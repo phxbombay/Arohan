@@ -1,0 +1,135 @@
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: arohan-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: arohan_health_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./backend/migrations:/docker-entrypoint-initdb.d/migrations
+    ports:
+      - "5435:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: arohan-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 5000
+      DATABASE_URL: postgresql://postgres:${DB_PASSWORD:-arohan_secure_2026}@postgres:5432/arohan_health_db
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-test_key_id}
+      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-test_key_secret}
+      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-test_webhook_secret}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost,http://localhost:3000,http://localhost:5173,http://localhost:8080}
+      # Email Configuration (Use .env file)
+      SMTP_HOST: ${SMTP_HOST:-smtp.ethereal.email}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-info@haspranahealth.com}
+      # Twilio SMS Configuration (Use .env file)
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
+      TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER}
+      SMS_RATE_LIMIT_PER_MINUTE: ${SMS_RATE_LIMIT_PER_MINUTE:-10}
+    ports:
+      - "5000:5000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      # logstash:
+      #   condition: service_started
+    volumes:
+      - ./backend/src:/app/src
+    command: node src/index.js
+
+  # Frontend (React + Vite)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: arohan-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+      # InfluxDB (Time-Series Database)
+      # influxdb:
+      #   image: influxdb:2.7-alpine
+      #   container_name: arohan-influxdb
+      #   volumes:
+      #     - influxdb_data:/var/lib/influxdb2
+      #   ports:
+      #     - "8086:8086"
+      #   environment:
+      #     DOCKER_INFLUXDB_INIT_MODE: setup
+      #     DOCKER_INFLUXDB_INIT_USERNAME: admin
+      #     DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUX_PASSWORD:-arohan_secure_2026}
+      #     DOCKER_INFLUXDB_INIT_ORG: arohan_health
+      #     DOCKER_INFLUXDB_INIT_BUCKET: vitals
+      #   restart: unless-stopped
+
+      # Elasticsearch (Search & Analytics Engine)
+      # elasticsearch:
+      #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
+      #   container_name: arohan-elasticsearch
+      #   environment:
+      #     - discovery.type=single-node
+      #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # Heap size limit
+      #   volumes:
+      #     - elasticsearch_data:/usr/share/elasticsearch/data
+      #   ports:
+      #     - "9200:9200"
+      #   mem_limit: 1g # Hard container limit
+
+      # Logstash (Data Processing Pipeline)
+      # logstash:
+      #   image: docker.elastic.co/logstash/logstash:7.17.10
+      #   container_name: arohan-logstash
+      #   volumes:
+      #     - ./backend/elk/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      #   ports:
+      #     - "5044:5000"
+      #   depends_on:
+      #     - elasticsearch
+      #   mem_limit: 512m
+
+      # Kibana (Visualization Dashboard)
+      # kibana:
+      #   image: docker.elastic.co/kibana/kibana:7.17.10
+      #   container_name: arohan-kibana
+      #   volumes:
+      #     - ./backend/elk/kibana.yml:/usr/share/kibana/config/kibana.yml
+      #   ports:
+      #     - "5601:5601"
+      #   depends_on:
+      #     - elasticsearch
+      #   mem_limit: 512m
+
+volumes:
+  postgres_data:
+    driver: local
+  influxdb_data:
+    driver: local
+  elasticsearch_data:
+    driver: local
+
+networks:
+  default:
+    name: arohan-network

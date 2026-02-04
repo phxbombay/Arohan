@@ -1,0 +1,32 @@
+{
+  "name": "Arohan - Advanced Emergency Response",
+  "short_name": "Arohan",
+  "description": "24/7 AI-powered emergency tracking, critical health monitoring, and instant ambulance dispatch. Arohan connects patients, hospitals, and emergency contacts in real-time.",
+  "categories": [
+    "medical",
+    "health",
+    "emergency",
+    "lifestyle"
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#DC2626",
+  "orientation": "portrait",
+  "scope": "/",
+  "id": "/",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+    "database": "arohan_health_db",
+    "user": "postgres",
+    "password": "arohan_secure_2026",
+    "host": "localhost",
+    "port": 5432,
+    "schema": "public",
+    "migrations-table": "pgmigrations",
+    "dir": "migrations",
+    "direction": "up",
+    "count": 1
+}
