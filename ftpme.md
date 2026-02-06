@@ -1,6 +1,27 @@
-# 🚀 Deep Step-by-Step Manual FTP Deployment Guide
+## 🧠 Database Knowledge Hub: PostgreSQL vs MySQL
 
-Follow this guide to manually update your Arohan Health application on the production server (`111.118.215.98`).
+If your automated or manual deployment failed at the database step, it is likely because of a **Database Type Mismatch**.
+
+### 1. The Situation
+- **Your Project**: Built using **PostgreSQL** (Uses `pg` library, UUIDs, and JSONB).
+- **Your Server**: Currently provides **MySQL** (The industry standard for most basic hosting).
+
+### 2. Can they talk to each other?
+**No.** PostgreSQL and MySQL are like different languages (e.g., French and Japanese). You cannot simply "upload" a PostgreSQL schema to a MySQL database.
+
+### 3. How to Proceed (Choose a Path)
+
+#### Path A: Enable PostgreSQL (Recommended)
+This keeps your code exactly as it is.
+1. Log in to your **cPanel**.
+2. Search for **"PostgreSQL Databases"**.
+3. If it exists, create a database and user there.
+4. If it **doesn't** exist, contact your hosting support and ask: *"Can you enable PostgreSQL for my account? My application requires it."*
+
+#### Path B: Convert to MySQL (Advanced)
+This requires changing both the **Database Schema** and the **Backend Code**.
+- **Schema Changes**: Replace `UUID` with `VARCHAR(36)`, `JSONB` with `JSON`, and `TIMESTAMPTZ` with `DATETIME`.
+- **Code Changes**: Replace the `pg` library with `mysql2` and rewrite some query logic.
 
 ---
 
@@ -10,7 +31,10 @@ Follow this guide to manually update your Arohan Health application on the produ
   - **Host**: `111.118.215.98`
   - **User**: `haspranahealth`
   - **Password**: `R@,sx-UbS)H$`
-  - **Port**: `21`
+  - **Port**: `21` (FTP) or `22` (SFTP)
+  
+> [!IMPORTANT]
+> If Port 22 (SFTP) gives an "Authentication Failed" error, it usually means your account only has Port 21 (FTP) enabled. Switch your client to **FTP** (Standard File Transfer Protocol) or Port **21**.
 - **Frontend Build Tool**: Node.js and npm installed locally.
 
 ---
