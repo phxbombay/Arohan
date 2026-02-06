@@ -15,6 +15,38 @@ Follow this guide to manually update your Arohan Health application on the produ
 
 ---
 
+## 3. Database Deployment
+
+The database cannot be "uploaded" via FTP. You must set it up using the SQL schema provided.
+
+1.  **Create Database on cPanel**:
+    - Go to **cPanel -> MySQL Databases** (or PostgreSQL if applicable).
+    - Create a new database named `arohan_health_db`.
+    - Create a new user and assign them to the database with **ALL PRIVILEGES**.
+    - Note down the `DB_USER`, `DB_PASSWORD`, and `DB_NAME`.
+
+2.  **Import Schema**:
+    - Open **phpMyAdmin** (or pgAdmin equivalent in cPanel).
+    - Select your new database.
+    - Go to the **Import** tab.
+    - Choose the file **`backend/schema.sql`** from your project.
+    - Click **Go** to create the tables.
+
+3.  **Update Variables**:
+    - Edit the `.env` file you uploaded to the `backend/` folder on the server.
+    - Ensure `DATABASE_URL` or individual `DB_` variables match your new cPanel database credentials.
+
+---
+
+## Summary of Folders
+- **Frontend Source**: `frontend/`
+- **Frontend Build (Upload this)**: `frontend/dist` -> `public_html/`
+- **Backend Source**: `backend/`
+- **Backend Build (Upload this)**: `backend.zip` -> `backend/`
+- **Database Schema**: `backend/schema.sql` (Import via phpMyAdmin)
+
+---
+
 ## 🏗 Phase 1: Frontend Deployment (Browser Interface)
 
 The frontend is a React application. You must convert the source code into static files before uploading.
