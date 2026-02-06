@@ -9,27 +9,43 @@ import bcrypt from 'bcryptjs';
  */
 export const getDashboardStats = async (req, res) => {
     try {
-        // Run queries in parallel for performance
+        // Run queries in parallel for performance, but handle individual failures
         const [usersCount, messagesCount, logsCount, activeUsers] = await Promise.all([
-            pool.query('SELECT COUNT(*) FROM users'),
-            pool.query('SELECT COUNT(*) FROM contact_messages'),
-            pool.query('SELECT COUNT(*) FROM audit_logs'),
-            pool.query('SELECT COUNT(*) FROM users WHERE is_active = true') // Assuming is_active column exists
+            pool.query('SELECT COUNT(*) FROM users').catch(err => {
+                logger.error('Stats - Users Query Error:', err);
+                return { rows: [{ count: 0 }] };
+            }),
+            pool.query('SELECT COUNT(*) FROM contact_messages').catch(err => {
+                logger.error('Stats - Messages Query Error:', err);
+                return { rows: [{ count: 0 }] };
+            }),
+            pool.query('SELECT COUNT(*) FROM audit_logs').catch(err => {
+                logger.error('Stats - Logs Query Error:', err);
+                return { rows: [{ count: 0 }] };
+            }),
+            pool.query('SELECT COUNT(*) FROM users WHERE is_active = true').catch(err => {
+                logger.error('Stats - Active Users Query Error:', err);
+                return { rows: [{ count: 0 }] };
+            })
         ]);
 
         res.json({
             status: 'success',
             data: {
-                totalUsers: parseInt(usersCount.rows[0].count),
-                activeUsers: parseInt(activeUsers.rows[0].count),
-                totalMessages: parseInt(messagesCount.rows[0].count),
-                totalLogs: parseInt(logsCount.rows[0].count),
+                totalUsers: parseInt(usersCount.rows[0]?.count || 0),
+                activeUsers: parseInt(activeUsers.rows[0]?.count || 0),
+                totalMessages: parseInt(messagesCount.rows[0]?.count || 0),
+                totalLogs: parseInt(logsCount.rows[0]?.count || 0),
                 generatedAt: new Date().toISOString()
             }
         });
     } catch (error) {
-        logger.error('Admin Stats Error:', error);
-        res.status(500).json({ message: 'Server error fetching stats' });
+        logger.error('Admin Stats Global Error:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error fetching stats',
+            data: { totalUsers: 0, activeUsers: 0, totalMessages: 0, totalLogs: 0 }
+        });
     }
 };
 
@@ -40,14 +56,18 @@ export const getDashboardStats = async (req, res) => {
  */
 export const getAllUsers = async (req, res) => {
     try {
-        const result = await pool.query(
-            'SELECT user_id, full_name, email, role, created_at, is_active FROM users ORDER BY created_at DESC'
-        );
+        const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
+
+        // Map to remove sensitive fields if they exist
+        const safeUsers = result.rows.map(user => {
+            const { password_hash, mfa_secret, ...safeUser } = user;
+            return safeUser;
+        });
 
         res.json({
             status: 'success',
-            count: result.rows.length,
-            data: result.rows
+            count: safeUsers.length,
+            data: safeUsers
         });
     } catch (error) {
         logger.error('Admin Users Error:', error);
@@ -64,7 +84,10 @@ export const getAllMessages = async (req, res) => {
     try {
         const result = await pool.query(
             'SELECT * FROM contact_messages ORDER BY created_at DESC'
-        );
+        ).catch(err => {
+            logger.error('Admin Messages Query Error:', err);
+            return { rows: [] };
+        });
 
         res.json({
             status: 'success',
@@ -72,8 +95,12 @@ export const getAllMessages = async (req, res) => {
             data: result.rows
         });
     } catch (error) {
-        logger.error('Admin Messages Error:', error);
-        res.status(500).json({ message: 'Server error fetching messages' });
+        logger.error('Admin Messages Global Error:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error fetching messages',
+            data: []
+        });
     }
 };
 
@@ -88,7 +115,10 @@ export const getSystemLogs = async (req, res) => {
         const result = await pool.query(
             'SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT $1',
             [limit]
-        );
+        ).catch(err => {
+            logger.error('Admin Logs Query Error:', err);
+            return { rows: [] };
+        });
 
         res.json({
             status: 'success',
@@ -96,8 +126,12 @@ export const getSystemLogs = async (req, res) => {
             data: result.rows
         });
     } catch (error) {
-        logger.error('Admin Logs Error:', error);
-        res.status(500).json({ message: 'Server error fetching logs' });
+        logger.error('Admin Logs Global Error:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error fetching logs',
+            data: []
+        });
     }
 };
 
@@ -108,38 +142,12 @@ export const getSystemLogs = async (req, res) => {
  */
 export const getAllOrders = async (req, res) => {
     try {
-        // Query orders 
-        // Note: 'payment_method' column name might be camelCase in DB if I used quotes, or snake_case
-        // In razorpayController I used "paymentMethod". Postgres creates lowercase by default unless quoted.
-        // I will assume standard snake_case or case-insensitive matching for unquoted creation.
-        // Let's check schema.sql again if uncertain.
-        // Schema said: paymentMethod (camelCase?)
-        // Wait, schema.sql step 779: paymentMethod VARCHAR(20) ...
-        // Postgres creates this as "paymentmethod" (lowercase) unless quoted "paymentMethod".
-        // I should check schema creation style.
-        // Step 779: CREATE TABLE IF NOT EXISTS orders ( ... paymentMethod ... )  -> lowercase 'paymentmethod'
-        // But in razorpayController I used: INSERT INTO orders (... currency, status ...)
-        // I did NOT specify columns in INSERT?
-        // Wait, step 790: INSERT INTO orders (order_id, user_id, amount, currency, status, receipt) ...
-        // I did NOT insert paymentMethod?
-        // Oh, schema.sql has `paymentMethod` as REQUIRED?
-        // Step 779 Line 18: paymentMethod type String... Wait, schema.sql showed Mongoose schema style in comments?
-        // No, Schema.sql (Step 779) lines 163+ showed "ORDERS table" for Razorpay.
-        // Line 163: order_id, user_id, amount...
-        // It did NOT have paymentMethod in the SQL table definition in the "PAYMENT GATEWAY TABLES" section?
-        // Let's re-read Step 779 lines 163-171.
-
-        // Line 163: CREATE TABLE IF NOT EXISTS orders ( order_id, user_id, amount, currency, receipt, status, created_at )
-        // IT DOES NOT HAVE payment_method column!
-        // But `payments` table has `method`.
-
-        // This means I can't select `payment_method` from `orders` table if it doesn't exist.
-        // I should select from `orders` and maybe join `payments`?
-        // Or just return what is in `orders`.
-
         const result = await pool.query(
-            'SELECT order_id, user_id, amount, currency, status, receipt, created_at FROM orders ORDER BY created_at DESC'
-        );
+            'SELECT * FROM orders ORDER BY created_at DESC'
+        ).catch(err => {
+            logger.error('Admin Orders Query Error:', err);
+            return { rows: [] };
+        });
 
         res.json({
             status: 'success',
@@ -147,8 +155,12 @@ export const getAllOrders = async (req, res) => {
             data: result.rows
         });
     } catch (error) {
-        logger.error('Admin Orders Error:', error);
-        res.status(500).json({ message: 'Server error fetching orders' });
+        logger.error('Admin Orders Global Error:', error);
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error fetching orders',
+            data: []
+        });
     }
 };
 

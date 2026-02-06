@@ -30,7 +30,8 @@ export function LogsPage() {
         const fetchLogs = async () => {
             try {
                 const response = await api.get('/admin/logs?limit=50');
-                setLogs(response.data.data);
+                const data = response.data.data;
+                setLogs(Array.isArray(data) ? data : []);
             } catch (error) {
                 console.error("Failed to fetch logs", error);
             } finally {
@@ -76,7 +77,7 @@ export function LogsPage() {
                             <TableRow key={log.log_id} hover>
                                 <TableCell>{getIcon(log.level || 'info')}</TableCell>
                                 <TableCell sx={{ color: 'text.secondary', whiteSpace: 'nowrap' }}>
-                                    {new Date(log.created_at).toLocaleString()}
+                                    {new Date(log.timestamp || log.created_at).toLocaleString()}
                                 </TableCell>
                                 <TableCell sx={{ fontWeight: 'medium' }}>{log.action}</TableCell>
                                 <TableCell sx={{ color: 'text.secondary', fontFamily: 'monospace' }}>

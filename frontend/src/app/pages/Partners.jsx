@@ -1,4 +1,4 @@
-import { Box, Button, Container, Typography, TextField, Grid, Paper, Card, CardContent } from '@mui/material';
+import { Box, Button, Container, Typography, TextField, Grid, Paper, Card, CardContent, CircularProgress, Alert } from '@mui/material';
 import { useState } from 'react';
 import {
     LocalHospital as HospitalIcon,
@@ -7,6 +7,8 @@ import {
     Science as FlaskIcon,
     CheckCircle as CheckCircleIcon
 } from '@mui/icons-material';
+import api from '../../services/api';
+import { toast } from 'sonner';
 
 export default function Partners() {
     const [formData, setFormData] = useState({
@@ -17,6 +19,8 @@ export default function Partners() {
         message: ''
     });
     const [submitted, setSubmitted] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
     const handleChange = (e) => {
         setFormData({
@@ -25,11 +29,22 @@ export default function Partners() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // TODO: Integrate with backend API
-        console.log('Partnership inquiry submitted:', formData);
-        setSubmitted(true);
+        setLoading(true);
+        setError(null);
+
+        try {
+            await api.post('/leads/partnership', formData);
+            setSubmitted(true);
+            toast.success('Partnership inquiry submitted successfully!');
+        } catch (err) {
+            console.error('Submission error:', err);
+            setError(err.response?.data?.message || 'Failed to submit inquiry. Please try again.');
+            toast.error('Failed to submit inquiry.');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const partnershipTypes = [
@@ -196,15 +211,21 @@ export default function Partners() {
                                         placeholder="Tell us about your organization and how you'd like to partner with Arohan..."
                                     />
                                 </Grid>
+                                {error && (
+                                    <Grid item xs={12}>
+                                        <Alert severity="error">{error}</Alert>
+                                    </Grid>
+                                )}
                                 <Grid item xs={12}>
                                     <Button
                                         type="submit"
                                         variant="contained"
                                         size="large"
                                         fullWidth
+                                        disabled={loading}
                                         sx={{ py: 1.5, fontSize: '1.1rem', borderRadius: 2 }}
                                     >
-                                        Submit Partnership Inquiry
+                                        {loading ? <CircularProgress size={24} color="inherit" /> : 'Submit Partnership Inquiry'}
                                     </Button>
                                 </Grid>
                             </Grid>

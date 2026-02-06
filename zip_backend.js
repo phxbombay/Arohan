@@ -2,42 +2,29 @@ import fs from 'fs';
 import path from 'path';
 import archiver from 'archiver';
 
-const output = fs.createWriteStream(path.join(process.cwd(), 'backend.zip'));
-const archive = archiver('zip', {
-    zlib: { level: 9 } // Sets the compression level.
-});
+async function zipDirectory(sourceDir, outPath) {
+    const archive = archiver('zip', { zlib: { level: 9 } });
+    const stream = fs.createWriteStream(outPath);
 
-output.on('close', function () {
-    console.log('✅ Backend zipped successfully!');
-    console.log(archive.pointer() + ' total bytes');
-    console.log('📂 File created: backend.zip');
-    console.log('👉 Upload this file to your cPanel backend directory and unzip it there.');
-});
+    return new Promise((resolve, reject) => {
+        archive
+            .glob('**/*', {
+                cwd: sourceDir,
+                ignore: ['node_modules/**', 'dist/**', 'logs/**', '.git/**', '.env']
+            })
+            .on('error', err => reject(err))
+            .pipe(stream);
 
-archive.on('warning', function (err) {
-    if (err.code === 'ENOENT') {
-        console.warn(err);
-    } else {
-        throw err;
-    }
-});
+        stream.on('close', () => resolve());
+        archive.finalize();
+    });
+}
 
-archive.on('error', function (err) {
-    throw err;
-});
+const source = path.join(process.cwd(), 'backend');
+const destination = path.join(process.cwd(), 'backend.zip');
 
-archive.pipe(output);
+console.log(`📦 Zipping ${source} to ${destination}...`);
 
-// Append files from local 'backend' directory, putting them at the root of the zip
-archive.directory('backend/', false, (entry) => {
-    // Exclude node_modules and other non-production files
-    if (entry.name.includes('node_modules') ||
-        entry.name.includes('.git') ||
-        entry.name.includes('tests') ||
-        entry.name.includes('coverage')) {
-        return false;
-    }
-    return entry;
-});
-
-archive.finalize();
+zipDirectory(source, destination)
+    .then(() => console.log('✅ Backend zipped successfully!'))
+    .catch(err => console.error('❌ Zipping failed:', err));

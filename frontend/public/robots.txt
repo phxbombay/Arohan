@@ -1,4 +1,24 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://arohan-health.com/sitemap.xml
+# Disallow admin and API routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /login
+Disallow: /register
+
+# Allow specific public pages
+Allow: /about
+Allow: /products
+Allow: /pricing
+Allow: /contact
+Allow: /team
+Allow: /faq
+Allow: /blog
+
+# Sitemap location
+Sitemap: https://arohanhealth.com/sitemap.xml
+
+# Crawl delay (optional, helps prevent server overload)
+Crawl-delay: 1

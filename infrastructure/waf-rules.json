@@ -1,0 +1,68 @@
+{
+    "Name": "ArohanWAFWebACL",
+    "Scope": "REGIONAL",
+    "DefaultAction": {
+        "Allow": {}
+    },
+    "VisibilityConfig": {
+        "SampledRequestsEnabled": true,
+        "CloudWatchMetricsEnabled": true,
+        "MetricName": "ArohanWebACL"
+    },
+    "Rules": [
+        {
+            "Name": "AWS-AWSManagedRulesCommonRuleSet",
+            "Priority": 0,
+            "Statement": {
+                "ManagedRuleGroupStatement": {
+                    "VendorName": "AWS",
+                    "Name": "AWSManagedRulesCommonRuleSet"
+                }
+            },
+            "OverrideAction": {
+                "None": {}
+            },
+            "VisibilityConfig": {
+                "SampledRequestsEnabled": true,
+                "CloudWatchMetricsEnabled": true,
+                "MetricName": "AWS-AWSManagedRulesCommonRuleSet"
+            }
+        },
+        {
+            "Name": "AWS-AWSManagedRulesKnownBadInputsRuleSet",
+            "Priority": 1,
+            "Statement": {
+                "ManagedRuleGroupStatement": {
+                    "VendorName": "AWS",
+                    "Name": "AWSManagedRulesKnownBadInputsRuleSet"
+                }
+            },
+            "OverrideAction": {
+                "None": {}
+            },
+            "VisibilityConfig": {
+                "SampledRequestsEnabled": true,
+                "CloudWatchMetricsEnabled": true,
+                "MetricName": "AWS-AWSManagedRulesKnownBadInputsRuleSet"
+            }
+        },
+        {
+            "Name": "RateLimitRule",
+            "Priority": 2,
+            "Statement": {
+                "RateBasedStatement": {
+                    "Limit": 2000,
+                    "AggregateKeyType": "IP"
+                }
+            },
+            "Action": {
+                "Block": {}
+            },
+            "VisibilityConfig": {
+                "SampledRequestsEnabled": true,
+                "CloudWatchMetricsEnabled": true,
+                "MetricName": "RateLimitRule"
+            }
+        }
+    ]
+}

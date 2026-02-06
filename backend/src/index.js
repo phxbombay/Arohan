@@ -12,6 +12,15 @@ import errorHandler from './middleware/errorHandler.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
 import swaggerSpec from './config/swagger.js';
 import { cspMiddleware, additionalSecurityHeaders } from './middleware/csp.js';
+import {
+    securityHeaders,
+    corsOptions,
+    sanitizeRequest,
+    preventSQLInjection,
+    preventXSS,
+    securityAuditLog
+} from './middleware/security.js';
+import { metricsMiddleware } from './middleware/metrics.js';
 
 dotenv.config();
 
@@ -21,13 +30,26 @@ const app = express();
 app.set('trust proxy', 1);
 
 // Security Middleware
-app.use(helmet());
+// Using our enhanced security headers instead of basic helmet
+app.use(securityHeaders);
+
+// Performance Monitoring Middleware (must be early)
+app.use(metricsMiddleware);
 
 // Content Security Policy
 app.use(cspMiddleware);
 
 // Additional security headers
 app.use(additionalSecurityHeaders);
+
+// Request sanitization (trim whitespace, prevent parameter pollution)
+app.use(sanitizeRequest);
+
+// SQL Injection Prevention
+app.use(preventSQLInjection);
+
+// XSS Prevention
+app.use(preventXSS);
 
 // Response compression
 app.use(compression());
@@ -75,6 +97,9 @@ app.use((req, res, next) => {
 // Apply rate limiting to all routes
 app.use('/v1/', apiLimiter);
 
+// Security audit logging for sensitive endpoints
+app.use(securityAuditLog);
+
 // API Documentation
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
     customCss: '.swagger-ui .topbar { display: none }',
@@ -109,6 +134,8 @@ import blogRoutes from './routes/blogRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import invoiceRoutes from './routes/invoiceRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import whatsappRoutes from './routes/whatsapp.js';
+import chatbotRoutes from './routes/chatbotRoutes.js';
 
 // API Routes
 app.use('/v1/auth', authRoutes);
@@ -129,6 +156,8 @@ app.use('/v1/phonepe', phonePeRoutes);
 app.use('/v1/orders', orderRoutes);
 app.use('/v1/invoices', invoiceRoutes);
 app.use('/v1/notifications', notificationRoutes);
+app.use('/v1/whatsapp', whatsappRoutes);
+app.use('/v1/chatbot', chatbotRoutes);
 
 // Health check endpoint (outside rate limiting)
 app.get('/health', async (req, res) => {

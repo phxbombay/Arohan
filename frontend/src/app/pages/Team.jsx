@@ -142,7 +142,7 @@ export function Team() {
                 </Grid>
             </Container>
 
-            {/* Advisors */}
+            {/* Advisory Board - Temporarily hidden pending updates
             <Box sx={{ bgcolor: 'grey.50', py: { xs: 6, md: 10 } }}>
                 <Container>
                     <Typography variant="h4" fontWeight="bold" align="center" gutterBottom>
@@ -167,6 +167,7 @@ export function Team() {
                     </Grid>
                 </Container>
             </Box>
+            */}
 
             {/* Join Us CTA */}
             <Container sx={{ py: { xs: 6, md: 10 }, textAlign: 'center' }}>

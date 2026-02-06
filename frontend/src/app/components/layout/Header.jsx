@@ -29,6 +29,7 @@ import {
 } from '@mui/material';
 import { AuthModal } from '../common/AuthModal';
 import { CartDrawer } from '../common/CartDrawer';
+import { LanguageSwitcher } from '../LanguageSwitcher';
 // @ts-ignore
 import { useAuth } from '../../../features/auth/hooks/useAuth';
 // @ts-ignore
@@ -70,6 +71,8 @@ export function Header() {
         { name: 'How It Works', path: '/how-it-works' },
         { name: 'Products', path: '/products' },
         { name: 'Pricing', path: '/pricing' },
+        { name: 'Consulting', path: '/consulting' },
+        { name: 'Integrations', path: '/integrations' },
         { name: 'Blog', path: '/blog' },
     ];
 
@@ -156,12 +159,18 @@ export function Header() {
                         </Popover>
 
                         {/* Cart */}
-                        <IconButton onClick={() => setIsCartOpen(true)}>
-                            <Badge badgeContent={totalItems} color="primary">
-                                <CartIcon size={20} />
-                            </Badge>
-                        </IconButton>
+                        <Tooltip title="Shopping Cart">
+                            <IconButton onClick={() => setIsCartOpen(true)} size="small" sx={{ color: 'text.secondary' }}>
+                                <Badge badgeContent={totalItems} color="primary">
+                                    <CartIcon size={20} />
+                                </Badge>
+                            </IconButton>
+                        </Tooltip>
 
+                        {/* Language Switcher */}
+                        <LanguageSwitcher />
+
+                        {/* Auth Button */}
                         {isAuthenticated ? (
                             <Stack direction="row" spacing={2} alignItems="center">
                                 <Typography variant="body2" fontWeight={600}>{user?.full_name || 'User'}</Typography>

@@ -13,7 +13,7 @@ import {
 import { Email as EmailIcon } from '@mui/icons-material';
 import { StructuredData } from '../components/StructuredData';
 import { generateOrganizationSchema, generateBreadcrumbSchema } from '../../utils/structuredData';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
 
 export function About() {
@@ -87,10 +87,9 @@ export function About() {
 
     const milestones = [
         { year: '2025', event: 'Company founded in Bengaluru' },
-        { year: '2025 Q4', event: 'Completed 50-subject clinical trial (95% accuracy)' },
-        { year: '2026 Q1', event: 'Secured seed funding' },
-        { year: '2026 Q2', event: 'Partnership with Apollo Hospitals (planned)' },
-        { year: '2026 Q3', event: 'CDSCO approval process initiated' }
+        { year: '2025 Q4', event: 'Initial prototype development and testing' },
+        { year: '2026 Q1', event: 'Open early access program' },
+        { year: '2026 Q3', event: 'Regulatory certification process' }
     ];
 
     const breadcrumbs = [
@@ -103,11 +102,14 @@ export function About() {
             <StructuredData schema={generateOrganizationSchema()} />
             <StructuredData schema={generateBreadcrumbSchema(breadcrumbs)} />
 
-            <Helmet>
-                <title>About Arohan Health | Mission to Save Lives with AI</title>
-                <meta name="description" content="Learn about Arohan's mission to protect India's elderly with AI technology. Meet our team of doctors, engineers, and healthcare innovators." />
-                <link rel="canonical" href="https://arohanhealth.com/about" />
-            </Helmet>
+            <SEO
+                title="About Us - Mission to Save Lives with AI"
+                description="Learn about Arohan's mission to protect India's elderly with AI technology. Meet our team of doctors, engineers, and healthcare innovators dedicated to emergency care."
+                keywords="about arohan health, health tech startup, AI emergency care, elderly care team, healthcare innovation, Bengaluru startup"
+                canonical="https://arohanhealth.com/about"
+                type="website"
+                image="https://arohanhealth.com/images/team-arohan.jpg"
+            />
 
             {/* Hero Section */}
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 6, md: 8 }, textAlign: 'center' }}>
@@ -158,10 +160,7 @@ export function About() {
                     </Typography>
                     <Paper elevation={0} sx={{ p: 4, borderLeft: '6px solid', borderColor: 'error.main', bgcolor: 'white', textAlign: 'center', borderRadius: 2 }}>
                         <Typography variant="h5" fontWeight="bold" color="error.main" gutterBottom>
-                            40% of cardiac & stroke deaths occur due to delayed emergency response
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            Source: National Institute of Health, India (2024)
+                            Reducing delays in emergency notification saves lives
                         </Typography>
                     </Paper>
                 </Container>

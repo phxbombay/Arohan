@@ -20,98 +20,7 @@ import {
     Paper
 } from '@mui/material';
 
-const jobOpenings = [
-    {
-        id: 1,
-        title: "Senior IoT Engineer",
-        department: "Engineering",
-        location: "Bengaluru / Remote",
-        type: "Full-time",
-        description: "Lead development of wearable biosensor systems. Design embedded firmware for real-time health monitoring.",
-        requirements: [
-            "5+ years embedded systems experience",
-            "Proficiency in C/C++, Python",
-            "Experience with BLE, LoRa, or cellular IoT",
-            "Knowledge of biosensor integration"
-        ],
-        salary: "₹15-25 LPA"
-    },
-    {
-        id: 2,
-        title: "Product Designer (UI/UX)",
-        department: "Design",
-        location: "Bengaluru",
-        type: "Full-time",
-        description: "Design intuitive health monitoring interfaces for elderly users. Create accessible, beautiful experiences.",
-        requirements: [
-            "3+ years product design experience",
-            "Mastery of Figma, design systems",
-            "Portfolio showing mobile app design",
-            "Accessibility design knowledge (WCAG)"
-        ],
-        salary: "₹10-18 LPA"
-    },
-    {
-        id: 3,
-        title: "Backend Engineer (Node.js/Python)",
-        department: "Engineering",
-        location: "Remote",
-        type: "Full-time",
-        description: "Build scalable cloud infrastructure for health data processing. Implement real-time alert systems.",
-        requirements: [
-            "4+ years backend development",
-            "Expert in Node.js or Python",
-            "Experience with PostgreSQL, Redis",
-            "Cloud infrastructure (AWS/GCP)"
-        ],
-        salary: "₹12-20 LPA"
-    },
-    {
-        id: 4,
-        title: "Customer Success Manager",
-        department: "Operations",
-        location: "Bengaluru / Remote",
-        type: "Full-time",
-        description: "Help families and healthcare providers maximize value from Arohan. Build long-term relationships.",
-        requirements: [
-            "2+ years customer success in healthcare/tech",
-            "Excellent communication skills",
-            "Empathy for elderly care challenges",
-            "Hindi + English fluency"
-        ],
-        salary: "₹8-14 LPA"
-    },
-    {
-        id: 5,
-        title: "Marketing Specialist (Health-Tech)",
-        department: "Growth",
-        location: "Bengaluru",
-        type: "Full-time",
-        description: "Drive growth through digital marketing, content, and partnerships in elder-care segment.",
-        requirements: [
-            "3+ years marketing in health-tech",
-            "SEO, content marketing, paid ads",
-            "Analytics-driven approach",
-            "B2B and D2C experience"
-        ],
-        salary: "₹10-16 LPA"
-    },
-    {
-        id: 6,
-        title: "AI/ML Engineer (Internship)",
-        department: "Research",
-        location: "Bengaluru / Remote",
-        type: "Internship (6 months)",
-        description: "Work on anomaly detection models for health vitals. Contribute to our AI-powered alert system.",
-        requirements: [
-            "Currently pursuing MS/MTech in CS/AI",
-            "Strong Python, TensorFlow/PyTorch",
-            "Understanding of time-series analysis",
-            "Passion for healthcare applications"
-        ],
-        salary: "₹30-50K/month stipend"
-    }
-];
+const jobOpenings = [];
 
 export function Careers() {
     const [selectedJob, setSelectedJob] = useState(null);
@@ -279,74 +188,14 @@ export function Careers() {
                             </Typography>
                         </Box>
 
-                        <Stack spacing={3}>
-                            {jobOpenings.map((job) => (
-                                <Card
-                                    key={job.id}
-                                    elevation={0}
-                                    sx={{
-                                        border: 2,
-                                        borderColor: 'grey.100',
-                                        transition: 'all 0.2s',
-                                        '&:hover': {
-                                            boxShadow: 3,
-                                            borderColor: 'error.light'
-                                        }
-                                    }}
-                                >
-                                    <CardContent sx={{ p: 3 }}>
-                                        <Grid container spacing={3} alignItems="flex-start">
-                                            <Grid item xs={12} md={9}>
-                                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 }}>
-                                                    <Typography variant="h5" fontWeight="bold" color="text.primary">
-                                                        {job.title}
-                                                    </Typography>
-                                                    <Chip
-                                                        label={job.salary}
-                                                        size="small"
-                                                        sx={{ bgcolor: 'success.light', color: 'success.dark', fontWeight: 'bold' }}
-                                                    />
-                                                </Box>
-
-                                                <Stack direction="row" spacing={1} flexWrap="wrap" alignItems="center" sx={{ mb: 2, color: 'text.secondary', fontSize: '0.875rem' }}>
-                                                    <Typography variant="body2" fontWeight="bold">{job.department}</Typography>
-                                                    <Typography variant="caption">•</Typography>
-                                                    <Typography variant="body2">{job.location}</Typography>
-                                                    <Typography variant="caption">•</Typography>
-                                                    <Chip label={job.type} size="small" color="primary" variant="outlined" sx={{ height: 20, fontSize: '0.7rem' }} />
-                                                </Stack>
-
-                                                <Typography variant="body1" color="text.primary" paragraph>
-                                                    {job.description}
-                                                </Typography>
-
-                                                <Box component="details" sx={{ cursor: 'pointer', '& summary': { fontWeight: 'bold', color: 'text.secondary', '&:hover': { color: 'error.main' } } }}>
-                                                    <summary>View Requirements</summary>
-                                                    <Stack spacing={1} sx={{ mt: 2, pl: 2 }}>
-                                                        {job.requirements.map((req, idx) => (
-                                                            <Box key={idx} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-                                                                <Check size={16} color="#16a34a" style={{ marginTop: 4 }} />
-                                                                <Typography variant="body2" color="text.secondary">{req}</Typography>
-                                                            </Box>
-                                                        ))}
-                                                    </Stack>
-                                                </Box>
-                                            </Grid>
-                                            <Grid item xs={12} md={3} display="flex" justifyContent={{ xs: 'flex-start', md: 'flex-end' }}>
-                                                <Button
-                                                    variant="contained"
-                                                    color="error"
-                                                    endIcon={<ArrowRight size={16} />}
-                                                    onClick={() => handleApply(job)}
-                                                >
-                                                    Apply Now
-                                                </Button>
-                                            </Grid>
-                                        </Grid>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </Stack>
+                        <Box sx={{ textAlign: 'center', py: 8 }}>
+                            <Typography variant="body1" color="text.secondary" paragraph>
+                                As our prototype undergoes clinical validation, we are preparing to scale our team across engineering, clinical research, and operations.
+                            </Typography>
+                            <Typography variant="body1" color="text.secondary">
+                                While we don't have active positions listed today, we are always eager to meet passionate individuals interested in health-tech.
+                            </Typography>
+                        </Box>
 
                         <Paper
                             elevation={0}

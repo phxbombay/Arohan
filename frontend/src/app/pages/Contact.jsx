@@ -108,14 +108,14 @@ export function Contact() {
                                         </Box>
                                     </CardContent>
                                 </Card>
-                                <Card sx={{ transition: 'all 0.3s', '&:hover': { transform: 'translateY(-5px)', boxShadow: 10 } }}>
+                                <Card>
                                     <CardContent sx={{ p: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 2 }}>
                                         <PhoneIcon color="primary" fontSize="large" />
                                         <Box sx={{ textAlign: 'left' }}>
-                                            <Typography variant="h6" fontWeight="bold">Phone</Typography>
-                                            <a href="tel:+917019024300" style={{ textDecoration: 'none', color: '#d32f2f', fontWeight: 500 }}>
-                                                +91 70190 24300
-                                            </a>
+                                            <Typography variant="h6" fontWeight="bold">Phone Support</Typography>
+                                            <Typography variant="body2" color="text.secondary">
+                                                This feature will be enabled soon.
+                                            </Typography>
                                         </Box>
                                     </CardContent>
                                 </Card>

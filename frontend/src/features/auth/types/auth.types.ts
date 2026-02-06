@@ -62,4 +62,5 @@ export interface AuthState {
     logout: () => void;
     clearError: () => void;
     setUser: (user: User) => void;
+    setToken: (token: string) => void;
 }

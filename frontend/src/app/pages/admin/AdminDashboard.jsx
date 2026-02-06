@@ -75,7 +75,9 @@ export function AdminDashboard() {
         const fetchStats = async () => {
             try {
                 const response = await api.get('/admin/stats');
-                setStats(response.data.data);
+                if (response.data && response.data.data) {
+                    setStats(response.data.data);
+                }
             } catch (error) {
                 console.error("Failed to fetch admin stats", error);
             } finally {
@@ -115,7 +117,7 @@ export function AdminDashboard() {
                 <Grid item xs={12} sm={6} md={3}>
                     <StatCard
                         title="Total Users"
-                        value={stats.totalUsers}
+                        value={stats?.totalUsers || 0}
                         icon={UsersIcon}
                         color1="#4F46E5" // Indigo
                         color2="#818CF8"
@@ -124,7 +126,7 @@ export function AdminDashboard() {
                 <Grid item xs={12} sm={6} md={3}>
                     <StatCard
                         title="Active Sessions"
-                        value={stats.activeUsers}
+                        value={stats?.activeUsers || 0}
                         icon={CheckCircleIcon}
                         color1="#059669" // Emerald
                         color2="#34D399"
@@ -133,7 +135,7 @@ export function AdminDashboard() {
                 <Grid item xs={12} sm={6} md={3}>
                     <StatCard
                         title="New Leads" // Placeholder logic
-                        value={stats.totalMessages}
+                        value={stats?.totalMessages || 0}
                         icon={MessageIcon}
                         color1="#D946EF" // Fuchsia
                         color2="#F472B6"
@@ -142,7 +144,7 @@ export function AdminDashboard() {
                 <Grid item xs={12} sm={6} md={3}>
                     <StatCard
                         title="System Logs"
-                        value={stats.totalLogs}
+                        value={stats?.totalLogs || 0}
                         icon={FileTextIcon}
                         color1="#EA580C" // Orange
                         color2="#FB923C"

@@ -135,8 +135,8 @@ export function Footer() {
                 <Box sx={{ display: 'flex', gap: 1.5 }}>
                   <PhoneIcon color="primary" fontSize="small" sx={{ mt: 0.5 }} />
                   <Box>
-                    <Typography variant="caption" color="grey.500" display="block">General Inquiry</Typography>
-                    <MuiLink href="tel:+917019024300" color="inherit" underline="none" variant="body2" sx={{ '&:hover': { color: 'white' } }}>+91 70190 24300</MuiLink>
+                    <Typography variant="caption" color="grey.500" display="block">Phone Support</Typography>
+                    <Typography variant="body2" color="grey.300">Enabled Soon</Typography>
                   </Box>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 1.5 }}>
@@ -207,9 +207,9 @@ export function Footer() {
               <Stack direction="row" spacing={2.5} alignItems="flex-start">
                 <PhoneIcon sx={{ color: 'error.main', mt: 0.5 }} />
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">Support Line</Typography>
-                  <MuiLink href="tel:+917019024300" variant="h6" fontWeight="bold" color="error.main" underline="none">+91 70190 24300</MuiLink>
-                  <Typography variant="body2" color="text.secondary">General Inquiries & Support</Typography>
+                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">Phone Support</Typography>
+                  <Typography variant="h6" fontWeight="bold" color="error.main">Coming Soon</Typography>
+                  <Typography variant="body2" color="text.secondary">This feature will be enabled soon</Typography>
                 </Box>
               </Stack>
             </Box>

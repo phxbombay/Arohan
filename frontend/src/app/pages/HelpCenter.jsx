@@ -86,9 +86,9 @@ export function HelpCenter() {
         {
             icon: PhoneIcon,
             title: 'Phone Support',
-            content: '+91 7019 024 300',
-            subtext: 'Mon-Sat, 9 AM - 6 PM IST',
-            action: 'tel:+917019024300'
+            content: 'Coming Soon',
+            subtext: 'This feature will be enabled soon',
+            action: '#'
         },
         {
             icon: MailIcon,
@@ -100,9 +100,9 @@ export function HelpCenter() {
         {
             icon: ChatIcon,
             title: 'Live Chat',
-            content: 'Chat with us',
-            subtext: 'Available Mon-Sat, 9 AM - 6 PM',
-            action: '#chat'
+            content: 'Coming Soon',
+            subtext: 'This feature will be enabled soon',
+            action: '#'
         }
     ];
 

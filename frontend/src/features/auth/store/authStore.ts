@@ -139,6 +139,14 @@ export const useAuthStore = create<AuthState>()(
              */
             setUser: (user: User) => {
                 set({ user, isAuthenticated: true });
+            },
+
+            /**
+             * Set token (for refresh)
+             */
+            setToken: (token: string) => {
+                set({ token });
+                localStorage.setItem('token', token);
             }
         }),
         {

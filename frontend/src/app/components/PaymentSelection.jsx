@@ -22,6 +22,7 @@ import {
     Shield as ShieldIcon
 } from '@mui/icons-material';
 import axios from 'axios';
+import { toast } from 'sonner';
 
 export function PaymentSelection({ amount, customerDetails, items, onSuccess, onError }) {
     const [selectedMethod, setSelectedMethod] = useState('google_pay');
@@ -66,9 +67,10 @@ export function PaymentSelection({ amount, customerDetails, items, onSuccess, on
         {
             id: 'cod',
             label: 'Cash on Delivery',
-            icon: <CODIcon sx={{ fontSize: 40, color: '#FF9800' }} />,
-            description: 'Pay when you receive',
-            badge: 'No Risk'
+            icon: <CODIcon sx={{ fontSize: 40, color: '#9E9E9E' }} />,
+            description: 'this feature will be enabled soon',
+            badge: 'Coming Soon',
+            disabled: true
         }
     ];
 
@@ -78,23 +80,8 @@ export function PaymentSelection({ amount, customerDetails, items, onSuccess, on
         try {
             // Handle Cash on Delivery
             if (selectedMethod === 'cod') {
-                const response = await axios.post(`${import.meta.env.VITE_API_URL}/orders/create`, {
-                    amount: amount,
-                    currency: 'INR',
-                    paymentMethod: 'COD',
-                    customerDetails: customerDetails,
-                    items: items
-                });
-
-                if (response.data.success) {
-                    setLoading(false);
-                    if (onSuccess) onSuccess(response.data);
-                    alert('Order placed successfully! You will pay on delivery.');
-                } else {
-                    setLoading(false);
-                    if (onError) onError(response.data);
-                    alert('Failed to place order. Please try again.');
-                }
+                setLoading(false);
+                toast.info('Cash on Delivery will be enabled soon! Please use online payment for now.');
                 return;
             }
 
@@ -244,19 +231,21 @@ export function PaymentSelection({ amount, customerDetails, items, onSuccess, on
                                     border: 2,
                                     borderColor: selectedMethod === method.id ? 'primary.main' : 'grey.200',
                                     borderRadius: 3,
-                                    cursor: 'pointer',
+                                    cursor: method.disabled ? 'not-allowed' : 'pointer',
+                                    opacity: method.disabled ? 0.6 : 1,
                                     transition: 'all 0.3s',
-                                    '&:hover': {
+                                    '&:hover': method.disabled ? {} : {
                                         transform: 'translateY(-4px)',
                                         boxShadow: 6,
                                         borderColor: 'primary.light'
                                     }
                                 }}
-                                onClick={() => setSelectedMethod(method.id)}
+                                onClick={() => !method.disabled && setSelectedMethod(method.id)}
                             >
                                 <FormControlLabel
                                     value={method.id}
-                                    control={<Radio />}
+                                    control={<Radio disabled={method.disabled} />}
+                                    disabled={method.disabled}
                                     label={
                                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
                                             <Box>{method.icon}</Box>
@@ -268,7 +257,7 @@ export function PaymentSelection({ amount, customerDetails, items, onSuccess, on
                                                     <Chip
                                                         label={method.badge}
                                                         size="small"
-                                                        color="primary"
+                                                        color={method.disabled ? 'default' : 'primary'}
                                                         sx={{ height: 20, fontSize: '0.7rem' }}
                                                     />
                                                 </Box>
@@ -276,7 +265,7 @@ export function PaymentSelection({ amount, customerDetails, items, onSuccess, on
                                                     {method.description}
                                                 </Typography>
                                             </Box>
-                                            {selectedMethod === method.id && (
+                                            {selectedMethod === method.id && !method.disabled && (
                                                 <CheckIcon color="primary" sx={{ fontSize: 28 }} />
                                             )}
                                         </Box>

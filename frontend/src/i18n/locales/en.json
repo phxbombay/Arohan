@@ -1,0 +1,128 @@
+{
+    "nav": {
+        "home": "Home",
+        "about": "About Us",
+        "howItWorks": "How It Works",
+        "products": "Products",
+        "pricing": "Pricing",
+        "consulting": "Consulting",
+        "integrations": "Integrations",
+        "blog": "Blog",
+        "contact": "Contact"
+    },
+    "hero": {
+        "title": "AI-Powered Health Monitoring for Peace of Mind",
+        "subtitle": "Advanced wearable technology that keeps your loved ones safe with 24/7 health monitoring and instant emergency alerts",
+        "cta": {
+            "getStarted": "Get Started",
+            "learnMore": "Learn More"
+        }
+    },
+    "features": {
+        "title": "Why Choose Arohan?",
+        "realTimeMonitoring": {
+            "title": "Real-Time Health Monitoring",
+            "description": "Track heart rate, blood pressure, oxygen levels, and more in real-time"
+        },
+        "aiDetection": {
+            "title": "AI-Powered Emergency Detection",
+            "description": "Advanced algorithms detect falls, irregular vitals, and emergencies instantly"
+        },
+        "instantAlerts": {
+            "title": "Instant Emergency Alerts",
+            "description": "Automatic notifications to family and emergency services when help is needed"
+        },
+        "easyToUse": {
+            "title": "Easy to Use",
+            "description": "Simple, intuitive interface designed for all ages"
+        }
+    },
+    "pricing": {
+        "title": "Choose Your Plan",
+        "subtitle": "Flexible pricing for individuals and families",
+        "monthly": "Monthly",
+        "yearly": "Yearly",
+        "perMonth": "/month",
+        "perYear": "/year",
+        "selectPlan": "Select Plan",
+        "free": {
+            "name": "Free",
+            "description": "Perfect for trying out Arohan",
+            "features": [
+                "Basic health monitoring",
+                "7-day data history",
+                "Email alerts",
+                "1 emergency contact"
+            ]
+        },
+        "premium": {
+            "name": "Premium",
+            "description": "Complete health monitoring solution",
+            "features": [
+                "Advanced health monitoring",
+                "365-day data history",
+                "SMS & WhatsApp alerts",
+                "5 emergency contacts",
+                "AI health insights",
+                "Priority support"
+            ]
+        },
+        "family": {
+            "name": "Family",
+            "description": "Monitor your entire family",
+            "features": [
+                "Everything in Premium",
+                "Up to 5 family members",
+                "Shared dashboard",
+                "Family health reports",
+                "Dedicated support"
+            ]
+        }
+    },
+    "footer": {
+        "tagline": "Transforming health monitoring with AI-powered wearable technology. Peace of mind for families, independence for everyone.",
+        "solutions": "Solutions",
+        "company": "Company",
+        "contact": "Contact",
+        "copyright": "© 2025 Hasprana Health Care Solutions. All rights reserved.",
+        "privacyPolicy": "Privacy Policy",
+        "termsOfService": "Terms of Service",
+        "compliance": "Compliance",
+        "cookies": "Cookies"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "Error",
+        "success": "Success",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "close": "Close",
+        "search": "Search",
+        "filter": "Filter",
+        "sort": "Sort",
+        "viewMore": "View More",
+        "viewLess": "View Less"
+    },
+    "auth": {
+        "login": "Login",
+        "signup": "Sign Up",
+        "logout": "Logout",
+        "email": "Email",
+        "password": "Password",
+        "forgotPassword": "Forgot Password?",
+        "rememberMe": "Remember Me",
+        "noAccount": "Don't have an account?",
+        "haveAccount": "Already have an account?"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "overview": "Overview",
+        "vitals": "Vitals",
+        "alerts": "Alerts",
+        "devices": "Devices",
+        "settings": "Settings"
+    }
+}

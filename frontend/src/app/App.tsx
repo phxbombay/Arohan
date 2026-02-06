@@ -3,6 +3,7 @@ import { lazy, Suspense, useEffect } from "react";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { SOSButton } from "./components/SOSButton";
+import { Chatbot } from "./components/Chatbot";
 import ScrollToTop from "./components/common/ScrollToTop";
 import { Toaster } from 'sonner';
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -40,7 +41,14 @@ const PartnerHospitals = lazy(() => import("./pages/PartnerHospitals").then(modu
 const NearbyHospitals = lazy(() => import("./pages/NearbyHospitals").then(module => ({ default: module.NearbyHospitals })));
 const HelpCenter = lazy(() => import("./pages/HelpCenter").then(module => ({ default: module.HelpCenter })));
 const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard").then(module => ({ default: module.AdminDashboard })));
+const HospitalAdminDashboard = lazy(() => import("./pages/admin/HospitalAdminDashboard").then(module => ({ default: module.HospitalAdminDashboard })));
+const PhysicianDashboard = lazy(() => import("./pages/physician/PhysicianDashboard").then(module => ({ default: module.PhysicianDashboard })));
+const PatientDashboard = lazy(() => import("./pages/patient/PatientDashboard").then(module => ({ default: module.PatientDashboard })));
 const UsersPage = lazy(() => import("./pages/admin/UsersPage").then(module => ({ default: module.UsersPage })));
+// ... imports
+
+// ... routes
+
 const MessagesPage = lazy(() => import("./pages/admin/MessagesPage").then(module => ({ default: module.MessagesPage })));
 const LogsPage = lazy(() => import("./pages/admin/LogsPage").then(module => ({ default: module.LogsPage })));
 const OrdersPage = lazy(() => import("./pages/admin/OrdersPage").then(module => ({ default: module.OrdersPage })));
@@ -62,6 +70,10 @@ const CaseStudies = lazy(() => import("./pages/CaseStudies").then(module => ({ d
 const ContactEnhanced = lazy(() => import("./pages/ContactEnhanced").then(module => ({ default: module.ContactEnhanced })));
 const Cookies = lazy(() => import("./pages/Cookies").then(module => ({ default: module.Cookies })));
 const PaymentDemo = lazy(() => import("./pages/PaymentDemo").then(module => ({ default: module.PaymentDemo })));
+const Integrations = lazy(() => import("./pages/Integrations").then(module => ({ default: module.Integrations })));
+const Consulting = lazy(() => import("./pages/Consulting").then(module => ({ default: module.Consulting })));
+const Compliance = lazy(() => import("./pages/Compliance").then(module => ({ default: module.Compliance })));
+const MonitoringDashboard = lazy(() => import("./pages/admin/MonitoringDashboard").then(module => ({ default: module.MonitoringDashboard })));
 
 import { ThemeProvider, CssBaseline, Box, CircularProgress } from "@mui/material";
 import theme from "./styles/theme";
@@ -69,8 +81,8 @@ import { AdminLayout } from "./components/layout/AdminLayout";
 import { HelmetProvider } from 'react-helmet-async';
 import { CookieConsent } from './components/CookieConsent';
 import { PWAInstallPrompt } from './components/PWAInstallPrompt';
-import { PushNotificationButton } from '../features/notifications/components/PushNotificationButton';
 import { PushNotificationButton } from '@features/notifications/components/PushNotificationButton';
+import '../i18n/config'; // Initialize i18n
 
 
 // Loading component
@@ -102,6 +114,9 @@ export default function App() {
 
                   {/* Integrated Legacy Routes */}
                   <Route path="/products" element={<Products />} />
+                  <Route path="/integrations" element={<Integrations />} />
+                  <Route path="/consulting" element={<Consulting />} />
+                  <Route path="/compliance" element={<Compliance />} />
                   <Route path="/blog" element={<Blog />} />
 
                   {/* Segments */}
@@ -119,6 +134,25 @@ export default function App() {
                       <RoleDashboard>
                         <HealthDashboard />
                       </RoleDashboard>
+                    </ProtectedRoute>
+                  } />
+
+                  {/* Role Specific Dashboards */}
+                  <Route path="/physician/dashboard" element={
+                    <ProtectedRoute allowedRoles={['physician', 'doctor']}>
+                      <PhysicianDashboard />
+                    </ProtectedRoute>
+                  } />
+
+                  <Route path="/hospital/dashboard" element={
+                    <ProtectedRoute allowedRoles={['hospital_admin']}>
+                      <HospitalAdminDashboard />
+                    </ProtectedRoute>
+                  } />
+
+                  <Route path="/patient/dashboard" element={
+                    <ProtectedRoute allowedRoles={['patient']}>
+                      <PatientDashboard />
                     </ProtectedRoute>
                   } />
                   <Route path="/about" element={<About />} />
@@ -164,12 +198,14 @@ export default function App() {
                     <Route path="users" element={<UsersPage />} />
                     <Route path="messages" element={<MessagesPage />} />
                     <Route path="logs" element={<LogsPage />} />
+                    <Route path="metrics" element={<MonitoringDashboard />} />
                   </Route>
                 </Routes>
               </Suspense>
             </main>
             <Footer />
             <SOSButton />
+            <Chatbot />
             {/* PWA Notification Control (Temporary Placement) */}
             <Box sx={{ position: 'fixed', bottom: 20, right: 90, zIndex: 9999 }}>
               <PushNotificationButton />

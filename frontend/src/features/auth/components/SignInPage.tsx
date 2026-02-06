@@ -13,7 +13,9 @@ import {
     InputAdornment,
     Link as MuiLink,
     Button as MuiButton,
-    IconButton
+    IconButton,
+    FormControlLabel,
+    Checkbox
 } from '@mui/material';
 import {
     PersonOutline,
@@ -236,6 +238,17 @@ export function SignInPage() {
                                     }}
                                 />
                             )}
+
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        name="rememberMe"
+                                        color="primary"
+                                        defaultChecked
+                                    />
+                                }
+                                label="Remember me"
+                            />
 
                             {/* Submit Button */}
                             <MuiButton

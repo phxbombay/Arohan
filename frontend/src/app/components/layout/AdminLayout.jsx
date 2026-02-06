@@ -22,6 +22,7 @@ import {
     ShoppingBag,
     Briefcase
 } from 'lucide-react';
+import { Speed as SpeedIcon } from '@mui/icons-material';
 import { useAuth } from '../../../features/auth/hooks/useAuth';
 
 export function AdminLayout() {
@@ -42,10 +43,11 @@ export function AdminLayout() {
         { icon: Users, label: 'Users', path: '/admin/users' },
         { icon: MessageSquare, label: 'Messages', path: '/admin/messages' },
         { icon: FileText, label: 'Logs', path: '/admin/logs' },
+        { icon: SpeedIcon, label: 'Performance', path: '/admin/metrics' },
     ];
 
     return (
-        <Box sx={{ display: 'flex', height: '100vh', bgcolor: '#f8fafc' }}>
+        <Box sx={{ display: 'flex', minHeight: 'calc(100vh - 80px)', bgcolor: '#f8fafc' }}>
             {/* Sidebar */}
             <Box
                 component="aside"

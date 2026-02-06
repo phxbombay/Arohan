@@ -11,6 +11,8 @@ import { getAllLeads } from '../controllers/leadController.js';
 import { protect } from '../middleware/authMiddleware.js';
 import { requireAdmin } from '../middleware/rbac.js';
 
+import { getMetricsJSON } from '../middleware/metrics.js';
+
 const router = express.Router();
 
 // Apply protection and admin requirement to all routes
@@ -19,6 +21,7 @@ router.use(requireAdmin);
 
 // Dashboard routes
 router.get('/stats', getDashboardStats);
+router.get('/metrics', getMetricsJSON);
 router.get('/users', getAllUsers);
 router.post('/users', createUser);
 router.get('/messages', getAllMessages);

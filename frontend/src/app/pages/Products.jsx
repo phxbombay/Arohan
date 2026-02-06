@@ -33,7 +33,7 @@ import {
 } from '@mui/icons-material';
 import { StructuredData } from '../components/StructuredData';
 import { generateProductSchema, generateBreadcrumbSchema } from '../../utils/structuredData';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 import { useAuth } from '../../features/auth/hooks/useAuth';
 
@@ -98,39 +98,27 @@ export function Products() {
     ];
 
     const specifications = [
-        { label: 'Dimensions', value: '42mm × 36mm × 12mm' },
-        { label: 'Weight', value: '28 grams (ultra-lightweight)' },
-        { label: 'Water Resistance', value: 'IP68 (sweat & splash proof)' },
-        { label: 'Battery Life', value: '72 hours continuous monitoring' },
-        { label: 'Charging', value: 'Wireless Qi charging (2 hours full)' },
-        { label: 'Connectivity', value: 'Bluetooth 5.2, WiFi, LTE (optional)' },
-        { label: 'Sensors', value: 'ECG, Accelerometer, Gyroscope, Temperature' },
-        { label: 'Compatibility', value: 'iOS 15+, Android 10+' },
-        { label: 'Material', value: 'Medical-grade silicone, stainless steel' },
-        { label: 'Warranty', value: '1 year manufacturer warranty' }
+        { label: 'Weight', value: 'Ultra-lightweight design' },
+        { label: 'Water Resistance', value: 'Splash proof' },
+        { label: 'Battery Life', value: 'Long-lasting (72+ hours target)' },
+        { label: 'Connectivity', value: 'Bluetooth & WiFi integration' },
+        { label: 'Compatibility', value: 'iOS & Android' }
     ];
 
     const testimonials = [
         {
-            name: 'Rajesh Kumar',
-            role: 'Son of 72-year-old user',
+            name: 'Prakash R.',
+            role: 'Family Caregiver',
             rating: 5,
-            comment: 'Arohan saved my mother\'s life. The instant alert when she fell allowed us to get help within minutes. Worth every rupee.',
-            avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop'
+            comment: 'Arohan gives us peace of mind knowing we\'ll be notified if dad ever needs help.',
+            avatar: ''
         },
         {
-            name: 'Dr. Priya Sharma',
-            role: 'Cardiologist, Apollo Hospitals',
+            name: 'S. Mehta',
+            role: 'Healthcare Professional',
             rating: 5,
-            comment: 'The accuracy is impressive. I recommend Arohan to all my elderly patients with cardiac conditions.',
-            avatar: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=100&h=100&fit=crop'
-        },
-        {
-            name: 'Sunita Patel',
-            role: '68-year-old Arohan user',
-            rating: 5,
-            comment: 'I feel safe living alone now. The device is comfortable and I forget I\'m even wearing it.',
-            avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop'
+            comment: 'The focus on emergency response time and family notification is exactly what\'s needed for elderly care.',
+            avatar: ''
         }
     ];
 
@@ -140,15 +128,17 @@ export function Products() {
     ];
 
     return (
-        <Box>
+        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
             <StructuredData schema={generateProductSchema()} />
             <StructuredData schema={generateBreadcrumbSchema(breadcrumbs)} />
-
-            <Helmet>
-                <title>Arohan Smart Wearable | 24/7 Health Monitoring & Fall Detection</title>
-                <meta name="description" content="AI-powered health wearable for seniors with fall detection, heart monitoring, and instant emergency alerts. Waterproof, 72h battery, and GPS tracking." />
-                <link rel="canonical" href="https://arohanhealth.com/products" />
-            </Helmet>
+            <SEO
+                title="Products - Smart Wearable Health Monitoring Device"
+                description="Arohan Smart Wearable: AI-powered health monitoring device for elderly care. Real-time vitals tracking, fall detection, emergency alerts, and 24/7 family connectivity. Pre-order now."
+                keywords="health monitoring device, wearable health tracker, elderly care device, fall detection, heart rate monitor, emergency alert system, smart health wearable"
+                canonical="https://arohanhealth.com/products"
+                type="product"
+                image="https://arohanhealth.com/images/arohan-wearable-hero.png"
+            />
 
             {/* Hero Section */}
             <Box sx={{ bgcolor: 'grey.50', py: { xs: 6, md: 10 }, textAlign: 'center' }}>
@@ -166,8 +156,8 @@ export function Products() {
                                 alerting family and emergency services within seconds.
                             </Typography>
                             <Stack direction="row" spacing={2} sx={{ mb: 4 }} justifyContent="center">
-                                <Chip icon={<CheckIcon />} label="98% Fall Detection Accuracy" color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
-                                <Chip icon={<CheckIcon />} label="95% Cardiac Accuracy" color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
+                                <Chip icon={<CheckIcon />} label="High Fall Detection Sensitivity" color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
+                                <Chip icon={<CheckIcon />} label="Real-time Cardiac Monitoring" color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
                             </Stack>
                             <Stack direction="row" spacing={2} justifyContent="center">
                                 <Button
@@ -372,37 +362,7 @@ export function Products() {
                 </Container>
             </Box>
 
-            {/* Testimonials */}
-            <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
-                <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
-                    Trusted by Families Worldwide
-                </Typography>
-                <Grid container spacing={4} sx={{ mt: 2 }} justifyContent="center">
-                    {testimonials.map((testimonial, index) => (
-                        <Grid item xs={12} md={4} key={index}>
-                            <Card sx={{ p: 4, height: '100%', textAlign: 'center', borderRadius: 4, bgcolor: 'grey.50', border: '1px solid', borderColor: 'grey.200' }}>
-                                <Box display="flex" flexDirection="column" alignItems="center" gap={2} mb={3}>
-                                    <Avatar src={testimonial.avatar} alt={testimonial.name} sx={{ width: 80, height: 80, border: 4, borderColor: 'white', boxShadow: 3 }} />
-                                    <Box>
-                                        <Typography variant="h6" fontWeight="bold">
-                                            {testimonial.name}
-                                        </Typography>
-                                        <Typography variant="subtitle2" color="primary">
-                                            {testimonial.role}
-                                        </Typography>
-                                        <Box mt={0.5}>
-                                            <Rating value={testimonial.rating} readOnly size="small" />
-                                        </Box>
-                                    </Box>
-                                </Box>
-                                <Typography variant="body1" color="text.secondary" fontStyle="italic" fontSize={16}>
-                                    "{testimonial.comment}"
-                                </Typography>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
-            </Container>
+
 
             {/* CTA */}
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 8, md: 10 }, textAlign: 'center' }}>

@@ -29,7 +29,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 import heroImage from '../../assets/images/hero_new_1.jpg';
 import { trackButtonClick } from '../../utils/eventTracking';
@@ -56,13 +56,14 @@ export function Home() {
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <Helmet>
-                <title>Arohan – AI‑Powered Emergency Detection & First Aid for Elders</title>
-                <meta name="description" content="A discreet wearable plugin chip and intelligent app that detects health emergencies early, alerts families instantly, and guides first responders with step‑by‑step first aid." />
-                <meta property="og:title" content="Arohan Health | Saving Lives with AI" />
-                <meta property="og:description" content="AI-powered emergency detection and first aid guidance for elderly safety. Peace of mind for families." />
-                <link rel="canonical" href="https://arohanhealth.com/" />
-            </Helmet>
+            <SEO
+                title="AI-Powered Emergency Prevention & First Aid"
+                description="A discreet wearable plugin chip and intelligent app that assists in health monitoring and emergency detection, providing alerts to families and guidance for first responders."
+                keywords="health monitoring, elderly care, emergency detection, first aid, AI health, wearable health device, fall detection, heart monitoring"
+                canonical="https://arohanhealth.com/"
+                type="website"
+                image="https://arohanhealth.com/images/hero-health-monitoring.jpg"
+            />
             {/* Hero Section */}
             <Box sx={{ position: 'relative', py: { xs: 8, lg: 16 }, overflow: 'hidden', bgcolor: 'grey.50' }}>
                 {/* Background Blobs (Simplified using Box) */}
@@ -82,8 +83,8 @@ export function Home() {
                                 sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 800, color: 'text.primary', lineHeight: 1.2, mb: 3 }}
                             >
                                 Arohan – <Box component="span" sx={{ color: 'primary.main' }}>AI‑Powered</Box><br />
-                                Emergency Detection <br />
-                                & First Aid for Elders
+                                Emergency Prevention <br />
+                                & First Aid
                             </MotionTypography>
 
                             <MotionTypography
@@ -93,7 +94,8 @@ export function Home() {
                                 transition={{ duration: 0.5, delay: 0.2 }}
                                 sx={{ color: 'text.secondary', mb: 4, maxWidth: 600, lineHeight: 1.6 }}
                             >
-                                A discreet wearable plugin chip and intelligent app that detects health emergencies early, alerts families instantly, and guides first responders with step‑by‑step first aid.
+                                A discreet wearable plugin chip and intelligent app designed to assist in health monitoring and emergency notification.
+                                <Box component="span" sx={{ display: 'block', mt: 2, fontSize: '0.9rem', fontStyle: 'italic', color: 'warning.dark' }}>⚠️ Prototype undergoing clinical validation</Box>
                             </MotionTypography>
 
                             <MotionBox
@@ -205,11 +207,11 @@ export function Home() {
                 <Container >
                     <Box sx={{ textAlign: 'center', mb: 6 }}>
                         <Typography variant="h3" fontWeight="bold" gutterBottom>
-                            Why emergencies still turn fatal
+                            Closing the emergency response gap
                         </Typography>
                     </Box>
                     <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 900, mx: 'auto', lineHeight: 1.8, textAlign: 'center' }}>
-                        Every minute counts in a cardiac or stroke emergency. Yet many elderly people live alone, with children and family members in other cities or countries. Falls or sudden health deteriorations often go unnoticed, especially at night or when the person is unconscious. Even when someone is nearby, they may not know what to do in the first few crucial minutes before an ambulance arrives. Existing wearables are not designed for 24/7 use during sleep and rarely combine reliable detection with clear first‑aid guidance. <Box component="span" sx={{ fontWeight: 'bold', color: 'error.main' }}>Arohan was created to close this dangerous gap.</Box>
+                        In health emergencies, every minute is vital. Many individuals live with limited immediate supervision, and family members may be distant. Early notification and clear guidance during those first few minutes can make a significant difference. Arohan aims to provide that critical connection between an event and the right assistance.
                     </Typography>
                 </Container>
             </Box>
@@ -245,10 +247,10 @@ export function Home() {
                                         <HeartPulseIcon sx={{ fontSize: 40 }} />
                                     </Box>
                                     <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: 'primary.main', mb: 1 }}>
-                                        AI Detection Engine
+                                        AI Prevention Engine
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                                        Learns each person's baseline to spot unusual spikes and drops, not just generic thresholds. Infers potential falls and health emergencies from patterns in vitals and movement. Triggers instant alerts to caregivers, family members or integrated ambulance services.
+                                        Learns each person's baseline to identify unusual patterns early, enabling prevention through timely intervention. Analyzes vitals and movement to detect potential health emergencies before they escalate. Triggers instant alerts to caregivers, family members or integrated emergency services.
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -294,7 +296,7 @@ export function Home() {
                 <Container >
                     <Box sx={{ textAlign: 'center', mb: 8 }}>
                         <Typography variant="h3" fontWeight="bold" gutterBottom>
-                            Designed for real‑world elder care
+                            Designed for real‑world health monitoring
                         </Typography>
                     </Box>
                     <Grid container spacing={4} justifyContent="center">
@@ -390,7 +392,7 @@ export function Home() {
                         </Box>
                         <Grid container spacing={4} justifyContent="center">
                             {[
-                                { title: "For Elderly", desc: "Independent living with 24/7 safety monitoring.", link: "/elderly-families", color: "primary.main" },
+                                { title: "For Individuals & Families", desc: "Independent living with 24/7 safety monitoring and peace of mind.", link: "/elderly-families", color: "primary.main" },
                                 { title: "For Doctors", desc: "Real-time patient vitals and seamless API integration.", link: "/healthcare-professionals", color: "secondary.main" },
                                 { title: "For Corporate", desc: "Employee wellness programs and health partnerships.", link: "/corporate-insurance", color: "success.main" }
                             ].map((item, i) => (
@@ -426,22 +428,6 @@ export function Home() {
                 </Container>
             </Box>
 
-            {/* AI-Powered Tools Section */}
-            <Box sx={{ py: { xs: 8, md: 12 }, bgcolor: 'grey.50' }}>
-                <Container>
-                    <Box sx={{ textAlign: 'center', mb: 6 }}>
-                        <Typography variant="h3" fontWeight="bold" gutterBottom>
-                            AI-Powered Health Tools
-                        </Typography>
-                        <Typography variant="h6" color="text.secondary">
-                            Experience our intelligent health monitoring capabilities
-                        </Typography>
-                    </Box>
-                    <Suspense fallback={<LoadingComponent />}>
-                        <SymptomChecker />
-                    </Suspense>
-                </Container>
-            </Box>
 
             {/* First Aid Section Wrapper (Partial Migration) */}
             <Suspense fallback={<LoadingComponent />}>

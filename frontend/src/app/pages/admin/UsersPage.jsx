@@ -45,7 +45,8 @@ export function UsersPage() {
     const fetchUsers = async () => {
         try {
             const response = await api.get('/admin/users');
-            setUsers(response.data.data);
+            const data = response.data.data;
+            setUsers(Array.isArray(data) ? data : []);
         } catch (error) {
             console.error("Failed to fetch users", error);
             toast.error("Failed to load users");

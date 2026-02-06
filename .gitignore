@@ -33,3 +33,6 @@ backend/.env.production
 *.njsproj
 *.sln
 *.sw?
+
+# Deployment artifacts
+backend.zip

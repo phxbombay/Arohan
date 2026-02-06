@@ -238,10 +238,11 @@ const PaymentSelection = ({ amount = 1, customerDetails, onSuccess, onError }) =
                     <PaymentOption
                         value="cod"
                         title="Cash on Delivery"
-                        subtitle="Pay when you receive"
-                        badge="No Risk"
-                        icon={<LocalShipping sx={{ color: '#F57C00' }} />}
+                        subtitle="this feature will be enabled soon"
+                        badge="Coming Soon"
+                        icon={<LocalShipping sx={{ color: '#9ca3af' }} />}
                         selected={method === 'cod'}
+                        disabled={true}
                     />
 
                 </RadioGroup>
@@ -288,7 +289,7 @@ const PaymentSelection = ({ amount = 1, customerDetails, onSuccess, onError }) =
 };
 
 // Reusable Option Sub-Component
-const PaymentOption = ({ value, title, subtitle, badge, icon, selected }) => (
+const PaymentOption = ({ value, title, subtitle, badge, icon, selected, disabled }) => (
     <Box
         sx={{
             display: 'flex',
@@ -298,15 +299,17 @@ const PaymentOption = ({ value, title, subtitle, badge, icon, selected }) => (
             border: selected ? '2px solid #0ea5e9' : '1px solid #e0e0e0',
             borderRadius: 2,
             bgcolor: selected ? '#f0f9ff' : 'white',
-            cursor: 'pointer',
+            cursor: disabled ? 'not-allowed' : 'pointer',
+            opacity: disabled ? 0.6 : 1,
             transition: 'all 0.2s'
         }}
     >
         <FormControlLabel
             value={value}
-            control={<Radio size="small" />}
+            control={<Radio size="small" disabled={disabled} />}
             label=""
             sx={{ mr: 1, m: 0 }}
+            disabled={disabled}
         />
         <Box sx={{ mr: 2, display: 'flex' }}>{icon}</Box>
         <Box sx={{ flexGrow: 1 }}>

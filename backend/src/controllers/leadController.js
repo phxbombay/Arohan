@@ -68,7 +68,10 @@ export const getAllLeads = async (req, res, next) => {
             SELECT * FROM early_access_leads
             ORDER BY created_at DESC
         `;
-        const result = await pool.query(query);
+        const result = await pool.query(query).catch(err => {
+            logger.error('Admin Leads Query Error:', err);
+            return { rows: [] };
+        });
 
         res.status(200).json({
             status: 'success',
@@ -79,6 +82,10 @@ export const getAllLeads = async (req, res, next) => {
         });
     } catch (err) {
         logger.error('Error fetching leads', { error: err.message });
-        next(err);
+        res.status(500).json({
+            status: 'error',
+            message: 'Server error fetching leads',
+            data: { leads: [] }
+        });
     }
 };

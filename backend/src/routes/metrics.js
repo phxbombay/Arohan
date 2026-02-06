@@ -1,6 +1,7 @@
 import express from 'express';
 import os from 'os';
 import pool from '../config/db.js';
+import { getMetrics } from '../middleware/metrics.js';
 
 const router = express.Router();
 
@@ -8,6 +9,9 @@ const router = express.Router();
  * Health and metrics endpoint
  * Provides system health status and performance metrics
  */
+
+// Prometheus metrics endpoint
+router.get('/', getMetrics);
 
 router.get('/health/detailed', async (req, res) => {
     try {

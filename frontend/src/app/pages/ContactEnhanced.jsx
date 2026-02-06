@@ -69,15 +69,15 @@ export function ContactEnhanced() {
         {
             icon: <PhoneIcon />,
             title: 'Call Us',
-            primary: '+91 80 4567 8900',
-            secondary: 'Mon-Fri, 9 AM - 6 PM IST',
-            action: 'tel:+918045678900'
+            primary: 'Coming Soon',
+            secondary: 'This feature will be enabled soon',
+            action: '#'
         },
         {
             icon: <ChatIcon />,
             title: 'Live Chat',
-            primary: 'Chat with our team',
-            secondary: 'Available 10 AM - 6 PM',
+            primary: 'Coming Soon',
+            secondary: 'This feature will be enabled soon',
             action: '#'
         },
         {
@@ -93,7 +93,7 @@ export function ContactEnhanced() {
         <Box>
             <Helmet>
                 <title>Contact Arohan Health - Support, Sales, Partnerships</title>
-                <meta name="description" content="Get in touch with Arohan: Email support@arohanhealth.com, Call +91 80 4567 8900, or visit our Bengaluru office. Live chat available 10 AM - 6 PM IST." />
+                <meta name="description" content="Get in touch with Arohan: Email support@arohanhealth.com or visit our Bengaluru office. Phone support and live chat coming soon." />
             </Helmet>
 
             {/* Hero */}

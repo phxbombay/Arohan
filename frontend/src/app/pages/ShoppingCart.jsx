@@ -6,7 +6,7 @@ import {
     DeleteOutline as TrashIcon,
     ArrowForward as ArrowRightIcon
 } from '@mui/icons-material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
     Box,
     Container,
@@ -18,52 +18,78 @@ import {
     CardContent,
     Divider,
     Stack,
-    Paper
+    Paper,
+    CircularProgress
 } from '@mui/material';
 import { toast } from 'sonner';
+import { useCartStore } from '../../context/cartStore';
+import { useAuth } from '../../features/auth/hooks/useAuth';
 
 export function ShoppingCart() {
-    const [cart, setCart] = useState([]);
+    const navigate = useNavigate();
+    const { user, isAuthenticated } = useAuth();
+    const {
+        cart,
+        loading,
+        fetchCart,
+        updateQuantity,
+        removeFromCart,
+        clearCart,
+        getCartTotal
+    } = useCartStore();
 
-    // Load cart from localStorage on mount
+    // Load cart from backend on mount
     useEffect(() => {
-        const loadedCart = JSON.parse(localStorage.getItem('arohan-cart') || '[]');
-        setCart(loadedCart);
-    }, []);
+        if (!isAuthenticated) {
+            navigate('/signin');
+            return;
+        }
 
-    // Save cart to localStorage whenever it changes
-    const saveCart = (newCart) => {
-        setCart(newCart);
-        localStorage.setItem('arohan-cart', JSON.stringify(newCart));
-    };
+        const userId = user?.user_id;
+        if (userId) {
+            fetchCart(userId);
+        }
+    }, [user?.user_id, isAuthenticated, fetchCart, navigate]);
 
-    const handleUpdateQuantity = (id, delta) => {
-        const newCart = cart.map(item => {
-            if (item.id === id) {
-                const newQty = item.quantity + delta;
-                if (newQty < 1) return item; // Don't go below 1
-                return { ...item, quantity: newQty };
-            }
-            return item;
-        });
-        saveCart(newCart);
-        toast.success(delta > 0 ? 'Quantity increased' : 'Quantity decreased');
-    };
+    const handleUpdateQuantity = async (id, delta) => {
+        const userId = user?.user_id;
+        if (!userId) return;
 
-    const handleRemove = (id) => {
-        const newCart = cart.filter(item => item.id !== id);
-        saveCart(newCart);
-        toast.success('Item removed from cart');
-    };
-
-    const handleClearCart = () => {
-        if (window.confirm('Are you sure you want to clear your cart?')) {
-            saveCart([]);
-            toast.success('Cart cleared');
+        try {
+            await updateQuantity(id, delta, userId);
+            toast.success(delta > 0 ? 'Quantity increased' : 'Quantity decreased');
+        } catch (error) {
+            toast.error('Failed to update quantity');
         }
     };
 
-    const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const handleRemove = async (id) => {
+        const userId = user?.user_id;
+        if (!userId) return;
+
+        try {
+            await removeFromCart(id, userId);
+            toast.success('Item removed from cart');
+        } catch (error) {
+            toast.error('Failed to remove item');
+        }
+    };
+
+    const handleClearCart = async () => {
+        const userId = user?.user_id;
+        if (!userId) return;
+
+        if (window.confirm('Are you sure you want to clear your cart?')) {
+            try {
+                await clearCart(userId);
+                toast.success('Cart cleared');
+            } catch (error) {
+                toast.error('Failed to clear cart');
+            }
+        }
+    };
+
+    const subtotal = getCartTotal();
     const shipping = 0;
     const tax = 0; // Inclusive
     const total = subtotal + shipping + tax;
@@ -76,7 +102,13 @@ export function ShoppingCart() {
                     <Typography variant="h4" fontWeight="bold">Shopping Cart</Typography>
                 </Stack>
 
-                {cart.length === 0 ? (
+                {loading ? (
+                    // Loading State
+                    <Paper sx={{ p: 8, textAlign: 'center', borderRadius: 2 }}>
+                        <CircularProgress size={60} />
+                        <Typography variant="h6" sx={{ mt: 3 }}>Loading your cart...</Typography>
+                    </Paper>
+                ) : cart.length === 0 ? (
                     // Empty Cart State
                     <Paper sx={{ p: 8, textAlign: 'center', borderRadius: 2 }}>
                         <ShoppingBagIcon sx={{ fontSize: 80, color: 'grey.300', mb: 2 }} />

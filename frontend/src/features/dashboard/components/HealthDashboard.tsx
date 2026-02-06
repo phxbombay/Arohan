@@ -31,6 +31,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '@features/auth/hooks/useAuth';
 import { useDashboard } from '../hooks/useDashboard';
 import type { Widget, QuickAction } from '../types/dashboard.types';
+import { DashboardWidget } from '../../../app/components/dashboard/DashboardWidget';
 
 // Icon mapping
 const iconMap: Record<string, React.ElementType> = {
@@ -90,65 +91,89 @@ export function HealthDashboard() {
         switch (widget.type) {
             case 'info':
                 return (
-                    <Card
+                    <DashboardWidget
                         key={widget.id}
-                        sx={{ height: '100%', transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 4 } }}
+                        title={widget.title}
+                        headerIcon={
+                            <Avatar
+                                variant="rounded"
+                                sx={{
+                                    bgcolor: 'error.light',
+                                    color: 'error.main'
+                                }}
+                            >
+                                <Icon />
+                            </Avatar>
+                        }
                     >
-                        <CardContent>
-                            <CommonHeader />
-                            <Typography variant="body1" color="text.secondary">
-                                {widget.content}
-                            </Typography>
-                        </CardContent>
-                    </Card>
+                        <Typography variant="body1" color="text.secondary">
+                            {widget.content}
+                        </Typography>
+                    </DashboardWidget>
                 );
 
             case 'stats':
                 return (
-                    <Card
+                    <DashboardWidget
                         key={widget.id}
-                        sx={{ height: '100%', transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 4 } }}
+                        title={widget.title}
+                        headerIcon={
+                            <Avatar
+                                variant="rounded"
+                                sx={{
+                                    bgcolor: 'primary.light',
+                                    color: 'primary.main'
+                                }}
+                            >
+                                <Icon />
+                            </Avatar>
+                        }
                     >
-                        <CardContent>
-                            <CommonHeader />
-                            {/* @ts-ignore - MUI Grid type definition issue, works correctly at runtime */}
-                            <Grid container spacing={2}>
-                                {widget.stats?.map((stat, idx) => (
-                                    // @ts-ignore - MUI Grid item prop type issue
-                                    <Grid item xs={4} key={idx} sx={{ textAlign: 'center' }}>
-                                        <Typography variant="h5" fontWeight="bold" color="text.primary">
-                                            {stat.value}
-                                        </Typography>
-                                        <Typography variant="caption" color="text.secondary">
-                                            {stat.label}
-                                        </Typography>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </CardContent>
-                    </Card>
+                        {/* @ts-ignore - MUI Grid type definition issue, works correctly at runtime */}
+                        <Grid container spacing={2}>
+                            {widget.stats?.map((stat, idx) => (
+                                // @ts-ignore - MUI Grid item prop type issue
+                                <Grid item xs={4} key={idx} sx={{ textAlign: 'center' }}>
+                                    <Typography variant="h5" fontWeight="bold" color="text.primary">
+                                        {stat.value}
+                                    </Typography>
+                                    <Typography variant="caption" color="text.secondary">
+                                        {stat.label}
+                                    </Typography>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </DashboardWidget>
                 );
 
             case 'list':
                 return (
-                    <Card
+                    <DashboardWidget
                         key={widget.id}
-                        sx={{ height: '100%', transition: 'box-shadow 0.3s', '&:hover': { boxShadow: 4 } }}
+                        title={widget.title}
+                        headerIcon={
+                            <Avatar
+                                variant="rounded"
+                                sx={{
+                                    bgcolor: 'success.light',
+                                    color: 'success.main'
+                                }}
+                            >
+                                <Icon />
+                            </Avatar>
+                        }
                     >
-                        <CardContent>
-                            <CommonHeader />
-                            <Stack spacing={1}>
-                                {widget.items?.map((item, idx) => (
-                                    <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                        <CheckIcon fontSize="small" color="success" />
-                                        <Typography variant="body2" color="text.primary">
-                                            {item}
-                                        </Typography>
-                                    </Box>
-                                ))}
-                            </Stack>
-                        </CardContent>
-                    </Card>
+                        <Stack spacing={1}>
+                            {widget.items?.map((item, idx) => (
+                                <Box key={idx} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                    <CheckIcon fontSize="small" color="success" />
+                                    <Typography variant="body2" color="text.primary">
+                                        {item}
+                                    </Typography>
+                                </Box>
+                            ))}
+                        </Stack>
+                    </DashboardWidget>
                 );
 
             default:

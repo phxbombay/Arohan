@@ -18,9 +18,8 @@ export const addToCartSchema = z.object({
         .max(1000000, 'Price too high'),
 
     image: z.string()
-        .url('Invalid image URL')
         .optional()
-        .or(z.literal('')),
+        .default(''),
 
     features: z.array(z.string())
         .optional()

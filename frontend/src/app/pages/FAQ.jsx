@@ -27,15 +27,15 @@ const faqCategories = [
         questions: [
             {
                 q: "What is Arohan?",
-                a: "Arohan is an AI-powered wearable health monitoring system designed specifically for elderly care. It provides 24/7 monitoring of vital signs, instant emergency detection (falls, cardiac events), and automatic alerts to family members and emergency services."
+                a: "Arohan is an AI-powered wearable health monitoring system designed for proactive health management. It provides 24/7 monitoring of vital signs, early detection of potential health emergencies (falls, cardiac events, etc.), and automatic alerts to family members and emergency services. Note: Arohan is currently a prototype undergoing clinical validation."
             },
             {
                 q: "How does Arohan work?",
-                a: "Arohan consists of a comfortable wearable device that continuously monitors your health vitals (heart rate, blood pressure, activity, sleep). Our AI analyzes this data in real-time to detect emergencies. If an anomaly is detected, the system automatically alerts your emergency contacts and can coordinate with nearby hospitals."
+                a: "Arohan consists of a comfortable wearable device that continuously monitors your health vitals (heart rate, blood pressure, activity, sleep). Our AI analyzes this data in real-time to identify potential health concerns early. If an anomaly is detected, the system automatically alerts your emergency contacts and can coordinate with nearby hospitals."
             },
             {
                 q: "Who should use Arohan?",
-                a: "Arohan is ideal for: (1) Elderly individuals living alone or with limited supervision, (2) Seniors with chronic health conditions like hypertension or arrhythmia, (3) Families who want peace of mind about their aging relatives, (4) Healthcare facilities managing multiple elderly patients."
+                a: "Arohan is ideal for: (1) Individuals living alone or with limited supervision, (2) People with chronic health conditions like hypertension or arrhythmia, (3) Families who want peace of mind about their relatives' health, (4) Healthcare facilities managing multiple patients, (5) Anyone seeking proactive health monitoring."
             },
             {
                 q: "Do I need a smartphone to use Arohan?",
@@ -52,16 +52,16 @@ const faqCategories = [
                 a: "Arohan tracks: Heart rate (continuous), Blood pressure, Oxygen saturation (SpO2), Body temperature, Respiratory rate, Activity (steps, calories, distance), Sleep quality and duration, Fall detection via accelerometer."
             },
             {
-                q: "How accurate is the fall detection?",
-                a: "Our fall detection algorithm has 98% accuracy in clinical trials. It uses advanced motion sensors and AI to distinguish between actual falls and normal activities like sitting down quickly or exercising."
+                q: "How accurate is fall detection?",
+                a: "Our fall detection system uses advanced motion sensors and AI to distinguish between actual falls and normal activities. We are currently validating the system's accuracy through clinical trials. Like other fall-detection providers (used in senior living facilities and medical alert systems), we balance sensitivity to catch real falls while minimizing false alarms from activities like sitting down quickly or exercising. Accuracy depends on factors like device placement, individual movement patterns, and fall type."
             },
             {
                 q: "What is the battery life?",
-                a: "The Arohan device lasts 7 days on a single charge with typical use. Charging takes approximately 2 hours using the included magnetic charger."
+                a: "The battery is designed for multi-day continuous monitoring. Detailed battery specifications and charging times will be finalized while the prototype is undergoing clinical validation."
             },
             {
                 q: "Is the device waterproof?",
-                a: "Yes, Arohan is water-resistant (IP67 rating), meaning it can withstand splashes, rain, and handwashing. However, it's not designed for swimming or showering. We recommend removing it during water activities."
+                a: "Arohan features splash resistance for daily durability. Specific IP ratings will be finalized as the prototype undergoes clinical validation."
             },
             {
                 q: "How do I set up my Arohan device?",
@@ -69,7 +69,33 @@ const faqCategories = [
             },
             {
                 q: "Can I wear Arohan during sleep?",
-                a: "Absolutely! In fact, we encourage nighttime wear as Arohan monitors sleep quality and can detect emergencies that occur during sleep, which are often the most dangerous."
+                a: "Absolutely! In fact, we encourage nighttime wear as Arohan monitors sleep quality and can detect emergencies that occur during sleep, which are often the most critical."
+            }
+        ]
+    },
+    {
+        category: "Clinical Validation & Accuracy",
+        icon: "🔬",
+        questions: [
+            {
+                q: "Is Arohan clinically validated?",
+                a: "Arohan is currently a prototype undergoing clinical validation. We are conducting rigorous testing and validation studies in partnership with medical institutions to ensure safety, accuracy, and efficacy. The device is not yet certified for medical use and should not be used as a substitute for professional medical advice or diagnosis."
+            },
+            {
+                q: "What about false positives (false alarms)?",
+                a: "Like all monitoring systems, Arohan may occasionally trigger alerts for non-emergency situations (false positives). We are continuously refining our algorithms to minimize these occurrences. Similar to fall-detection systems used in senior care facilities, our approach balances sensitivity (catching real emergencies) with specificity (avoiding false alarms). Users can provide feedback on alerts to help improve accuracy over time. During clinical validation, we are establishing baseline false-positive rates and implementing features like confirmation prompts before escalating alerts."
+            },
+            {
+                q: "What about false negatives (missed emergencies)?",
+                a: "A false negative occurs when the system fails to detect an actual emergency. This is a critical concern we take seriously. Our multi-sensor approach (combining heart rate, movement, blood pressure, etc.) is designed to reduce the risk of missed events. However, no monitoring system is 100% perfect. We recommend: (1) Using the manual SOS button if you feel unwell, (2) Maintaining regular medical check-ups, (3) Not relying solely on Arohan for medical care. During our clinical validation phase, we are measuring detection sensitivity across various emergency scenarios to establish performance benchmarks."
+            },
+            {
+                q: "How accurate is the system?",
+                a: "Arohan uses advanced sensor fusion and machine learning to distinguish falls from normal movements. We are currently establishing our validated accuracy metrics as the prototype undergoes clinical validation. We are committed to transparency and will publish our performance results once our validation is complete and reviewed."
+            },
+            {
+                q: "What medical research supports fall prevention technology?",
+                a: "Extensive medical literature demonstrates that early detection and rapid response significantly improve outcomes in fall-related injuries and cardiac emergencies. Studies published in journals like The Lancet, JAMA, and Age and Ageing show that: (1) Falls are a leading cause of injury-related deaths, (2) Timely intervention reduces complications, (3) Wearable monitoring can enable earlier detection. Arohan's approach is informed by this research, though our specific implementation is still undergoing validation. We encourage users to consult peer-reviewed literature on fall prevention and emergency response systems."
             }
         ]
     },
@@ -79,7 +105,7 @@ const faqCategories = [
         questions: [
             {
                 q: "How does emergency detection work?",
-                a: "Arohan uses rule-based medical algorithms to analyze your vitals against personalized thresholds. For example, if your heart rate exceeds 140 BPM while resting, or if blood pressure reaches crisis levels (>180/120), the system immediately triggers an emergency alert."
+                a: "Arohan uses AI algorithms to analyze your vitals against personalized baselines and medical guidelines. The system looks for patterns that may indicate potential health concerns. For example, significant changes in heart rate patterns, unusual movement suggesting a fall, or vital signs outside safe ranges may trigger alerts. The specific thresholds are personalized based on your health profile."
             },
             {
                 q: "What happens when an emergency is detected?",

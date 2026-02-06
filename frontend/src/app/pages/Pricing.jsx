@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import { CheckCircle as CheckIcon, ExpandMore as ExpandMoreIcon, Star as StarIcon } from '@mui/icons-material';
 import { trackButtonClick } from '../../utils/eventTracking';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 // import { useCartStore } from '../../context/cartStore'; // Removed
 import { toast } from 'sonner';
@@ -48,11 +48,11 @@ export function Pricing() {
             return;
         }
 
-        const annualBundle = {
-            id: 'arohan-annual-bundle-v1',
-            name: 'Arohan Annual Bundle (Device + 12mo Premium)',
+        const arohanDevice = {
+            id: 'arohan-wearable-v1',
+            name: 'Arohan Smart Wearable',
             price: 0,
-            description: 'Arohan Device + 1 Year Premium Subscription',
+            description: 'Pre-order: AI-powered health monitoring device for elderly care',
             image: '/images/arohan-wearable-hero.png'
         };
 
@@ -156,8 +156,8 @@ export function Pricing() {
 
     const faqs = [
         {
-            question: 'What\'s included in the ₹1 device price?',
-            answer: 'The one-time payment covers the Arohan wearable device, wireless charging cable, user manual, and 1-year manufacturer warranty. The Basic app is free forever; Premium features come with a subscription.'
+            question: 'What is the device pricing?',
+            answer: 'We are currently in a prototype phase. Final pricing for the Arohan wearable device will be announced soon along with our official launch.'
         },
         {
             question: 'Can I return the device if it doesn\'t work for me?',
@@ -172,8 +172,8 @@ export function Pricing() {
             answer: 'No hidden fees! Device (one-time), Basic app (free), Premium (optional subscription). No activation fees, no cancellation fees.'
         },
         {
-            question: 'What\'s the difference between Premium and Annual?',
-            answer: 'Premium unlocks AI features, 5 contacts, and 7-day history. Annual adds unlimited contacts, 365-day history, quarterly reports, and a dedicated account manager for white-glove service.'
+            question: 'What benefits do different plans offer?',
+            answer: 'Our plans are designed to scale with your needs, from basic monitoring to advanced AI-driven health insights and priority family support. Detailed feature comparison will be available at launch.'
         },
         {
             question: 'Do you offer discounts for bulk orders?',
@@ -183,16 +183,22 @@ export function Pricing() {
 
     return (
         <Box>
-            <Helmet>
-                <title>Pricing Plans - Arohan Health | Affordable Elderly Care Monitoring</title>
-                <meta name="description" content="Transparent pricing for Arohan's AI health monitoring. Basic app FREE. Premium features available. No hidden fees." />
-                <link rel="canonical" href="https://arohanhealth.com/pricing" />
-            </Helmet>
+            <SEO
+                title="Pricing Plans - Affordable Elderly Care Monitoring"
+                description="Transparent pricing for Arohan's AI health monitoring. Basic app FREE. Premium features available. No hidden fees. 30-day money-back guarantee."
+                keywords="health monitoring pricing, elderly care cost, affordable health device, subscription plans, health monitoring plans"
+                canonical="https://arohanhealth.com/pricing"
+                type="website"
+                image="https://arohanhealth.com/images/pricing-plans.jpg"
+            />
             {/* Hero */}
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 6, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h2" fontWeight="800" gutterBottom sx={{ letterSpacing: -1 }}>
                         Simple, Transparent Pricing
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 4, opacity: 0.9, maxWidth: 600, mx: 'auto' }}>
+                        Join our early adopter program. Final pricing will be announced as the prototype completes clinical validation.
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9, fontWeight: 500 }}>
                         No hidden fees. Cancel anytime. 30-day money-back guarantee.

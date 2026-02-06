@@ -37,14 +37,14 @@ export function Footer() {
                                 <Typography variant="h6" fontWeight="bold" color="primary">Arohan</Typography>
                             </Box>
                             <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 300 }}>
-                                Transforming elderly care with AI-powered wearable technology.
-                                Peace of mind for families, independence for seniors.
+                                Transforming health monitoring with AI-powered wearable technology.
+                                Peace of mind for families, independence for everyone.
                             </Typography>
                             <Stack direction="row" spacing={1}>
-                                <IconButton size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Facebook size={20} /></IconButton>
-                                <IconButton size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Twitter size={20} /></IconButton>
-                                <IconButton size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Instagram size={20} /></IconButton>
-                                <IconButton size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Linkedin size={20} /></IconButton>
+                                <IconButton component="a" href="https://facebook.com/arohanhealth" target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Facebook size={20} /></IconButton>
+                                <IconButton component="a" href="https://twitter.com/arohanhealth" target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Twitter size={20} /></IconButton>
+                                <IconButton component="a" href="https://instagram.com/arohanhealth" target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Instagram size={20} /></IconButton>
+                                <IconButton component="a" href="https://linkedin.com/company/arohanhealth" target="_blank" rel="noopener noreferrer" size="small" sx={{ color: 'text.secondary', '&:hover': { color: 'primary.main' } }}><Linkedin size={20} /></IconButton>
                             </Stack>
                         </Stack>
                     </Grid>
@@ -94,6 +94,12 @@ export function Footer() {
                         </Link>
                         <Link to="/terms" style={{ textDecoration: 'none' }}>
                             <Typography variant="caption" color="text.secondary" sx={{ '&:hover': { color: 'text.primary' } }}>Terms of Service</Typography>
+                        </Link>
+                        <Link to="/compliance" style={{ textDecoration: 'none' }}>
+                            <Typography variant="caption" color="text.secondary" sx={{ '&:hover': { color: 'text.primary' } }}>Compliance</Typography>
+                        </Link>
+                        <Link to="/cookies" style={{ textDecoration: 'none' }}>
+                            <Typography variant="caption" color="text.secondary" sx={{ '&:hover': { color: 'text.primary' } }}>Cookies</Typography>
                         </Link>
                     </Stack>
                 </Box>

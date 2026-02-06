@@ -27,7 +27,10 @@ CREATE TABLE IF NOT EXISTS users (
     phone_number VARCHAR(20),
     address TEXT,
     date_of_birth DATE,
-    gender VARCHAR(20)
+    gender VARCHAR(20),
+    permissions TEXT[] DEFAULT '{}',
+    account_locked_until TIMESTAMP WITH TIME ZONE,
+    last_login TIMESTAMP WITH TIME ZONE
 );
 
 -- 1.5 REFRESH TOKENS (Session Management)

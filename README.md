@@ -36,39 +36,22 @@ Arohan Health is a comprehensive healthcare platform that combines wearable devi
 
 ---
 
-## 🆕 What's New
+## 🆕 What's New (February 2026 Sprint)
 
-### Recently Implemented (February 2026)
+### ✅ Core Features Completed
+- **Role-Based Dashboards**: Customized views for `/hospital/dashboard`, `/physician/dashboard`, and `/patient/dashboard`.
+- **Deep Compliance Module**: `/compliance` - HIPAA, GDPR, DPDPA 2023, ISO 27001 documentation.
+- **Consulting Services**: `/consulting` - Service showcase, case studies, and lead generation form.
+- **Multi-Channel Support**: WhatsApp Business API integration & Social Media sharing.
+- **Internationalization (i18n)**: Full support for English, Hindi (हिन्दी), and Kannada (ಕನ್ನಡ).
+- **Payment & Integrations**: `/integrations` - Payment gateway (Razorpay/Stripe) and device SDK docs.
 
-✅ **Frontend Updates (Live)**
-- **Hero Image**: Updated to `hero_new_1.jpg` (Happy Elderly Couple).
-- **Statistics**: Removed "50K+ Lives Saved" section from Home page.
-- **Linting**: Fixed TypeScript errors in `HeroSection.tsx`.
-
-✅ **Deployment & Management**
-- **New Scripts**: Added `deploy.js` for FTP upload and `ssh_restart.js` for server control.
-- **Documentation**: Added `SERVER_MANAGEMENT.md` and `DEPLOYMENT_LOG.md`.
-
----
-
-## 🚀 Live Deployment Guide
-
-The production website (`haspranahealth.com`) is a Static React App served via FTP.
-
-### How to Deploy Updates
-1.  **Build**: `npm run build` (in `frontend/` folder).
-2.  **Deploy**: `node deploy.js` (in root folder).
-    - *Uploads `frontend/dist` to `public_html`.*
-
-### ⚠️ Important: "I can't see my changes!"
-The site uses a **Service Worker (PWA)** which caches files aggressively.
-- **Symptoms**: You deploy, but Chrome still shows the old version.
-- **Fix**:
-    1.  Test in **Incognito Mode** (If it works there, deployment is fine).
-    2.  **Clear Cache**: `Ctrl + F5` or `Ctrl + Shift + Delete`.
-    3.  **Unregister Worker**: DevTools (F12) -> Application -> Service Workers -> Unregister.
-
-For detailed server commands (Restart, SSH, etc.), see **[SERVER_MANAGEMENT.md](./SERVER_MANAGEMENT.md)**.
+### ✅ Security & Performance
+- **Authentication**: JWT Refresh Token rotation, "Remember Me" session management, and Account Lockout policies.
+- **Infrastructure Security**: AWS WAF rules, Security Groups (IaC), and Secrets configuration.
+- **Advanced Security**: SQL Injection protection, XSS filtering, Rate Limiting, CAPTCHA v3, Helmet, and CSP.
+- **Performance Monitoring**: Prometheus metrics collection & Admin Dashboard (`/admin/metrics`).
+- **SEO Engines**: Open Graph, Twitter Cards, JSON-LD, and XML Sitemap generation.
 
 ---
 
@@ -95,139 +78,90 @@ This single command builds the images, sets up the database, and starts the prox
 ### 4. Access Points
 *   **Frontend**: http://localhost:8080
 *   **Admin Dashboard**: http://localhost:8080/admin
+*   **Performance Metrics**: http://localhost:8080/admin/metrics
 *   **Backend API**: http://localhost:8080/v1
 *   **Database**: localhost:5435
+*   **MailHog/Ethereal**: Check logs for URL
 
 ---
 
 ## 🔐 Default Credentials
 
-### Admin Dashboard Access
+Use these credentials to test different role-based access controls (RBAC).
 
-**URL:** http://localhost:8080/admin
+### 1. System Admin
+*   **URL**: http://localhost:8080/admin
+*   **Email**: `admin@arohanhealth.com`
+*   **Password**: `Admin123!`
+*   **Access**: Full system control, User Management, Logs, Metrics, CMS.
 
-**Login Credentials:**
-- **Email:** `admin@arohanhealth.com`
-- **Password:** `Admin123!`
+### 2. Physician / Doctor
+*   **URL**: http://localhost:8080/dashboard
+*   **Email**: `doctor@arohanhealth.com` (Create if not exists)
+*   **Password**: `Doctor123!`
+*   **Access**: Patient Vitals, Emergency Alerts, Prescriptions.
 
-> ⚠️ **IMPORTANT**: Change these credentials in production for security.
+### 3. Hospital Administrator
+*   **URL**: http://localhost:8080/dashboard
+*   **Email**: `hospital@arohanhealth.com` (Create if not exists)
+*   **Password**: `Hospital123!`
+*   **Access**: Staff management, Department stats.
 
----
+### 4. Patient
+*   **URL**: http://localhost:8080/login
+*   **Email**: `patient@test.com` (Create via Register)
+*   **Password**: `Patient123!`
+*   **Access**: Personal Vitals, Shop, Emergency SOS.
 
-## 📧 Alert System Configuration
-
-### Email Alerts (✅ Operational)
-
-**Service:** Ethereal Email (Test SMTP)
-- **Status:** ✅ Configured and working
-- **Purpose:** Development and testing
-- **View Sent Emails:** https://ethereal.email/messages
-- **Test Inbox Login:**
-  - Email: `g5sqk4lva5kkhkzs@ethereal.email`
-  - Password: `xcgDwhT8E5MvxTJASd`
-
-**Features:**
-- ✅ Emergency alert emails with HTML templates
-- ✅ Contact form notifications
-- ✅ Location links (Google Maps)
-- ✅ Alert priority indicators
-
-**Test Email Delivery:**
-```bash
-docker exec arohan-backend node /app/test_email_alert.js
-```
-
-**For Production:**
-Replace Ethereal with:
-- **Gmail** (with App Password) - Recommended for small scale
-- **SendGrid** - 100 emails/day free tier
-- **AWS SES** - $0.10 per 1,000 emails
-
-See `gmail_smtp_setup.md` for detailed instructions.
-
----
-
-### SMS Alerts (✅ Operational)
-
-**Service:** Twilio
-- **Status:** ✅ Configured and working
-- **From Number:** `+17407933749` (US Trial Number)
-- **Account:** Arohan Health / info@haspranahealth.com
-
-**Features:**
-- ✅ Rate limiting: 10 SMS per phone number per minute
-- ✅ International phone number support (auto E.164 formatting)
-- ✅ Emergency alerts bypass rate limits
-- ✅ Cost protection safeguards
-- ✅ Phone number masking in logs (privacy)
-
-**Supported Formats (Auto-converted):**
-- `9876543210` → `+919876543210` (India)
-- `09876543210` → `+919876543210` (India)
-- `+14155551234` → USA
-- `+442012345678` → UK
-- All E.164 international formats
-
-**Test SMS Delivery:**
-```bash
-# Replace with your verified phone number
-docker exec -e TEST_PHONE_NUMBER=+919876543210 arohan-backend node /app/test_sms.js
-```
-
-**Trial Account Limitations:**
-- Can only send SMS to verified phone numbers
-- SMS includes "Sent from Twilio trial account" footer
-- $15.50 USD free credit (~500+ messages)
-
-**For Production:**
-- Upgrade Twilio account (pay-as-you-go)
-- India SMS: ₹0.50 - ₹2 per message
-- USA SMS: $0.0079 per message
-- Set spending limits in Twilio Console
-
-See `twilio_sms_setup.md` for detailed instructions.
+> ⚠️ **IMPORTANT**: These are development credentials. Change immediately in production.
 
 ---
 
 ## ✨ Features
 
-### For Patients
-- ✅ **Authentication**: Register/Login with JWT
-- ✅ **Dashboard**: Real-time health vitals (Heart rate, SpO2, etc.)
-- ✅ **Emergency Alerts**: 
-  - Manual SOS button
-  - Fall detection alerts
-  - Heart rate abnormality alerts
-  - Low SpO2 alerts
-  - Email + SMS notifications to emergency contacts
-- ✅ **First Aid Guidance**: Step-by-step instructions
-- ✅ **Contact Form**: Submit inquiries to admin
-- ✅ **Shop**: Product listing and Cart (E-commerce)
+### 🏢 Corporate & Consulting (`/consulting`)
+- **Services Showcase**: Web/App Development, AI/ML Integrations, Cloud Infrastructure.
+- **Case Studies**: Real-world success stories with metrics.
+- **Lead Generation**: Smart inquiry form with budget estimator.
+- **Tech Stack**: Visual display of Arohan's technology expertise.
 
-### For Admins
-- ✅ **Admin Dashboard**: User management and statistics
-- ✅ **RBAC**: Role-Based Access Control (Patient vs Doctor vs Admin)
-- ✅ **Contact Messages**: View, search, and export submissions
-- ✅ **User Management**: Create and manage user accounts
-- ✅ **Audit Logs**: System activity tracking
-- ✅ **Analytics**: Dashboard metrics and insights
+### ⚖️ Compliance & Privacy (`/compliance`)
+- **Regulatory Frameworks**: 
+  - **HIPAA** (USA) - PHI Security
+  - **GDPR** (EU) - Data Privacy Rights
+  - **DPDPA 2023** (India) - Data Fiduciary obligations
+- **Certifications**: Status tracking for ISO 27001, SOC 2.
+- **Security Transparency**: Encryption standards (AES-256), Access Controls.
 
-### Emergency Alert Flow
-```
-User Triggers Emergency (SOS/Fall/Abnormal Vitals)
-           ↓
-Backend API /v1/alerts/trigger
-           ↓
-Fetch Emergency Contacts from Database
-           ↓
-For Each Contact:
-  ├─→ Send Email (HTML template with location)
-  └─→ Send SMS (if phone number exists)
-           ↓
-Log Delivery Status
-           ↓
-Return Success/Failure to User
-```
+### 🌐 Internationalization (i18n)
+- **Language Switcher**: Seamless toggling between languages in Header.
+- **Supported Languages**:
+  - English (Default)
+  - Hindi (हिन्दी)
+  - Kannada (ಕನ್ನಡ)
+- **Auto-Detection**: Browser language detection with persistence.
+
+### 💬 Multi-Channel Engagement
+- **Social Sharing**: Share products/articles to WhatsApp, Facebook, LinkedIn, Twitter.
+- **WhatsApp Integration**:
+  - Emergency Alerts to family via WhatsApp.
+  - Appointment reminders and health reports.
+  - Social sharing directly to WhatsApp contacts.
+
+### 📊 Role-Based Analytics
+- **Hospital Admin**: Bed occupancy tracking, physician availability, and critical alert monitoring.
+- **Physician**: Patient vitals overview, active alerts list, and patient search.
+- **Patient**: Personal health stats, daily activity logs, and quick actions (SOS).
+
+### 💳 Integrations & Payments (`/integrations`)
+- **Payment Gateways**: Documentation for Razorpay, Stripe, PayPal.
+- **Device SDK**: Guide for connecting wearables (BLE/Smartwatches).
+- **API Docs**: Developer resources for partners.
+
+### 📊 Admin Power Tools
+- **Performance Dashboard**: Real-time request tracking, error rates, system health.
+- **Audit Logs**: Deep tracking of who did what and when.
+- **Message Center**: Centralized management of contact inquiries.
 
 ---
 
@@ -320,30 +254,32 @@ arohan-health/
 
 ## 📚 API Documentation
 
-### Authentication
+## 📚 API Documentation
+
+### Authentication & Access
 *   **POST** `/v1/auth/register` - Create account
-*   **POST** `/v1/auth/login` - Login (Returns JWT)
+*   **POST** `/v1/auth/login` - Login (Returns JWT + Refresh Token)
 *   **POST** `/v1/auth/logout` - Logout
 *   **GET** `/v1/auth/profile` - Get current user profile
 
-### Users (Protected)
-*   **GET** `/v1/users/me` - Get own profile
-*   **PUT** `/v1/users/me` - Update own profile
+### Consulting & Leads
+*   **POST** `/v1/leads/consulting` - Submit consulting project inquiry
+
+### Multi-Channel
+*   **POST** `/v1/whatsapp/send` - Send WhatsApp notification (Protected)
+*   **GET** `/v1/whatsapp/webhook` - Webhook verification
+*   **POST** `/v1/whatsapp/webhook` - Receive incoming messages
+
+### Admin & Monitoring (Admin Only)
+*   **GET** `/v1/admin/stats` - Main Dashboard statistics
+*   **GET** `/v1/admin/metrics` - **[NEW]** Prometheus Performance Metrics
+*   **GET** `/v1/admin/users` - List all users with RBAC
+*   **GET** `/v1/admin/logs` - detailed system audit logs
 
 ### Emergency Alerts (Protected)
-*   **POST** `/v1/alerts/trigger` - Trigger emergency alert
+*   **POST** `/v1/alerts/trigger` - Trigger emergency alert (SOS/Fall)
 *   **GET** `/v1/alerts/active` - Get active alerts
 *   **PUT** `/v1/alerts/:id/resolve` - Resolve an alert
-
-### Contact
-*   **POST** `/v1/contact` - Submit contact form
-
-### Admin (Protected - Admin Only)
-*   **GET** `/v1/admin/stats` - Dashboard statistics
-*   **GET** `/v1/admin/users` - List all users
-*   **POST** `/v1/admin/users` - Create user
-*   **GET** `/v1/admin/messages` - List contact messages
-*   **GET** `/v1/admin/logs` - System audit logs
 
 ---
 

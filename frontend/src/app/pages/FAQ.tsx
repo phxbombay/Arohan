@@ -49,12 +49,12 @@ export function FAQ() {
         {
             category: 'getting-started',
             question: 'How long does the battery last?',
-            answer: 'The battery lasts 72 hours (3 days) on a full charge with continuous monitoring. You\'ll receive a low-battery notification at 20%. Charging is wireless (Qi standard) and takes about 2 hours for a full charge from 0% to 100%.'
+            answer: 'The battery is designed for multi-day continuous monitoring. Detailed battery specifications and charging times will be finalized while the prototype is undergoing clinical validation.'
         },
         {
             category: 'getting-started',
             question: 'Is the device waterproof?',
-            answer: 'Yes, Arohan is IP68-rated water resistant, meaning it can handle sweat, splashes, and brief immersion (up to 1.5m for 30 minutes). You can wear it while washing hands or showering. However, we recommend removing it for swimming or bathing to preserve battery life.'
+            answer: 'Arohan is designed with splash resistance for everyday use. Detailed IP ratings will be provided as the prototype undergoes clinical validation.'
         },
         {
             category: 'technical',
@@ -64,12 +64,12 @@ export function FAQ() {
         {
             category: 'technical',
             question: 'How accurate is the fall detection?',
-            answer: 'Our AI-powered fall detection achieves 98% accuracy in clinical trials. It uses a combination of accelerometer, gyroscope, and machine learning to distinguish real falls from normal movements like sitting down quickly. False positives are < 5%.'
+            answer: 'Arohan uses advanced sensor fusion and machine learning to distinguish falls from normal movements. We are currently establishing our validated accuracy metrics as the prototype undergoes clinical validation.'
         },
         {
             category: 'technical',
             question: 'Can Arohan detect heart attacks?',
-            answer: 'Arohan monitors heart rate and rhythm for anomalies that may indicate arrhythmia, tachycardia, or bradycardia—common precursors to cardiac events. It achieves 95% sensitivity in detecting abnormal heart patterns. However, it is NOT a medical diagnostic device. Always consult a doctor for diagnosis.'
+            answer: 'Arohan monitors heart rate and rhythm for anomalies that may indicate potential cardiac concerns. Our system is designed to provide high sensitivity in pattern detection. However, it is NOT a medical diagnostic device. Always consult a doctor for diagnosis.'
         },
         {
             category: 'technical',

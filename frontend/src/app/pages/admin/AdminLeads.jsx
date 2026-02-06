@@ -32,9 +32,8 @@ export default function AdminLeads() {
         setError(null);
         try {
             const response = await api.get('/admin/leads');
-            // Check if response.data.data.leads exists, or if it's directly in data
-            const leadsData = response.data?.data?.leads || [];
-            setLeads(leadsData);
+            const leadsData = response.data?.data?.leads || response.data?.data || [];
+            setLeads(Array.isArray(leadsData) ? leadsData : []);
         } catch (err) {
             console.error('Error fetching leads:', err);
             setError('Failed to load leads from server.');

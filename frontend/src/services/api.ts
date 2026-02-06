@@ -26,10 +26,35 @@ api.interceptors.request.use(
 // Response interceptor for handling 401s (optional)
 api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError) => {
-        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-            // Optional: Logout user on token expiry
-            // useAuthStore.getState().logout();
+    async (error: AxiosError) => {
+        const originalRequest = error.config as any;
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+                // Attempt to refresh token
+                // We use axios directly to avoid interceptor loop
+                const response = await axios.post(
+                    `${import.meta.env.VITE_API_URL || 'http://localhost:5000/v1'}/auth/refresh-token`,
+                    {},
+                    { withCredentials: true } // Important for sending cookies
+                );
+
+                const { accessToken } = response.data;
+
+                // Update store and storage
+                useAuthStore.getState().setToken(accessToken);
+
+                // Retry original request with new token
+                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                return api(originalRequest);
+
+            } catch (refreshError) {
+                // Refresh failed - logout user
+                useAuthStore.getState().logout();
+                return Promise.reject(refreshError);
+            }
         }
         return Promise.reject(error);
     }
