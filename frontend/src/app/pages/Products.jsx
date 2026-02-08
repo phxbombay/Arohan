@@ -98,10 +98,14 @@ export function Products() {
     ];
 
     const specifications = [
-        { label: 'Weight', value: 'will be updated soon' },
-        { label: 'Water Resistance', value: 'will be updated soon' },
+        { label: 'Setup Time', value: 'will be updated soon' },
+        { label: 'Detection Accuracy', value: 'will be updated soon' },
+        { label: 'Response Time', value: 'will be updated soon' },
         { label: 'Battery Life', value: 'will be updated soon' },
+        { label: 'Sensors', value: 'will be updated soon' },
         { label: 'Connectivity', value: 'will be updated soon' },
+        { label: 'Water Resistance', value: 'will be updated soon' },
+        { label: 'Weight', value: 'will be updated soon' },
         { label: 'Compatibility', value: 'iOS & Android' }
     ];
 
