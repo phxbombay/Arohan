@@ -2,6 +2,12 @@ import { Heart, Activity, Thermometer, Bandage, AlertTriangle, Phone } from "luc
 import { Box, Button, Container, Typography, Grid, Paper, Stack, Card, CardContent, Chip } from "@mui/material";
 import { useState } from "react";
 
+// Import local images
+import cprImage from "../../assets/images/first_aid_cpr.jpg";
+import burnImage from "../../assets/images/first_aid_burn.jpg";
+import bleedingImage from "../../assets/images/first_aid_bleeding.jpg";
+import campImage from "../../assets/images/first_aid_camp.jpg";
+
 export function FirstAidSection() {
   const [selectedTip, setSelectedTip] = useState(0);
 
@@ -12,7 +18,7 @@ export function FirstAidSection() {
       bgcolor: "error.50",
       color: "error.main",
       borderColor: "error.light",
-      image: "https://images.unsplash.com/photo-1759872138841-c342bd6410ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjcHIlMjB0cmFpbmluZyUyMG1lZGljYWx8ZW58MXx8fHwxNzY4NjQxMzIxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      image: cprImage,
       videoLink: "https://www.youtube.com/results?search_query=how+to+do+cpr+first+aid",
       steps: [
         "Call emergency services immediately",
@@ -28,7 +34,7 @@ export function FirstAidSection() {
       bgcolor: "warning.50",
       color: "warning.main",
       borderColor: "warning.light",
-      image: "https://images.unsplash.com/photo-1622115585848-1d5b6e8af4e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmaXJzdCUyMGFpZCUyMGVtZXJnZW5jeXxlbnwxfHx8fDE3Njg1NzE3Njd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      image: campImage,
       videoLink: "https://www.youtube.com/results?search_query=heimlich+maneuver+guide",
       steps: [
         "Encourage coughing if person can breathe",
@@ -44,7 +50,7 @@ export function FirstAidSection() {
       bgcolor: "info.50",
       color: "info.main",
       borderColor: "info.light",
-      image: "https://images.unsplash.com/photo-1762347920888-508763c652bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtZWRpY2FsJTIwYmFuZGFnZSUyMHRyZWF0bWVudHxlbnwxfHx8fDE3Njg2NDEzMjF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      image: bleedingImage,
       videoLink: "https://www.youtube.com/results?search_query=stop+severe+bleeding+first+aid",
       steps: [
         "Apply direct pressure with clean cloth",
@@ -60,7 +66,7 @@ export function FirstAidSection() {
       bgcolor: "secondary.50",
       color: "secondary.main",
       borderColor: "secondary.light",
-      image: "https://images.unsplash.com/photo-1561464494-8253a638f1bd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxidXJuJTIwdHJlYXRtZW50JTIwbWVkaWNhbHxlbnwxfHx8fDE3Njg2NDEzMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      image: burnImage,
       videoLink: "https://www.youtube.com/results?search_query=treat+burns+first+aid",
       steps: [
         "Remove from heat source immediately",

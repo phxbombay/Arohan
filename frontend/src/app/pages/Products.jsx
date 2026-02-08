@@ -98,10 +98,10 @@ export function Products() {
     ];
 
     const specifications = [
-        { label: 'Weight', value: 'Ultra-lightweight design' },
-        { label: 'Water Resistance', value: 'Splash proof' },
-        { label: 'Battery Life', value: 'Long-lasting (72+ hours target)' },
-        { label: 'Connectivity', value: 'Bluetooth & WiFi integration' },
+        { label: 'Weight', value: 'will be updated soon' },
+        { label: 'Water Resistance', value: 'will be updated soon' },
+        { label: 'Battery Life', value: 'will be updated soon' },
+        { label: 'Connectivity', value: 'will be updated soon' },
         { label: 'Compatibility', value: 'iOS & Android' }
     ];
 
