@@ -1,24 +1,34 @@
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
     container_name: arohan-db
     restart: unless-stopped
     environment:
-      POSTGRES_DB: arohan_health_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
+      MYSQL_DATABASE: ${DB_NAME:-arohan_health_db}
+      MYSQL_USER: ${DB_USER:-arohan_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backend/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./backend/migrations:/docker-entrypoint-initdb.d/migrations
+      - mysql_data:/var/lib/mysql
+      # Initializing with schema
+      - ./backend/schema_mysql.sql:/docker-entrypoint-initdb.d/01-schema.sql
     ports:
-      - "5435:5432"
+      - "3306:3306"
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  # MailHog (Email Testing)
+  mailhog:
+    image: mailhog/mailhog
+    container_name: arohan-mailhog
+    ports:
+      - "1025:1025" # SMTP server
+      - "8025:8025" # Web UI
+    restart: unless-stopped
 
   # Backend API
   backend:
@@ -30,30 +40,30 @@ services:
     environment:
       NODE_ENV: development
       PORT: 5000
-      DATABASE_URL: postgresql://postgres:${DB_PASSWORD:-arohan_secure_2026}@postgres:5432/arohan_health_db
+      DB_HOST: mysql
+      DB_USER: ${DB_USER:-arohan_user}
+      DB_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
+      DB_NAME: ${DB_NAME:-arohan_health_db}
       JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
       RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-test_key_id}
       RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-test_key_secret}
       RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-test_webhook_secret}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost,http://localhost:3000,http://localhost:5173,http://localhost:8080}
-      # Email Configuration (Use .env file)
-      SMTP_HOST: ${SMTP_HOST:-smtp.ethereal.email}
-      SMTP_PORT: ${SMTP_PORT:-587}
-      SMTP_USER: ${SMTP_USER}
-      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost,http://localhost:3000,http://localhost:5173,http://localhost:8080,http://localhost:80}
+      SMTP_HOST: mailhog
+      SMTP_PORT: 1025
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
       ADMIN_EMAIL: ${ADMIN_EMAIL:-info@haspranahealth.com}
-      # Twilio SMS Configuration (Use .env file)
-      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID}
-      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN}
-      TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER}
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-mock_sid}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-mock_token}
+      TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER:-mock_number}
       SMS_RATE_LIMIT_PER_MINUTE: ${SMS_RATE_LIMIT_PER_MINUTE:-10}
+      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-a1b2c3d4e5f6071829384a5b6c7d8e9f0a1b2c3d4e5f6071829384a5b6c7d8e9f}
     ports:
       - "5000:5000"
     depends_on:
-      postgres:
+      mysql:
         condition: service_healthy
-      # logstash:
-      #   condition: service_started
     volumes:
       - ./backend/src:/app/src
     command: node src/index.js
@@ -123,11 +133,7 @@ services:
       #   mem_limit: 512m
 
 volumes:
-  postgres_data:
-    driver: local
-  influxdb_data:
-    driver: local
-  elasticsearch_data:
+  mysql_data:
     driver: local
 
 networks:

@@ -36,3 +36,6 @@ backend/.env.production
 
 # Deployment artifacts
 backend.zip
+fe_pkg_lite.zip
+fe_pkg.zip
+backend/scripts/.env

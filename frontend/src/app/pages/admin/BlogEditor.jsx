@@ -21,6 +21,7 @@ import { Save as SaveIcon, Publish as PublishIcon, ArrowBack as BackIcon } from 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
+import { safeDate } from '../../../utils/date-utils';
 
 export function BlogEditor() {
     const navigate = useNavigate();
@@ -68,7 +69,7 @@ export function BlogEditor() {
                     category: blog.category,
                     tags: blog.tags || [],
                     status: blog.status,
-                    publishDate: new Date(blog.publishDate).toISOString().split('T')[0]
+                    publishDate: safeDate(blog.publishDate).toISOString().split('T')[0]
                 });
             }
         } catch (err) {

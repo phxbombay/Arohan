@@ -29,6 +29,12 @@ RUN addgroup -g 1001 -S nodejs && \
 COPY --from=builder --chown=nodejs:nodejs /app/node_modules ./node_modules
 COPY --chown=nodejs:nodejs . .
 
+# Ensure permissions for runtime
+# Ensure permissions for runtime (force rebuild)
+# Ensure permissions for runtime (optimized)
+RUN mkdir -p /app/logs && chown -R nodejs:nodejs /app/logs && chmod -R 777 /app/logs
+
+
 # Switch to non-root user
 USER nodejs
 

@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs';
 import pool from './config/db.js';
-import logger from './config/logger.js';
+import crypto from 'crypto';
 
 const seedAdmin = async () => {
     try {
@@ -9,27 +9,29 @@ const seedAdmin = async () => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Check if exists
-        const check = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (check.rows.length > 0) {
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (rows.length > 0) {
             console.log('Admin already exists');
             process.exit(0);
         }
 
+        const user_id = crypto.randomUUID();
+
         const query = `
-            INSERT INTO users (full_name, email, password_hash, role, is_active)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING user_id, email, role
+            INSERT INTO users (user_id, full_name, email, password_hash, role, is_active)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
 
-        const result = await pool.query(query, [
+        await pool.query(query, [
+            user_id,
             'System Admin',
             email,
             hashedPassword,
             'admin',
-            true // is_active
+            true
         ]);
 
-        console.log('✅ Admin user created successfully:', result.rows[0]);
+        console.log('✅ Admin user created successfully:', { user_id, email, role: 'admin' });
         process.exit(0);
     } catch (error) {
         console.error('❌ Error seeding admin:', error);

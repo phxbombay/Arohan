@@ -3,7 +3,7 @@
  * Change Admin Password Script
  * Usage: node change-admin-password.js
  * 
- * This script updates the admin password to: R@,sx-UbS)H$
+ * This script updates the admin password. Set ADMIN_PASSWORD env var.
  */
 
 import bcrypt from 'bcryptjs';
@@ -15,7 +15,8 @@ const { Pool } = pg;
 // Load environment variables
 dotenv.config();
 
-const newPassword = 'R@,sx-UbS)H$';
+const newPassword = process.env.ADMIN_PASSWORD;
+if (!newPassword) { console.error('Set ADMIN_PASSWORD env var'); process.exit(1); }
 const adminEmail = 'admin@arohanhealth.com';
 
 async function changeAdminPassword() {
@@ -31,7 +32,7 @@ async function changeAdminPassword() {
         console.log('⏳ Generating password hash...');
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(newPassword, saltRounds);
-        
+
         // Update password in database
         console.log('⏳ Updating database...');
         const result = await pool.query(
@@ -48,10 +49,10 @@ async function changeAdminPassword() {
         console.log('✅ Admin password updated successfully!\n');
         console.log('📧 Email:', result.rows[0].email);
         console.log('👤 Role:', result.rows[0].role);
-        console.log('🔑 New Password: R@,sx-UbS)H$\n');
-        
+        console.log('🔑 New Password: [set via ADMIN_PASSWORD env var]\n');
+
         console.log('⚠️  IMPORTANT: Save this password securely!');
-        
+
     } catch (error) {
         console.error('❌ Error:', error.message);
         process.exit(1);

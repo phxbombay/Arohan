@@ -18,8 +18,8 @@ export const protect = async (req, res, next) => {
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
             // Load user - use * to handle potential schema mismatches gracefully
-            const { rows } = await pool.query(
-                `SELECT * FROM users WHERE user_id = $1`,
+            const [rows] = await pool.query(
+                `SELECT * FROM users WHERE user_id = ?`,
                 [decoded.id]
             );
 
@@ -46,7 +46,7 @@ export const protect = async (req, res, next) => {
             // Update last login timestamp (optional, swallow error if column missing)
             try {
                 await pool.query(
-                    'UPDATE users SET last_login = NOW() WHERE user_id = $1',
+                    'UPDATE users SET last_login = NOW() WHERE user_id = ?',
                     [user.user_id]
                 ).catch(() => { /* column likely missing */ });
             } catch (e) {
@@ -90,8 +90,8 @@ export const optionalAuth = async (req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-            const { rows } = await pool.query(
-                'SELECT user_id, full_name, email, role, permissions FROM users WHERE user_id = $1',
+            const [rows] = await pool.query(
+                'SELECT user_id, full_name, email, role, permissions FROM users WHERE user_id = ?',
                 [decoded.id]
             );
 

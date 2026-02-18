@@ -3,6 +3,7 @@ import { submitEarlyAccess } from '../controllers/leadController.js';
 import { body, validationResult } from 'express-validator';
 import pool from '../config/db.js';
 import logger from '../config/logger.js';
+import crypto from 'crypto';
 
 const router = express.Router();
 
@@ -47,17 +48,18 @@ router.post(
                 description
             } = req.body;
 
-            // Insert into database (table will be created manually or via migration)
+            const leadId = crypto.randomUUID();
+
             const query = `
                 INSERT INTO consulting_leads (
-                    name, email, company, phone, service_type, 
+                    id, name, email, company, phone, service_type, 
                     budget, timeline, description, status, created_at
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())
-                RETURNING *
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
             `;
 
             const values = [
+                leadId,
                 name,
                 email,
                 company || null,
@@ -69,10 +71,10 @@ router.post(
                 'new'
             ];
 
-            const result = await pool.query(query, values);
+            await pool.query(query, values);
 
             logger.info('New consulting lead received', {
-                leadId: result.rows[0].id,
+                leadId,
                 email,
                 serviceType
             });
@@ -81,7 +83,7 @@ router.post(
                 status: 'success',
                 message: 'Thank you for your inquiry! We will contact you within 24 hours.',
                 data: {
-                    leadId: result.rows[0].id
+                    leadId
                 }
             });
 

@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import api from '../services/api';
+import api from '../core/api/client';
 
 export interface CartItem {
     id: string;

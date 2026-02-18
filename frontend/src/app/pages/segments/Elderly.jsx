@@ -47,7 +47,7 @@ export function Elderly() {
     ];
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
             {/* Hero */}
             <Box sx={{ bgcolor: 'info.50', py: 10 }}>
                 <Container>

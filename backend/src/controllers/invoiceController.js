@@ -3,6 +3,7 @@ import { generateInvoicePDF } from '../services/pdfGenerator.js';
 import path from 'path';
 import fs from 'fs';
 import { fileURLToPath } from 'url';
+import crypto from 'crypto';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,28 +17,28 @@ export const generateInvoice = async (req, res) => {
         const { orderId } = req.params;
 
         // Check if invoice already exists
-        const existingInvoice = await pool.query('SELECT * FROM invoices WHERE order_id = $1', [orderId]);
-        if (existingInvoice.rows.length > 0) {
+        const [existingInvoice] = await pool.query('SELECT * FROM invoices WHERE order_id = ?', [orderId]);
+        if (existingInvoice.length > 0) {
             return res.status(400).json({
                 success: false,
                 message: 'Invoice already exists for this order',
-                invoiceId: existingInvoice.rows[0].invoice_id
+                invoiceId: existingInvoice[0].invoice_id
             });
         }
 
         // Fetch order details
-        const orderResult = await pool.query('SELECT * FROM orders WHERE order_id = $1', [orderId]);
-        if (orderResult.rows.length === 0) {
+        const [orders] = await pool.query('SELECT * FROM orders WHERE order_id = ?', [orderId]);
+        if (orders.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Order not found'
             });
         }
-        const order = orderResult.rows[0];
+        const order = orders[0];
 
-        // Parse JSONB fields
-        const orderItems = order.items || [];
-        const customerDetails = order.customer_details || {};
+        // Parse JSON fields
+        const orderItems = typeof order.items === 'string' ? JSON.parse(order.items) : (order.items || []);
+        const customerDetails = typeof order.customer_details === 'string' ? JSON.parse(order.customer_details) : (order.customer_details || {});
 
         // Calculate pricing
         const subtotal = order.amount / 100; // stored in paise
@@ -49,14 +50,7 @@ export const generateInvoice = async (req, res) => {
 
         // Invoice Number
         const invoiceNumber = `INV-${Date.now()}`;
-
-        // Create invoice
-        const insertQuery = `
-            INSERT INTO invoices 
-            (order_id, invoice_number, customer_details, items, pricing, payment_method, payment_status, status)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-            RETURNING *
-        `;
+        const invoice_id = crypto.randomUUID();
 
         const pricing = {
             subtotal,
@@ -67,18 +61,37 @@ export const generateInvoice = async (req, res) => {
             total
         };
 
-        const invoiceResult = await pool.query(insertQuery, [
-            order.order_id,
-            invoiceNumber,
-            JSON.stringify(customerDetails),
-            JSON.stringify(orderItems),
-            JSON.stringify(pricing),
-            'Online', // Default to online for now or fetch from payment logs
-            order.status === 'paid' ? 'PAID' : 'PENDING',
-            'ISSUED'
-        ]);
+        const paymentStatus = order.status === 'paid' ? 'PAID' : 'PENDING';
 
-        const invoice = invoiceResult.rows[0];
+        // Create invoice
+        await pool.query(
+            `INSERT INTO invoices 
+            (invoice_id, order_id, invoice_number, customer_details, items, pricing, payment_method, payment_status, status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                invoice_id,
+                order.order_id,
+                invoiceNumber,
+                JSON.stringify(customerDetails),
+                JSON.stringify(orderItems),
+                JSON.stringify(pricing),
+                'Online',
+                paymentStatus,
+                'ISSUED'
+            ]
+        );
+
+        const invoice = {
+            invoice_id,
+            order_id: order.order_id,
+            invoice_number: invoiceNumber,
+            customer_details: customerDetails,
+            items: orderItems,
+            pricing,
+            payment_method: 'Online',
+            payment_status: paymentStatus,
+            status: 'ISSUED'
+        };
 
         // Generate PDF
         const pdfDir = path.join(__dirname, '../../invoices');
@@ -92,7 +105,7 @@ export const generateInvoice = async (req, res) => {
         fs.writeFileSync(pdfPath, 'Dummy Invoice PDF Content');
 
         // Update invoice with PDF path
-        await pool.query('UPDATE invoices SET pdf_path = $1 WHERE invoice_id = $2', [pdfPath, invoice.invoice_id]);
+        await pool.query('UPDATE invoices SET pdf_path = ? WHERE invoice_id = ?', [pdfPath, invoice_id]);
         invoice.pdf_path = pdfPath;
 
         return res.status(201).json({
@@ -119,9 +132,9 @@ export const getInvoice = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const result = await pool.query('SELECT * FROM invoices WHERE invoice_id = $1', [id]);
+        const [rows] = await pool.query('SELECT * FROM invoices WHERE invoice_id = ?', [id]);
 
-        if (result.rows.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Invoice not found'
@@ -130,7 +143,7 @@ export const getInvoice = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            data: result.rows[0]
+            data: rows[0]
         });
 
     } catch (error) {
@@ -151,16 +164,16 @@ export const downloadInvoicePDF = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const result = await pool.query('SELECT * FROM invoices WHERE invoice_id = $1', [id]);
+        const [rows] = await pool.query('SELECT * FROM invoices WHERE invoice_id = ?', [id]);
 
-        if (result.rows.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Invoice not found'
             });
         }
 
-        const invoice = result.rows[0];
+        const invoice = rows[0];
 
         // Check if PDF exists
         if (!invoice.pdf_path || !fs.existsSync(invoice.pdf_path)) {
@@ -201,18 +214,18 @@ export const getAllInvoices = async (req, res) => {
         } = req.query;
 
         let query = 'SELECT * FROM invoices';
-        let countQuery = 'SELECT COUNT(*) FROM invoices';
+        let countQuery = 'SELECT COUNT(*) as count FROM invoices';
         const params = [];
         const conditions = [];
 
         if (status) {
             params.push(status);
-            conditions.push(`status = $${params.length}`);
+            conditions.push(`status = ?`);
         }
 
         if (paymentStatus) {
             params.push(paymentStatus);
-            conditions.push(`payment_status = $${params.length}`);
+            conditions.push(`payment_status = ?`);
         }
 
         if (conditions.length > 0) {
@@ -226,21 +239,16 @@ export const getAllInvoices = async (req, res) => {
         const limitVal = parseInt(limit);
         const offset = (parseInt(page) - 1) * limitVal;
 
-        params.push(limitVal);
-        query += ` LIMIT $${params.length}`;
+        query += ` LIMIT ? OFFSET ?`;
+        const queryParams = [...params, limitVal, offset];
 
-        params.push(offset);
-        query += ` OFFSET $${params.length}`;
-
-        const invoicesResult = await pool.query(query, params);
-
-        const filterParams = params.slice(0, params.length - 2);
-        const countResult = await pool.query(countQuery, filterParams);
-        const total = parseInt(countResult.rows[0].count);
+        const [invoices] = await pool.query(query, queryParams);
+        const [countResult] = await pool.query(countQuery, params);
+        const total = parseInt(countResult[0].count);
 
         return res.status(200).json({
             success: true,
-            data: invoicesResult.rows,
+            data: invoices,
             pagination: {
                 page: parseInt(page),
                 limit: limitVal,
@@ -267,9 +275,9 @@ export const getInvoiceByOrderId = async (req, res) => {
     try {
         const { orderId } = req.params;
 
-        const result = await pool.query('SELECT * FROM invoices WHERE order_id = $1', [orderId]);
+        const [rows] = await pool.query('SELECT * FROM invoices WHERE order_id = ?', [orderId]);
 
-        if (result.rows.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Invoice not found for this order'
@@ -278,7 +286,7 @@ export const getInvoiceByOrderId = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            data: result.rows[0]
+            data: rows[0]
         });
 
     } catch (error) {

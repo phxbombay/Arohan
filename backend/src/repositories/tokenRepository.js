@@ -1,4 +1,5 @@
 import pool from '../config/db.js';
+import crypto from 'crypto';
 
 /**
  * Token Repository - Data Access Layer
@@ -13,13 +14,13 @@ export const tokenRepository = {
      * @returns {Promise<Object>}
      */
     async create(userId, tokenHash) {
-        const result = await pool.query(
-            `INSERT INTO refresh_tokens (user_id, token_hash, expires_at) 
-             VALUES ($1, $2, NOW() + INTERVAL '7 days')
-             RETURNING id`,
-            [userId, tokenHash]
+        const id = crypto.randomUUID();
+        await pool.query(
+            `INSERT INTO refresh_tokens (id, user_id, token_hash, expires_at) 
+             VALUES (?, ?, ?, NOW() + INTERVAL 7 DAY)`,
+            [id, userId, tokenHash]
         );
-        return result.rows[0];
+        return { id };
     },
 
     /**
@@ -28,14 +29,14 @@ export const tokenRepository = {
      * @returns {Promise<Object|null>}
      */
     async findValid(tokenHash) {
-        const result = await pool.query(
+        const [rows] = await pool.query(
             `SELECT * FROM refresh_tokens 
-             WHERE token_hash = $1 
+             WHERE token_hash = ? 
              AND expires_at > NOW() 
              AND revoked_at IS NULL`,
             [tokenHash]
         );
-        return result.rows[0] || null;
+        return rows[0] || null;
     },
 
     /**
@@ -44,11 +45,11 @@ export const tokenRepository = {
      * @returns {Promise<boolean>}
      */
     async revoke(tokenId) {
-        const result = await pool.query(
-            'UPDATE refresh_tokens SET revoked_at = NOW() WHERE id = $1',
+        const [result] = await pool.query(
+            'UPDATE refresh_tokens SET revoked_at = NOW() WHERE id = ?',
             [tokenId]
         );
-        return result.rowCount > 0;
+        return result.affectedRows > 0;
     },
 
     /**
@@ -57,11 +58,11 @@ export const tokenRepository = {
      * @returns {Promise<boolean>}
      */
     async revokeByHash(tokenHash) {
-        const result = await pool.query(
-            'UPDATE refresh_tokens SET revoked_at = NOW() WHERE token_hash = $1',
+        const [result] = await pool.query(
+            'UPDATE refresh_tokens SET revoked_at = NOW() WHERE token_hash = ?',
             [tokenHash]
         );
-        return result.rowCount > 0;
+        return result.affectedRows > 0;
     },
 
     /**
@@ -70,11 +71,11 @@ export const tokenRepository = {
      * @returns {Promise<number>}
      */
     async revokeAllForUser(userId) {
-        const result = await pool.query(
-            'UPDATE refresh_tokens SET revoked_at = NOW() WHERE user_id = $1 AND revoked_at IS NULL',
+        const [result] = await pool.query(
+            'UPDATE refresh_tokens SET revoked_at = NOW() WHERE user_id = ? AND revoked_at IS NULL',
             [userId]
         );
-        return result.rowCount;
+        return result.affectedRows;
     },
 
     /**
@@ -82,9 +83,9 @@ export const tokenRepository = {
      * @returns {Promise<number>}
      */
     async cleanExpired() {
-        const result = await pool.query(
-            'DELETE FROM refresh_tokens WHERE expires_at < NOW() - INTERVAL \'30 days\''
+        const [result] = await pool.query(
+            `DELETE FROM refresh_tokens WHERE expires_at < NOW() - INTERVAL 30 DAY`
         );
-        return result.rowCount;
+        return result.affectedRows;
     }
 };

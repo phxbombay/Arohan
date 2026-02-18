@@ -9,15 +9,15 @@ export const getCart = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        const result = await pool.query(
-            `SELECT id, product_id, product_name, description, price, quantity, image_url, features, created_at, updated_at
+        const [rows] = await pool.query(
+            `SELECT product_id, product_name, description, price, quantity, image_url, features, created_at, updated_at
              FROM cart_items
-             WHERE user_id = $1
+             WHERE user_id = ?
              ORDER BY created_at DESC`,
             [userId]
         );
 
-        const cart = result.rows.map(row => ({
+        const cart = rows.map(row => ({
             id: row.product_id,
             name: row.product_name,
             description: row.description,
@@ -36,7 +36,6 @@ export const getCart = async (req, res) => {
 
 /**
  * Add item to cart
- * Uses transaction to ensure atomicity
  */
 export const addToCart = async (req, res) => {
     try {
@@ -47,39 +46,42 @@ export const addToCart = async (req, res) => {
             return res.status(400).json({ error: 'Missing required fields: id, name, price' });
         }
 
-        // Use transaction for atomic check-and-update
-        const result = await executeTransaction(async (client) => {
+        const result = await executeTransaction(async (connection) => {
+            console.log('🛒 [DEBUG] Transaction started for addToCart');
+
             // Check if item already exists
-            const existing = await client.query(
-                'SELECT quantity FROM cart_items WHERE user_id = $1 AND product_id = $2',
+            const [rows] = await connection.query(
+                'SELECT quantity FROM cart_items WHERE user_id = ? AND product_id = ?',
                 [userId, id]
             );
 
-            if (existing.rows.length > 0) {
+            console.log('🛒 [DEBUG] Item exists?', rows.length > 0);
+
+            if (rows.length > 0) {
                 // Update quantity
-                const newQuantity = existing.rows[0].quantity + 1;
-                await client.query(
-                    'UPDATE cart_items SET quantity = $1, updated_at = NOW() WHERE user_id = $2 AND product_id = $3',
+                const newQuantity = rows[0].quantity + 1;
+                await connection.query(
+                    'UPDATE cart_items SET quantity = ?, updated_at = NOW() WHERE user_id = ? AND product_id = ?',
                     [newQuantity, userId, id]
                 );
-
                 return { message: 'Cart updated', quantity: newQuantity };
             } else {
                 // Insert new item
-                await client.query(
-                    `INSERT INTO cart_items (user_id, product_id, product_name, description, price, quantity, image_url, features)
-                     VALUES ($1, $2, $3, $4, $5, 1, $6, $7)`,
+                console.log('🛒 [DEBUG] Inserting new item:', { userId, id, price });
+                await connection.query(
+                    `INSERT INTO cart_items (id, user_id, product_id, product_name, description, price, quantity, image_url, features)
+                     VALUES (UUID(), ?, ?, ?, ?, ?, 1, ?, ?)`,
                     [userId, id, name, description || '', price, image || '', JSON.stringify(features || [])]
                 );
-
                 return { message: 'Item added to cart' };
             }
         });
 
         res.json(result);
     } catch (error) {
+        console.error('🛒 [DEBUG] Add to cart FAILED:', error);
         logger.error('Add to cart error', { error: error.message, userId: req.params.userId });
-        res.status(500).json({ error: 'Failed to add item to cart' });
+        res.status(500).json({ error: 'Failed to add item to cart: ' + error.message });
     }
 };
 
@@ -95,16 +97,16 @@ export const updateCartItem = async (req, res) => {
             return res.status(400).json({ error: 'Quantity must be at least 1' });
         }
 
-        const result = await pool.query(
-            'UPDATE cart_items SET quantity = $1 WHERE user_id = $2 AND product_id = $3 RETURNING *',
+        const [result] = await pool.query(
+            'UPDATE cart_items SET quantity = ? WHERE user_id = ? AND product_id = ?',
             [quantity, userId, productId]
         );
 
-        if (result.rows.length === 0) {
+        if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Item not found in cart' });
         }
 
-        res.json({ message: 'Quantity updated', item: result.rows[0] });
+        res.json({ message: 'Quantity updated', item: { user_id: userId, product_id: productId, quantity } });
     } catch (error) {
         console.error('Update cart item error:', error);
         res.status(500).json({ error: 'Failed to update cart item' });
@@ -118,12 +120,12 @@ export const removeFromCart = async (req, res) => {
     try {
         const { userId, productId } = req.params;
 
-        const result = await pool.query(
-            'DELETE FROM cart_items WHERE user_id = $1 AND product_id = $2 RETURNING *',
+        const [result] = await pool.query(
+            'DELETE FROM cart_items WHERE user_id = ? AND product_id = ?',
             [userId, productId]
         );
 
-        if (result.rows.length === 0) {
+        if (result.affectedRows === 0) {
             return res.status(404).json({ error: 'Item not found in cart' });
         }
 
@@ -141,7 +143,7 @@ export const clearCart = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        await pool.query('DELETE FROM cart_items WHERE user_id = $1', [userId]);
+        await pool.query('DELETE FROM cart_items WHERE user_id = ?', [userId]);
 
         res.json({ message: 'Cart cleared' });
     } catch (error) {
@@ -157,12 +159,12 @@ export const getCartCount = async (req, res) => {
     try {
         const { userId } = req.params;
 
-        const result = await pool.query(
-            'SELECT COALESCE(SUM(quantity), 0) as count FROM cart_items WHERE user_id = $1',
+        const [rows] = await pool.query(
+            'SELECT COALESCE(SUM(quantity), 0) as count FROM cart_items WHERE user_id = ?',
             [userId]
         );
 
-        res.json({ count: parseInt(result.rows[0].count) });
+        res.json({ count: parseInt(rows[0].count) });
     } catch (error) {
         console.error('Get cart count error:', error);
         res.status(500).json({ error: 'Failed to get cart count' });

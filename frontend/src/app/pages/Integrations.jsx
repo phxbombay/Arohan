@@ -115,7 +115,7 @@ export function Integrations() {
     ];
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 6 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 6 }}>
             <Helmet>
                 <title>Integrations - Payment Gateway & Device Integration | Arohan Health</title>
                 <meta name="description" content="Integrate with Arohan Health platform. Payment gateways (Razorpay, Stripe), device integrations, and API documentation for partners and developers." />

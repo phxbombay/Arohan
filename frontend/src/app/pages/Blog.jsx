@@ -18,6 +18,7 @@ import {
     Divider
 } from '@mui/material';
 import { blogPosts } from '../../data/blog-data';
+import { safeDate } from '../../utils/date-utils';
 
 export function Blog() {
     const [visibleCount, setVisibleCount] = useState(4);
@@ -27,14 +28,14 @@ export function Blog() {
         category: post.category,
         title: post.title,
         excerpt: post.excerpt,
-        date: new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        date: safeDate(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
         readTime: '5 min read',
         link: post.link || `/blog/${post.slug}`,
         image: post.image
     })), []);
 
     return (
-        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', py: { xs: 6, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h2" fontWeight="800" gutterBottom sx={{ letterSpacing: -1 }}>

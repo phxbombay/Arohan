@@ -1,4 +1,5 @@
 import pool from '../config/db.js';
+import crypto from 'crypto';
 
 // @desc    Pair a new device
 // @route   POST /v1/devices/pair
@@ -9,29 +10,29 @@ export const pairDevice = async (req, res) => {
 
     try {
         // 1. Check if device exists in inventory
-        const deviceResult = await pool.query(
-            'SELECT device_id FROM devices WHERE serial_number = $1',
+        const [devices] = await pool.query(
+            'SELECT device_id FROM devices WHERE serial_number = ?',
             [serial_number]
         );
 
         let device_id;
 
-        if (deviceResult.rows.length === 0) {
+        if (devices.length === 0) {
             // For prototype purposes, auto-create the device if it doesn't exist
-            // In prod, this would fail or require admin privileges
-            const newDevice = await pool.query(
-                "INSERT INTO devices (serial_number, status, model_version) VALUES ($1, 'active', 'v1.0') RETURNING device_id",
-                [serial_number]
+            device_id = crypto.randomUUID();
+            await pool.query(
+                "INSERT INTO devices (device_id, serial_number, status, model_version) VALUES (?, ?, 'active', 'v1.0')",
+                [device_id, serial_number]
             );
-            device_id = newDevice.rows[0].device_id;
         } else {
-            device_id = deviceResult.rows[0].device_id;
+            device_id = devices[0].device_id;
         }
 
         // 2. Link to user
+        const pairing_id = crypto.randomUUID();
         await pool.query(
-            'INSERT INTO user_devices (user_id, device_id, is_primary) VALUES ($1, $2, $3) ON CONFLICT DO NOTHING',
-            [user_id, device_id, true]
+            'INSERT IGNORE INTO user_devices (id, user_id, device_id, is_primary) VALUES (?, ?, ?, ?)',
+            [pairing_id, user_id, device_id, true]
         );
 
         res.status(201).json({ device_id, status: 'paired', message: 'Device paired successfully' });
@@ -52,11 +53,11 @@ export const getUserDevices = async (req, res) => {
       SELECT d.device_id, d.serial_number, d.model_version, d.status, ud.paired_at
       FROM devices d
       JOIN user_devices ud ON d.device_id = ud.device_id
-      WHERE ud.user_id = $1
+      WHERE ud.user_id = ?
     `;
-        const result = await pool.query(query, [user_id]);
+        const [rows] = await pool.query(query, [user_id]);
 
-        res.json(result.rows);
+        res.json(rows);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error' });

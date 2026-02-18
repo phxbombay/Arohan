@@ -14,6 +14,8 @@ export const useAuth = () => {
         error,
         login,
         register,
+        verifyOTP,
+        resendOTP,
         logout,
         clearError
     } = useAuthStore();
@@ -26,6 +28,8 @@ export const useAuth = () => {
         error,
         login,
         register,
+        verifyOTP,
+        resendOTP,
         logout,
         clearError
     };

@@ -120,7 +120,7 @@ export function PaymentStatus() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 8 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 8 }}>
             <Container maxWidth="sm">
                 <Card
                     elevation={12}

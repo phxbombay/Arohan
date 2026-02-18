@@ -1,4 +1,5 @@
 import pool from '../config/db.js';
+import crypto from 'crypto';
 
 /**
  * Create a new blog post
@@ -16,8 +17,7 @@ export const createPost = async (req, res) => {
             tags,
             author, // author object or string
             status,
-            publishDate,
-            seo // Ignoring SEO for SQL simplicity for now, or store as JSON if needed
+            publishDate
         } = req.body;
 
         // Validation
@@ -28,31 +28,31 @@ export const createPost = async (req, res) => {
             });
         }
 
+        const id = crypto.randomUUID();
         const finalSlug = slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
         const authorName = author?.name || 'Arohan Team';
         const finalStatus = status || 'draft';
         const finalPublishDate = publishDate || new Date();
 
         // Create blog post
-        const result = await pool.query(
+        await pool.query(
             `INSERT INTO blogs 
-            (title, slug, content, excerpt, featured_image, category, tags, author_name, status, publish_date)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
-            RETURNING *`,
-            [title, finalSlug, content, excerpt, featuredImage, category, tags || [], authorName, finalStatus, finalPublishDate]
+            (id, title, slug, content, excerpt, featured_image, category, tags, author_name, status, publish_date)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [id, title, finalSlug, content, excerpt, featuredImage, category, JSON.stringify(tags || []), authorName, finalStatus, finalPublishDate]
         );
 
         return res.status(201).json({
             success: true,
             message: 'Blog post created successfully',
-            data: result.rows[0]
+            data: { id, title, slug: finalSlug, status: finalStatus }
         });
 
     } catch (error) {
         console.error('Create Blog Error:', error);
 
-        // Handle duplicate slug error (Postgres error 23505)
-        if (error.code === '23505') {
+        // Handle duplicate slug error (MySQL error 1062)
+        if (error.code === 'ER_DUP_ENTRY' || error.errno === 1062) {
             return res.status(400).json({
                 success: false,
                 message: 'A blog post with this slug already exists'
@@ -82,26 +82,26 @@ export const getAllPosts = async (req, res) => {
         } = req.query;
 
         let query = 'SELECT * FROM blogs';
-        let countQuery = 'SELECT COUNT(*) FROM blogs';
+        let countQuery = 'SELECT COUNT(*) as count FROM blogs';
         const params = [];
         const conditions = [];
 
         // Filter by status
         if (status && status !== 'all') {
             params.push(status);
-            conditions.push(`status = $${params.length}`);
+            conditions.push(`status = ?`);
         }
 
         // Filter by category
         if (category) {
             params.push(category);
-            conditions.push(`category = $${params.length}`);
+            conditions.push(`category = ?`);
         }
 
         // Search in title
         if (search) {
             params.push(`%${search}%`);
-            conditions.push(`(title ILIKE $${params.length})`);
+            conditions.push(`(title LIKE ?)`);
         }
 
         // Apply conditions
@@ -118,28 +118,18 @@ export const getAllPosts = async (req, res) => {
         const limitVal = parseInt(limit);
         const offset = (parseInt(page) - 1) * limitVal;
 
-        params.push(limitVal);
-        query += ` LIMIT $${params.length}`;
-
-        params.push(offset);
-        query += ` OFFSET $${params.length}`;
+        query += ` LIMIT ? OFFSET ?`;
+        const queryParams = [...params, limitVal, offset];
 
         // Execute queries
-        const blogsResult = await pool.query(query, params); // Use sliced params for logic if needed, but here simple push works as LIMIT/OFFSET are last
+        const [blogs] = await pool.query(query, queryParams);
+        const [countResult] = await pool.query(countQuery, params);
 
-        // Wait, params index must verify.
-        // If status($1), cat($2), search($3), LIMIT($4), OFFSET($5)
-        // Correct.
-
-        // For count query, we need ONLY the filter params, not limit/offset
-        const filterParams = params.slice(0, params.length - 2);
-        const countResult = await pool.query(countQuery, filterParams);
-
-        const total = parseInt(countResult.rows[0].count);
+        const total = parseInt(countResult[0].count);
 
         return res.status(200).json({
             success: true,
-            data: blogsResult.rows,
+            data: blogs,
             pagination: {
                 page: parseInt(page),
                 limit: limitVal,
@@ -166,9 +156,9 @@ export const getPostBySlug = async (req, res) => {
     try {
         const { slug } = req.params;
 
-        const result = await pool.query('SELECT * FROM blogs WHERE slug = $1', [slug]);
+        const [rows] = await pool.query('SELECT * FROM blogs WHERE slug = ?', [slug]);
 
-        if (result.rows.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Blog post not found'
@@ -176,11 +166,11 @@ export const getPostBySlug = async (req, res) => {
         }
 
         // Increment view count async
-        await pool.query('UPDATE blogs SET view_count = view_count + 1 WHERE slug = $1', [slug]);
+        pool.query('UPDATE blogs SET view_count = view_count + 1 WHERE slug = ?', [slug]).catch(err => console.error('View count update error:', err));
 
         return res.status(200).json({
             success: true,
-            data: result.rows[0]
+            data: rows[0]
         });
 
     } catch (error) {
@@ -202,22 +192,19 @@ export const updatePost = async (req, res) => {
         const { id } = req.params;
         const { title, content, status, category } = req.body;
 
-        // Dynamic update is complex in SQL without ORM, implementing simple required field update for now
-        // Or using COALESCE
-
-        const result = await pool.query(
-            `UPDATE blogs 
-            SET title = COALESCE($1, title),
-                content = COALESCE($2, content),
-                status = COALESCE($3, status),
-                category = COALESCE($4, category),
+        const query = `
+            UPDATE blogs 
+            SET title = COALESCE(?, title),
+                content = COALESCE(?, content),
+                status = COALESCE(?, status),
+                category = COALESCE(?, category),
                 updated_at = CURRENT_TIMESTAMP
-            WHERE id = $5
-            RETURNING *`,
-            [title, content, status, category, id]
-        );
+            WHERE id = ?
+        `;
 
-        if (result.rows.length === 0) {
+        const [result] = await pool.query(query, [title, content, status, category, id]);
+
+        if (result.affectedRows === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Blog post not found'
@@ -226,8 +213,7 @@ export const updatePost = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: 'Blog post updated successfully',
-            data: result.rows[0]
+            message: 'Blog post updated successfully'
         });
 
     } catch (error) {
@@ -248,9 +234,9 @@ export const deletePost = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const result = await pool.query('DELETE FROM blogs WHERE id = $1 RETURNING *', [id]);
+        const [result] = await pool.query('DELETE FROM blogs WHERE id = ?', [id]);
 
-        if (result.rows.length === 0) {
+        if (result.affectedRows === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Blog post not found'
@@ -278,8 +264,8 @@ export const deletePost = async (req, res) => {
  */
 export const getCategories = async (req, res) => {
     try {
-        const result = await pool.query('SELECT DISTINCT category FROM blogs');
-        const categories = result.rows.map(row => row.category);
+        const [rows] = await pool.query('SELECT DISTINCT category FROM blogs');
+        const categories = rows.map(row => row.category);
 
         return res.status(200).json({
             success: true,

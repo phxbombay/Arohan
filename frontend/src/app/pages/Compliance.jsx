@@ -229,7 +229,7 @@ export function Compliance() {
     ];
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50' }}>
             <SEO
                 title="Compliance & Data Privacy - HIPAA, GDPR, DPDPA"
                 description="Arohan Health's commitment to data privacy and regulatory compliance. HIPAA, GDPR, and DPDPA 2023 compliant. ISO 27001 and SOC 2 certifications. Comprehensive data security measures."

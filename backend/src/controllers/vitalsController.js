@@ -13,9 +13,8 @@ export const syncVitals = async (req, res) => {
 
     try {
         const query = `
-      INSERT INTO health_vitals (user_id, device_id, recorded_at, heart_rate, steps, oxygen_level, battery_level)
-      VALUES ($1, $2, $3, $4, $5, $6, $7)
-      ON CONFLICT (user_id, recorded_at) DO NOTHING
+      INSERT IGNORE INTO health_vitals (user_id, device_id, recorded_at, heart_rate, steps, oxygen_level, battery_level)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
         let count = 0;
@@ -46,16 +45,16 @@ export const getLiveVitals = async (req, res) => {
     const user_id = req.user.user_id;
 
     try {
-        const result = await pool.query(
-            'SELECT heart_rate, battery_level, recorded_at FROM health_vitals WHERE user_id = $1 ORDER BY recorded_at DESC LIMIT 1',
+        const [rows] = await pool.query(
+            'SELECT heart_rate, battery_level, recorded_at FROM health_vitals WHERE user_id = ? ORDER BY recorded_at DESC LIMIT 1',
             [user_id]
         );
 
-        if (result.rows.length === 0) {
+        if (rows.length === 0) {
             return res.json({ message: 'No data available' });
         }
 
-        const { heart_rate, battery_level, recorded_at } = result.rows[0];
+        const { heart_rate, battery_level, recorded_at } = rows[0];
         res.json({ heart_rate, battery: battery_level, last_seen: recorded_at });
     } catch (error) {
         console.error(error);
@@ -77,13 +76,13 @@ export const getHistoryVitals = async (req, res) => {
         const query = `
             SELECT recorded_at as time, heart_rate as hr 
             FROM health_vitals 
-            WHERE user_id = $1 
+            WHERE user_id = ? 
             ORDER BY recorded_at DESC 
-            LIMIT $2
+            LIMIT ?
         `;
 
-        const result = await pool.query(query, [user_id, limit]);
-        res.json(result.rows);
+        const [rows] = await pool.query(query, [user_id, limit]);
+        res.json(rows);
 
     } catch (error) {
         console.error(error);

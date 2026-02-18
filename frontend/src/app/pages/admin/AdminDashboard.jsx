@@ -152,8 +152,109 @@ export function AdminDashboard() {
                 </Grid>
             </Grid>
 
+            {/* Quick Actions */}
+            <Box sx={{ mt: 6 }}>
+                <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
+                    Quick Actions
+                </Typography>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Paper
+                            component={Link}
+                            to="/admin/users"
+                            sx={{
+                                p: 3,
+                                textAlign: 'center',
+                                borderRadius: 4,
+                                textDecoration: 'none',
+                                color: 'inherit',
+                                transition: 'all 0.2s',
+                                '&:hover': { transform: 'scale(1.05)', bgcolor: 'primary.50', borderColor: 'primary.main' },
+                                border: '1px solid transparent',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: 1
+                            }}
+                        >
+                            <UsersIcon color="primary" sx={{ fontSize: 40 }} />
+                            <Typography fontWeight="600">User Management</Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Paper
+                            component={Link}
+                            to="/admin/logs"
+                            sx={{
+                                p: 3,
+                                textAlign: 'center',
+                                borderRadius: 4,
+                                textDecoration: 'none',
+                                color: 'inherit',
+                                transition: 'all 0.2s',
+                                '&:hover': { transform: 'scale(1.05)', bgcolor: 'warning.50', borderColor: 'warning.main' },
+                                border: '1px solid transparent',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: 1
+                            }}
+                        >
+                            <FileTextIcon color="warning" sx={{ fontSize: 40 }} />
+                            <Typography fontWeight="600">System Logs</Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Paper
+                            component={Link}
+                            to="/admin/monitoring"
+                            sx={{
+                                p: 3,
+                                textAlign: 'center',
+                                borderRadius: 4,
+                                textDecoration: 'none',
+                                color: 'inherit',
+                                transition: 'all 0.2s',
+                                '&:hover': { transform: 'scale(1.05)', bgcolor: 'success.50', borderColor: 'success.main' },
+                                border: '1px solid transparent',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: 1
+                            }}
+                        >
+                            <TrendingUpIcon color="success" sx={{ fontSize: 40 }} />
+                            <Typography fontWeight="600">System Metrics</Typography>
+                        </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={3}>
+                        <Paper
+                            component={Link}
+                            to="/admin/blogs"
+                            sx={{
+                                p: 3,
+                                textAlign: 'center',
+                                borderRadius: 4,
+                                textDecoration: 'none',
+                                color: 'inherit',
+                                transition: 'all 0.2s',
+                                '&:hover': { transform: 'scale(1.05)', bgcolor: 'secondary.50', borderColor: 'secondary.main' },
+                                border: '1px solid transparent',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                gap: 1
+                            }}
+                        >
+                            <MessageIcon color="secondary" sx={{ fontSize: 40 }} />
+                            <Typography fontWeight="600">Blog Manager</Typography>
+                        </Paper>
+                    </Grid>
+                </Grid>
+            </Box>
+
             {/* Real Data Sections */}
-            <Box sx={{ mt: 4 }}>
+            <Box sx={{ mt: 6 }}>
                 <Typography variant="h5" fontWeight="bold" sx={{ mb: 2 }}>
                     Recent Activity
                 </Typography>
@@ -174,3 +275,7 @@ export function AdminDashboard() {
         </Box>
     );
 }
+
+// Ensure Link is imported
+import { Link } from 'react-router-dom';
+

@@ -37,6 +37,7 @@ import {
 import { useAuth } from '../../../features/auth/hooks/useAuth';
 import api from '../../../services/api';
 import { DashboardWidget } from '../../components/dashboard/DashboardWidget';
+import { safeDate } from '../../../utils/date-utils';
 
 export function PhysicianDashboard() {
     const { user } = useAuth();
@@ -112,7 +113,7 @@ export function PhysicianDashboard() {
     }
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 4 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 4 }}>
             <Container maxWidth="xl">
                 {/* Header */}
                 <Box sx={{ mb: 4 }}>
@@ -210,7 +211,7 @@ export function PhysicianDashboard() {
                                                         {alert.alert_type}
                                                     </Typography>
                                                     <Typography variant="caption" color="text.secondary">
-                                                        {new Date(alert.created_at).toLocaleString()}
+                                                        {safeDate(alert.created_at).toLocaleString()}
                                                     </Typography>
                                                 </Box>
                                                 <Chip

@@ -121,7 +121,7 @@ export function HealthDashboard() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 6 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 6 }}>
             <Container maxWidth="lg">
                 {/* Header */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 6, flexDirection: { xs: 'column', md: 'row' }, textAlign: { xs: 'center', md: 'left' } }}>

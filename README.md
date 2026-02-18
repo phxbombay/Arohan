@@ -4,6 +4,7 @@
 [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/react-18.x-blue.svg)](https://reactjs.org/)
 [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)
+[![MySQL](https://img.shields.io/badge/mysql-8.0-orange.svg)](https://www.mysql.com/)
 
 > **Enterprise-grade health monitoring platform with wearable device integration, emergency detection, and first aid guidance.**
 
@@ -12,52 +13,58 @@
 ## 📋 Table of Contents
 
 - [Overview](#-overview)
-- [What's New](#-whats-new)
-- [Quick Start](#-quick-start)
-- [Default Credentials](#-default-credentials)
-- [Alert System Configuration](#-alert-system-configuration)
-- [Features](#-features)
 - [Architecture](#-architecture)
-- [API Documentation](#-api-documentation)
+- [Quick Start (Docker)](#-quick-start-docker)
+- [Manual Setup](#-manual-setup)
+- [Features & API](#-features--api)
+- [Project Structure](#-project-structure)
 - [Testing](#-testing)
 - [Production Deployment](#-production-deployment)
+- [Default Credentials](#-default-credentials)
+- [Troubleshooting](#-troubleshooting)
 
 ---
 
 ## 🎯 Overview
 
-Arohan Health is a comprehensive healthcare platform that combines wearable device monitoring, AI-powered emergency detection, and real-time first aid guidance.
+Arohan Health is a comprehensive healthcare platform that combines wearable device monitoring, AI-powered emergency detection, and real-time first aid guidance. It seamlessly connects patients, doctors, and hospital administrators.
 
 ### Technology Stack
-- **Frontend:** React 18, TypeScript, Vite, Material-UI, Zustand
-- **Backend:** Node.js, Express, PostgreSQL 15, Zod, JWT
-- **Alerts:** Nodemailer (Email), Twilio (SMS)
-- **Infrastructure:** Docker, Nginx (Proxy)
+- **Frontend:** React 18, TypeScript, Vite, Material-UI, Zustand, i18n
+- **Backend:** Node.js, Express, MySQL 8.0, Zod, JWT
+- **Communication:** Nodemailer (Email), Twilio (SMS), WhatsApp Business API
+- **Payments:** Razorpay, Stripe, PhonePe
+- **Infrastructure:** Docker, Nginx (Reverse Proxy)
 
 ---
 
-## 🆕 What's New (February 2026 Sprint)
+## �️ Architecture
 
-### ✅ Core Features Completed
-- **Role-Based Dashboards**: Customized views for `/hospital/dashboard`, `/physician/dashboard`, and `/patient/dashboard`.
-- **Deep Compliance Module**: `/compliance` - HIPAA, GDPR, DPDPA 2023, ISO 27001 documentation.
-- **Consulting Services**: `/consulting` - Service showcase, case studies, and lead generation form.
-- **Multi-Channel Support**: WhatsApp Business API integration & Social Media sharing.
-- **Internationalization (i18n)**: Full support for English, Hindi (हिन्दी), and Kannada (ಕನ್ನಡ).
-- **Payment & Integrations**: `/integrations` - Payment gateway (Razorpay/Stripe) and device SDK docs.
-
-### ✅ Security & Performance
-- **Authentication**: JWT Refresh Token rotation, "Remember Me" session management, and Account Lockout policies.
-- **Infrastructure Security**: AWS WAF rules, Security Groups (IaC), and Secrets configuration.
-- **Advanced Security**: SQL Injection protection, XSS filtering, Rate Limiting, CAPTCHA v3, Helmet, and CSP.
-- **Performance Monitoring**: Prometheus metrics collection & Admin Dashboard (`/admin/metrics`).
-- **SEO Engines**: Open Graph, Twitter Cards, JSON-LD, and XML Sitemap generation.
+```mermaid
+graph TD
+    User[User / Client] -->|HTTPS| Nginx[Nginx Reverse Proxy]
+    
+    subgraph "Docker Network"
+        Nginx -->|Static Assets| React[React Frontend]
+        Nginx -->|API Requests /v1| Express[Express Backend]
+        
+        Express -->|SQL| MySQL[(MySQL 8.0)]
+        Express -->|SMTP| MailHog[MailHog (Dev Email)]
+    end
+    
+    subgraph "External Services"
+        Express -->|SMS| Twilio
+        Express -->|Email| Gmail/SendGrid
+        Express -->|Payment| Razorpay/PhonePe
+        Express -->|Chat| WhatsAppAPI
+    end
+```
 
 ---
 
-## 🚀 Quick Start (Docker Only)
+## 🚀 Quick Start (Docker)
 
-The entire application is containerized. You do not need Node.js or PostgreSQL installed locally.
+The application is fully containerized. You do not need Node.js or MySQL installed locally.
 
 ### 1. Prerequisites
 - **Docker Desktop** (Running)
@@ -69,141 +76,60 @@ git clone https://github.com/yourusername/arohan-health.git
 cd arohan-health
 ```
 
-### 3. Run Application
+### 3. Environment Setup
+The project includes default configurations for development. For production, create a `.env` file based on `.env.example`.
+
+### 4. Run Application
 ```bash
-docker-compose up -d --build
+# Build and start all services
+docker compose up -d --build
 ```
-This single command builds the images, sets up the database, and starts the proxy.
+*Note: The initial build may take a few minutes as it compiles the frontend and backend.*
 
-### 4. Access Points
-*   **Frontend**: http://localhost:8080
-*   **Admin Dashboard**: http://localhost:8080/admin
-*   **Performance Metrics**: http://localhost:8080/admin/metrics
-*   **Backend API**: http://localhost:8080/v1
-*   **Database**: localhost:5435
-*   **MailHog/Ethereal**: Check logs for URL
+### 5. Access Points
+| Service | URL | Description |
+|---------|-----|-------------|
+| **Frontend** | [http://localhost:8080](http://localhost:8080) | Main Application |
+| **Backend API** | [http://localhost:8080/v1](http://localhost:8080/v1) | API Endpoints |
+| **Admin Dashboard** | [http://localhost:8080/admin](http://localhost:8080/admin) | System Administration |
+| **MailHog** | [http://localhost:8025](http://localhost:8025) | View Test Emails |
+| **Database** | `localhost:3306` | MySQL (User: root) |
 
 ---
 
-## 🔐 Default Credentials
+## 🛠️ Manual Setup (Without Docker)
 
-Use these credentials to test different role-based access controls (RBAC).
+If you prefer running locally without Docker:
 
-### 1. System Admin
-*   **URL**: http://localhost:8080/admin
-*   **Email**: `admin@arohanhealth.com`
-*   **Password**: `Admin123!`
-*   **Access**: Full system control, User Management, Logs, Metrics, CMS.
+### Backend
+```bash
+cd backend
+npm install
+# Ensure MySQL is running locally and update .env
+npm run dev
+```
 
-### 2. Physician / Doctor
-*   **URL**: http://localhost:8080/dashboard
-*   **Email**: `doctor@arohanhealth.com` (Create if not exists)
-*   **Password**: `Doctor123!`
-*   **Access**: Patient Vitals, Emergency Alerts, Prescriptions.
-
-### 3. Hospital Administrator
-*   **URL**: http://localhost:8080/dashboard
-*   **Email**: `hospital@arohanhealth.com` (Create if not exists)
-*   **Password**: `Hospital123!`
-*   **Access**: Staff management, Department stats.
-
-### 4. Patient
-*   **URL**: http://localhost:8080/login
-*   **Email**: `patient@test.com` (Create via Register)
-*   **Password**: `Patient123!`
-*   **Access**: Personal Vitals, Shop, Emergency SOS.
-
-> ⚠️ **IMPORTANT**: These are development credentials. Change immediately in production.
+### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ---
 
-## ✨ Features
+## ✨ Features & API
 
-### 🏢 Corporate & Consulting (`/consulting`)
-- **Services Showcase**: Web/App Development, AI/ML Integrations, Cloud Infrastructure.
-- **Case Studies**: Real-world success stories with metrics.
-- **Lead Generation**: Smart inquiry form with budget estimator.
-- **Tech Stack**: Visual display of Arohan's technology expertise.
+The platform exposes a RESTful API at `/v1`.
 
-### ⚖️ Compliance & Privacy (`/compliance`)
-- **Regulatory Frameworks**: 
-  - **HIPAA** (USA) - PHI Security
-  - **GDPR** (EU) - Data Privacy Rights
-  - **DPDPA 2023** (India) - Data Fiduciary obligations
-- **Certifications**: Status tracking for ISO 27001, SOC 2.
-- **Security Transparency**: Encryption standards (AES-256), Access Controls.
-
-### 🌐 Internationalization (i18n)
-- **Language Switcher**: Seamless toggling between languages in Header.
-- **Supported Languages**:
-  - English (Default)
-  - Hindi (हिन्दी)
-  - Kannada (ಕನ್ನಡ)
-- **Auto-Detection**: Browser language detection with persistence.
-
-### 💬 Multi-Channel Engagement
-- **Social Sharing**: Share products/articles to WhatsApp, Facebook, LinkedIn, Twitter.
-- **WhatsApp Integration**:
-  - Emergency Alerts to family via WhatsApp.
-  - Appointment reminders and health reports.
-  - Social sharing directly to WhatsApp contacts.
-
-### 📊 Role-Based Analytics
-- **Hospital Admin**: Bed occupancy tracking, physician availability, and critical alert monitoring.
-- **Physician**: Patient vitals overview, active alerts list, and patient search.
-- **Patient**: Personal health stats, daily activity logs, and quick actions (SOS).
-
-### 💳 Integrations & Payments (`/integrations`)
-- **Payment Gateways**: Documentation for Razorpay, Stripe, PayPal.
-- **Device SDK**: Guide for connecting wearables (BLE/Smartwatches).
-- **API Docs**: Developer resources for partners.
-
-### 📊 Admin Power Tools
-- **Performance Dashboard**: Real-time request tracking, error rates, system health.
-- **Audit Logs**: Deep tracking of who did what and when.
-- **Message Center**: Centralized management of contact inquiries.
-
----
-
-## 🏗️ Architecture
-
-### System Components
-
-```
-┌─────────────────┐
-│   React App     │  (Port 8080)
-│   (Frontend)    │
-└────────┬────────┘
-         │
-    ┌────▼─────┐
-    │  Nginx   │  (Reverse Proxy)
-    │  Proxy   │
-    └────┬─────┘
-         │
-    ┌────▼──────────┐
-    │  Express API  │  (Port 5000)
-    │  (Backend)    │
-    └────┬──────────┘
-         │
-    ┌────▼──────────┐
-    │  PostgreSQL   │  (Port 5435)
-    │  Database     │
-    └───────────────┘
-
-External Services:
-├─→ Ethereal Email (SMTP)
-└─→ Twilio (SMS)
-```
-
-### Database Schema
-
-**Key Tables:**
-- `users` - Authentication and profiles
-- `emergency_contacts` - Patient emergency contact information
-- `emergency_alerts` - Alert history and status
-- `contact_messages` - Contact form submissions (encrypted)
-- `audit_logs` - System activity tracking
-- `push_subscriptions` - Browser push notifications
+### Key Modules
+- **Authentication**: JWT-based auth with Refresh Tokens & RBAC.
+- **Emergency Alerts**: `/v1/alerts` - Trigger SOS, notifying via SMS/Email/WhatsApp.
+- **Vitals Monitoring**: `/v1/vitals` - Track Heart Rate, SpO2, BP.
+- **Consulting**: `/v1/consulting` - Lead generation for B2B services.
+- **E-Commerce**: `/v1/orders`, `/v1/cart`, `/v1/payment` - Health product store.
+- **Blog/CMS**: `/v1/blog` - Health articles and detailed content.
+- **Internationalization**: Support for English, Hindi, and Kannada.
 
 ---
 
@@ -211,220 +137,115 @@ External Services:
 
 ```
 arohan-health/
-├── backend/                    # Node.js API
+├── backend/
 │   ├── src/
+│   │   ├── config/            # DB, Logger, Swagger config
 │   │   ├── controllers/       # Request handlers
-│   │   ├── routes/            # API endpoints
-│   │   ├── services/          # Business logic
-│   │   │   ├── emergencyAlertService.js  # Email alerts
-│   │   │   ├── smsService.js            # SMS alerts
-│   │   │   └── notificationService.js   # Push notifications
-│   │   ├── middleware/        # Auth, RBAC, rate limiting
-│   │   ├── config/            # Email, DB, logger
-│   │   └── utils/             # Helpers, encryption
-│   ├── schema.sql             # Database schema
-│   ├── test_email_alert.js    # Email testing script
-│   ├── test_sms.js           # SMS testing script
+│   │   ├── middleware/        # Auth, Validation, Security
+│   │   ├── models/            # Data models
+│   │   ├── routes/            # API Route definitions
+│   │   ├── services/          # Business logic (Alerts, Email, Payment)
+│   │   ├── utils/             # Helper functions
+│   │   ├── validators/        # Zod/Express validators
+│   │   └── index.js           # Entry point
 │   ├── package.json
 │   └── Dockerfile
 │
-├── frontend/                   # React App
+├── frontend/
 │   ├── src/
-│   │   ├── app/               # Pages and layouts
-│   │   │   ├── pages/
-│   │   │   │   ├── SignInPage.tsx
-│   │   │   │   └── admin/     # Admin dashboard pages
-│   │   │   │       └── MessagesPage.jsx
-│   │   ├── features/          # Feature modules
-│   │   │   ├── auth/          # Authentication
-│   │   │   ├── health/        # Health monitoring
-│   │   │   └── admin/         # Admin features
-│   │   ├── shared/            # Shared components
-│   │   └── core/              # API client, config
-│   ├── nginx.conf             # Nginx proxy config
+│   │   ├── app/               # App routing and pages
+│   │   ├── features/          # Feature-based modules (Auth, Admin, Vitals)
+│   │   ├── shared/            # Reusable UI components
+│   │   ├── services/          # API services
+│   │   ├── context/           # React Context (Auth, Theme)
+│   │   └── main.tsx           # Entry point
+│   ├── nginx.conf             # Nginx configuration
 │   ├── package.json
 │   └── Dockerfile
 │
 ├── docker-compose.yml         # Container orchestration
-├── README.md                  # This file
-└── .env                       # Environment variables
+└── README.md                  # This file
 ```
-
----
-
-## 📚 API Documentation
-
-## 📚 API Documentation
-
-### Authentication & Access
-*   **POST** `/v1/auth/register` - Create account
-*   **POST** `/v1/auth/login` - Login (Returns JWT + Refresh Token)
-*   **POST** `/v1/auth/logout` - Logout
-*   **GET** `/v1/auth/profile` - Get current user profile
-
-### Consulting & Leads
-*   **POST** `/v1/leads/consulting` - Submit consulting project inquiry
-
-### Multi-Channel
-*   **POST** `/v1/whatsapp/send` - Send WhatsApp notification (Protected)
-*   **GET** `/v1/whatsapp/webhook` - Webhook verification
-*   **POST** `/v1/whatsapp/webhook` - Receive incoming messages
-
-### Admin & Monitoring (Admin Only)
-*   **GET** `/v1/admin/stats` - Main Dashboard statistics
-*   **GET** `/v1/admin/metrics` - **[NEW]** Prometheus Performance Metrics
-*   **GET** `/v1/admin/users` - List all users with RBAC
-*   **GET** `/v1/admin/logs` - detailed system audit logs
-
-### Emergency Alerts (Protected)
-*   **POST** `/v1/alerts/trigger` - Trigger emergency alert (SOS/Fall)
-*   **GET** `/v1/alerts/active` - Get active alerts
-*   **PUT** `/v1/alerts/:id/resolve` - Resolve an alert
 
 ---
 
 ## 🧪 Testing
 
-### Test Email System
-```bash
-# Sends a test emergency alert email
-docker exec arohan-backend node /app/test_email_alert.js
+The backend includes comprehensive test suites using **Vitest** and **Playwright**.
 
-# View the sent email at:
-# https://ethereal.email/messages
-# Login: g5sqk4lva5kkhkzs@ethereal.email / xcgDwhT8E5MvxTJASd
+### Running Tests in Docker
+You can run tests directly inside the running backend container:
+
+```bash
+# Unit & Integration Tests (Vitest)
+docker exec arohan-backend npm test
+
+# Load Testing
+docker exec arohan-backend npm run test:load
 ```
 
-### Test SMS System
-```bash
-# Replace +919876543210 with YOUR verified Twilio phone number
-docker exec -e TEST_PHONE_NUMBER=+919876543210 arohan-backend node /app/test_sms.js
-
-# You should receive an SMS within seconds
-```
-
-### Test Emergency Alert Flow
-```bash
-# Use Postman or curl to trigger an alert
-curl -X POST http://localhost:8080/v1/alerts/trigger \
-  -H "Authorization: Bearer YOUR_JWT_TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "manual_sos",
-    "location": {
-      "lat": 12.9716,
-      "lng": 77.5946
-    }
-  }'
-
-# Check Ethereal inbox for email AND your phone for SMS
-```
-
-### Manual Testing Checklist
-- [ ] Admin login with `admin@arohanhealth.com` / `Admin123!`
-- [ ] Navigate to `/admin` - should work without errors
-- [ ] Submit contact form - check admin Messages page
-- [ ] Trigger emergency alert - verify email + SMS received
-- [ ] Check Ethereal inbox - verify HTML formatting
-- [ ] Verify SMS received on verified phone number
-- [ ] Test CSV export from Messages page
-- [ ] Check admin dashboard statistics
+### Manual Verification
+1.  **Trigger SOS**: Log in as Patient -> Click CLI SOS -> Check MailHog ([http://localhost:8025](http://localhost:8025)) for the alert email.
+2.  **API Docs**: Visit `/api-docs` (if enabled) or use Postman collection.
 
 ---
 
 ## 🚀 Production Deployment
 
-### 1. Environment Variables
+### 1. Security Checklist
+-   [ ] **Change Secrets**: Update `JWT_SECRET`, `DB_PASSWORD` in `.env`.
+-   [ ] **HTTPS**: Configure SSL in Nginx or external load balancer.
+-   [ ] **Disable MailHog**: Remove MailHog service from production `docker-compose.yml`.
+-   [ ] **Environment**: Set `NODE_ENV=production`.
 
-**Critical Changes Required:**
+### 2. Environment Variables (.env)
+Create a production `.env` file with real credentials:
 
-```yaml
-# In docker-compose.yml or backend/.env
-
-# Database (use strong password)
-DB_PASSWORD: <generate-secure-password>
-
-# JWT (generate random 64-char string)
-JWT_SECRET: <generate-random-secret>
-
-# Email - Replace with production SMTP
-SMTP_HOST: smtp.gmail.com  # or smtp.sendgrid.net
-SMTP_PORT: 587
-SMTP_USER: <your-production-email>
-SMTP_PASSWORD: <gmail-app-password or sendgrid-api-key>
-ADMIN_EMAIL: info@haspranahealth.com
-
-# SMS - Update if needed
-TWILIO_ACCOUNT_SID: <your-twilio-account-sid>
-TWILIO_AUTH_TOKEN: <your-twilio-auth-token>
-TWILIO_PHONE_NUMBER: <your-twilio-number>
-
-# Security
-NODE_ENV: production
-ALLOWED_ORIGINS: https://yourdomain.com
+```ini
+NODE_ENV=production
+PORT=5000
+DB_HOST=mysql
+DB_USER=root
+DB_PASSWORD=strong_password
+DB_NAME=arohan_health_db
+JWT_SECRET=complex_random_string
+SMTP_HOST=smtp.sendgrid.net
+SMTP_USER=apikey
+SMTP_PASS=your_sendgrid_key
+TWILIO_SID=your_sid
+TWILIO_TOKEN=your_token
+APP_URL=https://yourdomain.com
 ```
-
-### 2. Security Hardening
-
-- [ ] Change admin password from `Admin123!`
-- [ ] Enable HTTPS (SSL/TLS certificates)
-- [ ] Set up firewall rules
-- [ ] Configure rate limiting (already enabled)
-- [ ] Enable database backups
-- [ ] Set up monitoring and alerts
-- [ ] Review and rotate secret keys monthly
-
-### 3. Email Service Upgrade
-
-**Option A: Gmail**
-- Generate App Password: https://myaccount.google.com/apppasswords
-- Cost: Free (500 emails/day limit)
-- See: `gmail_smtp_setup.md`
-
-**Option B: SendGrid** (Recommended)
-- Sign up: https://sendgrid.com/
-- Free tier: 100 emails/day
-- Better deliverability than Gmail
-
-**Option C: AWS SES**
-- Cost: $0.10 per 1,000 emails
-- Best for high-volume production
-
-### 4. SMS Service Upgrade
-
-- [ ] Upgrade Twilio account from trial
-- [ ] Set spending limits in Twilio Console
-- [ ] Buy local phone numbers for each market
-- [ ] Enable Twilio webhook signatures
-- [ ] Monitor SMS delivery logs
-
-### 5. Monitoring
-
-**Backend Logs:**
-```bash
-docker logs arohan-backend -f
-```
-
-**Database Connection:**
-```bash
-docker exec -it arohan-db psql -U postgres -d arohan_health_db
-```
-
-**Email Delivery:** Check SMTP provider dashboard
-
-**SMS Delivery:** https://console.twilio.com/monitor/logs/sms
 
 ---
 
-## 📞 Support
+## 🔐 Default Credentials
 
-**Company:** Arohan Health / Hasprana Health  
-**Email:** info@haspranahealth.com  
-**Website:** haspranahealth.com
+| Role | Email | Password | Access |
+|------|-------|----------|--------|
+| **Admin** | `admin@arohanhealth.com` | `Admin123!` | Full System Access |
+| **Doctor** | `doctor@arohanhealth.com` | `Doctor123!` | Patient Data, Alerts |
+| **Hospital** | `hospital@arohanhealth.com` | `Hospital123!` | Staff, Bed Management |
+| **Patient** | `patient@test.com` | `Patient123!` | Personal Vitals, SOS |
+
+---
+
+## ❓ Troubleshooting
+
+### Backend Fails to Start
+-   **Check Logs**: `docker logs arohan-backend`
+-   **Database**: Ensure MySQL is healthy (`docker ps`). The backend waits for it.
+-   **Permissions**: If you see `EACCES` errors, ensure the Dockerfile user has permissions (already handled in default setup).
+
+### Frontend Not Updating
+-   **Browser Cache**: Hard refresh (Ctrl+F5).
+-   **Rebuild**: `docker compose up -d --build frontend` to force a re-compile.
+
+### Email Not Received
+-   **Dev Mode**: Check MailHog at http://localhost:8025. Emails are trapped there by default.
+-   **Prod Mode**: Check SMTP credentials in `.env`.
 
 ---
 
 ## 📄 License
-
-Proprietary - All Rights Reserved
-
+Proprietary - All Rights Reserved © 2026 Arohan Health

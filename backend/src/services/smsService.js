@@ -17,15 +17,16 @@ class SMSService {
         this.recentSMS = new Map(); // Track SMS sending times
 
         // Initialize Twilio client
-        if (this.accountSid && this.authToken) {
+        if (this.accountSid && this.accountSid.startsWith('AC') && this.authToken) {
             this.client = twilio(this.accountSid, this.authToken);
             logger.info('Twilio SMS Service initialized', {
                 phoneNumber: this.phoneNumber,
                 rateLimitPerMinute: this.rateLimitPerMinute
             });
         } else {
-            logger.warn('Twilio credentials not configured. SMS will not be sent.');
+            logger.warn('Twilio credentials not configured. Switching to MOCK SMS mode.');
             this.client = null;
+            this.mockMode = true;
         }
     }
 
@@ -105,7 +106,20 @@ class SMSService {
     async sendSMS({ to, message, emergency = false }) {
         try {
             // Check if Twilio is configured
+            // Check if Twilio is configured
             if (!this.client) {
+                if (this.mockMode) {
+                    logger.info('MOCK SMS SENT', {
+                        to: this.maskPhoneNumber(to),
+                        message
+                    });
+                    return {
+                        success: true,
+                        sid: 'mock_sid_' + Date.now(),
+                        status: 'sent'
+                    };
+                }
+
                 logger.warn('SMS not sent - Twilio not configured', {
                     to: this.maskPhoneNumber(to)
                 });

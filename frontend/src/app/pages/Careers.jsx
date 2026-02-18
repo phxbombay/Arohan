@@ -59,7 +59,7 @@ export function Careers() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'common.white', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'common.white', display: 'flex', flexDirection: 'column' }}>
             {/* Hero Section */}
             <Box component="section" sx={{
                 position: 'relative',

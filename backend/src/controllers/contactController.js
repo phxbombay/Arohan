@@ -1,6 +1,7 @@
 import pool from '../config/db.js';
 import logger from '../config/logger.js';
 import xss from 'xss';
+import crypto from 'crypto';
 import { encrypt } from '../utils/encryption.js';
 import { sendContactFormNotification } from '../config/email.js';
 
@@ -37,17 +38,18 @@ export const submitContactForm = async (req, res, next) => {
         // Encrypt sensitive data
         const encryptedPhone = encrypt(phone);
         const encryptedMessage = encrypt(sanitizedMessage);
+        const id = crypto.randomUUID();
+        const created_at = new Date();
 
         const query = `
-            INSERT INTO contact_messages (name, email, phone, message)
-            VALUES ($1, $2, $3, $4)
-            RETURNING id, created_at
+            INSERT INTO contact_messages (id, name, email, phone, message, created_at)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
 
-        const result = await pool.query(query, [sanitizedName, sanitizedEmail, encryptedPhone || null, encryptedMessage]);
+        await pool.query(query, [id, sanitizedName, sanitizedEmail, encryptedPhone || null, encryptedMessage, created_at]);
 
         logger.info('Contact message received', {
-            messageId: result.rows[0].id,
+            messageId: id,
             email: email
         });
 
@@ -60,18 +62,18 @@ export const submitContactForm = async (req, res, next) => {
         }).then(emailResult => {
             if (emailResult.success) {
                 logger.info('Contact form email notification sent', {
-                    messageId: result.rows[0].id,
+                    messageId: id,
                     emailMessageId: emailResult.messageId
                 });
             } else {
                 logger.warn('Failed to send contact form email notification', {
-                    messageId: result.rows[0].id,
+                    messageId: id,
                     error: emailResult.error
                 });
             }
         }).catch(err => {
             logger.error('Email notification error', {
-                messageId: result.rows[0].id,
+                messageId: id,
                 error: err.message
             });
         });
@@ -80,8 +82,8 @@ export const submitContactForm = async (req, res, next) => {
             status: 'success',
             message: 'Your message has been sent successfully. We will contact you shortly.',
             data: {
-                id: result.rows[0].id,
-                created_at: result.rows[0].created_at
+                id,
+                created_at
             }
         });
     } catch (err) {

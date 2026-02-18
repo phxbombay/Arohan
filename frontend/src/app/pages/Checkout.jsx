@@ -40,7 +40,7 @@ export function Checkout() {
 
     if (amount <= 0) {
         return (
-            <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 8 }}>
+            <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 8 }}>
                 <Container maxWidth="sm">
                     <Paper sx={{ p: 4, textAlign: 'center' }}>
                         <Typography variant="h5" fontWeight="bold" gutterBottom>
@@ -62,7 +62,7 @@ export function Checkout() {
     }
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 8 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 8 }}>
             <Container>
                 {/* Back Button */}
                 <Button

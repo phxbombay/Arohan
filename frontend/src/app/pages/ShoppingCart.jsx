@@ -95,7 +95,7 @@ export function ShoppingCart() {
     const total = subtotal + shipping + tax;
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 6 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 6 }}>
             <Container>
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
                     <ShoppingBagIcon color="error" fontSize="large" />

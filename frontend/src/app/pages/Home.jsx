@@ -55,7 +55,7 @@ export function Home() {
     const [selectedImage, setSelectedImage] = useState(null);
 
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
             <SEO
                 title="AI-Powered Emergency Prevention & First Aid"
                 description="A discreet wearable plugin chip and intelligent app that assists in health monitoring and emergency detection, providing alerts to families and guidance for first responders."

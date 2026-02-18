@@ -101,7 +101,17 @@ export function Header() {
                 {navLinks.map((link) => (
                   <NavButton key={link.path} name={link.name} path={link.path} />
                 ))}
-                {isAuthenticated && <NavButton name="Dashboard" path="/dashboard" />}
+                {isAuthenticated && (
+                  <NavButton
+                    name={
+                      user?.role === 'admin' ? 'Admin Panel' :
+                        user?.role === 'physician' ? 'Physician Panel' :
+                          user?.role === 'hospital_admin' ? 'Hospital Panel' :
+                            'Dashboard'
+                    }
+                    path="/dashboard"
+                  />
+                )}
               </Box>
             )}
 
@@ -121,7 +131,7 @@ export function Header() {
                 isAuthenticated ? (
                   <Stack direction="row" spacing={1}>
                     <Button variant="outlined" component={Link} to="/dashboard" color="inherit" sx={{ borderRadius: 8, textTransform: 'none', fontWeight: 600 }}>
-                      {user?.full_name || 'Dashboard'}
+                      {user?.role === 'admin' ? 'System Admin' : user?.full_name || 'Dashboard'}
                     </Button>
                     <Button
                       onClick={() => {

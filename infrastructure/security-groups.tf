@@ -6,7 +6,7 @@ provider "aws" {
 resource "aws_security_group" "backend_sg" {
   name        = "arohan-backend-sg"
   description = "Security group for Arohan Backend API"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.default.id
 
   # Allow inbound from ALB only
   ingress {
@@ -39,7 +39,7 @@ resource "aws_security_group" "backend_sg" {
 resource "aws_security_group" "alb_sg" {
   name        = "arohan-alb-sg"
   description = "Security group for Load Balancer"
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
     description = "HTTPS from World"
@@ -69,13 +69,13 @@ resource "aws_security_group" "alb_sg" {
 # Database Security Group
 resource "aws_security_group" "db_sg" {
   name        = "arohan-db-sg"
-  description = "Security group for PostgreSQL RDS"
-  vpc_id      = var.vpc_id
+  description = "Security group for Database (MySQL)"
+  vpc_id      = data.aws_vpc.default.id
 
   ingress {
-    description     = "PostgreSQL from Backend"
-    from_port       = 5432
-    to_port         = 5432
+    description     = "MySQL from Backend"
+    from_port       = 3306
+    to_port         = 3306
     protocol        = "tcp"
     security_groups = [aws_security_group.backend_sg.id]
   }

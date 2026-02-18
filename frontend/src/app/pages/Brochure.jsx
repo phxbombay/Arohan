@@ -7,11 +7,11 @@ import { ImageWithFallback } from '../components/common/ImageWithFallback';
 
 export function Brochure() {
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', fontFamily: 'sans-serif', color: 'text.primary' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', fontFamily: 'sans-serif', color: 'text.primary' }}>
             {/* PANEL 1: Front Cover (Hero) */}
             <Box component="section" sx={{
                 position: 'relative',
-                minHeight: '100vh',
+                minHeight: '100dvh',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',

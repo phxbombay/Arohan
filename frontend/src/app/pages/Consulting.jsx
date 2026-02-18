@@ -276,7 +276,7 @@ export function Consulting() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50' }}>
             <SEO
                 title="Consulting & Development Services"
                 description="Professional web development, mobile app development, healthcare IT consulting, AI/ML integration, and cloud infrastructure services. Expert team delivering cutting-edge technology solutions."

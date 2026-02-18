@@ -43,7 +43,10 @@ export interface AuthResponse {
     full_name: string;
     email: string;
     role: UserRole;
-    accessToken: string;
+    accessToken?: string;
+    refreshToken?: string;
+    message?: string;
+    unverified?: boolean; // For login errors
 }
 
 /**
@@ -57,8 +60,10 @@ export interface AuthState {
     error: string | null;
 
     // Actions
-    login: (credentials: LoginCredentials) => Promise<void>;
-    register: (data: RegisterData) => Promise<void>;
+    login: (credentials: LoginCredentials) => Promise<void | { unverified: boolean; user_id: string; email: string }>;
+    register: (data: RegisterData) => Promise<AuthResponse>;
+    verifyOTP: (user_id: string, otp_code: string) => Promise<void>;
+    resendOTP: (user_id: string) => Promise<void>;
     logout: () => void;
     clearError: () => void;
     setUser: (user: User) => void;

@@ -42,7 +42,7 @@ export function Products() {
     const navigate = useNavigate();
     const location = useLocation();
     const addToCart = useCartStore((state) => state.addToCart);
-    const { isAuthenticated } = useAuth();
+    const { user, isAuthenticated } = useAuth();
 
     // Product data
     const arohanDevice = {
@@ -56,31 +56,15 @@ export function Products() {
     // Add to cart handler
     const handleAddToCart = async () => {
         // Enforce Authentication
-        if (!isAuthenticated) {
+        if (!isAuthenticated || !user?.user_id) {
             toast.error('Please login to add items to your cart');
             navigate('/signin', { state: { from: location.pathname } });
             return;
         }
 
         try {
-            // Get current cart from localStorage
-            const existingCart = JSON.parse(localStorage.getItem('arohan-cart') || '[]');
-
-            // Check if product already in cart
-            const existingItemIndex = existingCart.findIndex(item => item.id === arohanDevice.id);
-
-            if (existingItemIndex >= 0) {
-                // Increment quantity
-                existingCart[existingItemIndex].quantity += 1;
-                toast.success('Quantity updated in cart!');
-            } else {
-                // Add new item
-                existingCart.push({ ...arohanDevice, quantity: 1 });
-                toast.success('Arohan device added to cart!');
-            }
-
-            // Save to localStorage
-            localStorage.setItem('arohan-cart', JSON.stringify(existingCart));
+            await addToCart(arohanDevice, user.user_id);
+            toast.success('Arohan device added to cart!');
 
             // Navigate to cart
             navigate('/cart');
@@ -100,13 +84,12 @@ export function Products() {
     const specifications = [
         { label: 'Setup Time', value: 'will be updated soon' },
         { label: 'Detection Accuracy', value: 'will be updated soon' },
-        { label: 'Response Time', value: 'will be updated soon' },
+        { label: 'Alert Speed', value: 'will be updated soon' },
         { label: 'Battery Life', value: 'will be updated soon' },
         { label: 'Sensors', value: 'will be updated soon' },
         { label: 'Connectivity', value: 'will be updated soon' },
         { label: 'Water Resistance', value: 'will be updated soon' },
-        { label: 'Weight', value: 'will be updated soon' },
-        { label: 'Compatibility', value: 'iOS & Android' }
+        { label: 'Weight', value: 'will be updated soon' }
     ];
 
     const testimonials = [
@@ -132,7 +115,7 @@ export function Products() {
     ];
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50' }}>
             <StructuredData schema={generateProductSchema()} />
             <StructuredData schema={generateBreadcrumbSchema(breadcrumbs)} />
             <SEO

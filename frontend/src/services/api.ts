@@ -52,7 +52,8 @@ api.interceptors.response.use(
 
             } catch (refreshError) {
                 // Refresh failed - logout user
-                useAuthStore.getState().logout();
+                console.error('Refresh failed', refreshError);
+                // useAuthStore.getState().logout(); // DISABLE AUTO LOGOUT FOR DEBUGGING
                 return Promise.reject(refreshError);
             }
         }

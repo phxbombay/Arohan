@@ -107,14 +107,14 @@ export function HowItWorks() {
     ];
 
     const specs = [
-        { feature: 'Setup Time', value: '5 minutes (one-time)' },
-        { feature: 'Detection Accuracy', value: '98% falls, 95% cardiac' },
-        { feature: 'Alert Speed', value: '< 10 seconds' },
-        { feature: 'Battery Life', value: '72 hours continuous' },
-        { feature: 'Sensors', value: 'ECG, Accelerometer, Gyroscope, Temp' },
-        { feature: 'Connectivity', value: 'Bluetooth, WiFi, LTE (optional)' },
-        { feature: 'Water Resistance', value: 'IP68 (splash/sweat proof)' },
-        { feature: 'Weight', value: '28 grams (ultra-light)' }
+        { feature: 'Setup Time', value: 'will be updated soon' },
+        { feature: 'Detection Accuracy', value: 'will be updated soon' },
+        { feature: 'Alert Speed', value: 'will be updated soon' },
+        { feature: 'Battery Life', value: 'will be updated soon' },
+        { feature: 'Sensors', value: 'will be updated soon' },
+        { feature: 'Connectivity', value: 'will be updated soon' },
+        { feature: 'Water Resistance', value: 'will be updated soon' },
+        { feature: 'Weight', value: 'will be updated soon' }
     ];
 
     const breadcrumbs = [
@@ -126,7 +126,7 @@ export function HowItWorks() {
         <Box>
             <Helmet>
                 <title>How Arohan Works - AI-Powered Emergency Detection System</title>
-                <meta name="description" content="Learn how Arohan's AI-powered wearable detects falls and cardiac emergencies in real-time, sending instant alerts to family and emergency services. Setup in 5 minutes." />
+                <meta name="description" content="Learn how Arohan's AI-powered wearable detects falls and cardiac emergencies in real-time, sending instant alerts to family and emergency services. Setup is quick and easy." />
                 <meta property="og:title" content="How Arohan Works - Emergency Detection Explained" />
                 <meta property="og:description" content="6-step setup process. 98% fall detection accuracy. Instant alerts to family." />
             </Helmet>
@@ -139,7 +139,7 @@ export function HowItWorks() {
                         How Arohan Works
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9, mb: 2, fontWeight: 500 }}>
-                        From setup to life-saving alerts in 5 simple steps
+                        From setup to life-saving alerts in simple steps
                     </Typography>
                     <Chip
                         label="⚠️ PRODUCT DEVELOPMENT IS STILL UNDERWAY"
@@ -153,7 +153,7 @@ export function HowItWorks() {
                         }}
                     />
                     <Stack direction="row" spacing={2} justifyContent="center">
-                        <Chip label="5-Minute Setup" sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 'bold', fontSize: '1rem', py: 2 }} />
+                        <Chip label="Quick Setup" sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 'bold', fontSize: '1rem', py: 2 }} />
                         <Chip label="No Training Required" sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 'bold', fontSize: '1rem', py: 2 }} />
                     </Stack>
                 </Container>
@@ -284,7 +284,7 @@ export function HowItWorks() {
                         Ready to Get Started?
                     </Typography>
                     <Typography variant="h6" sx={{ opacity: 0.9, mb: 5 }}>
-                        Setup takes 5 minutes. Protection lasts a lifetime.
+                        Setup is quick. Protection lasts a lifetime.
                     </Typography>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                         <Button

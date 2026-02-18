@@ -89,9 +89,9 @@ router.get('/health/live', (req, res) => {
 async function getDatabaseMetrics() {
     try {
         const poolStats = {
-            totalCount: pool.totalCount,
-            idleCount: pool.idleCount,
-            waitingCount: pool.waitingCount,
+            totalCount: pool._allConnections ? pool._allConnections.length : 0,
+            idleCount: pool._freeConnections ? pool._freeConnections.length : 0,
+            waitingCount: pool._connectionQueue ? pool._connectionQueue.length : 0,
         };
 
         // Test query performance

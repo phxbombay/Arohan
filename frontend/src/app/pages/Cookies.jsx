@@ -4,7 +4,7 @@ import { Box, Container, Typography, Paper, Grid, Card, CardContent } from '@mui
 
 export function Cookies() {
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 8 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 8 }}>
             <Container>
                 <Paper elevation={3} sx={{ overflow: 'hidden', borderRadius: 2 }}>
                     <Box sx={{ bgcolor: 'error.main', px: 4, py: 3, display: 'flex', alignItems: 'center', gap: 2 }}>

@@ -240,7 +240,7 @@ export function FAQ() {
     const categories = ['All', ...faqCategories.map(c => c.category)];
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 10, px: 2 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 10, px: 2 }}>
             <Container>
                 {/* Header */}
                 <Box sx={{ textAlign: 'center', mb: 8 }}>

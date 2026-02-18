@@ -32,7 +32,7 @@ export function PartnerHospitals() {
     const filteredHospitals = hospitals.filter(h => h.name.toLowerCase().includes(search.toLowerCase()) || h.location.toLowerCase().includes(search.toLowerCase()));
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 10 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 10 }}>
             <Container>
                 <Box sx={{ textAlign: 'center', mb: 8 }}>
                     <Typography variant="h3" fontWeight="bold" color="primary.main" gutterBottom>Partner Hospitals</Typography>

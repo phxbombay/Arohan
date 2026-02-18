@@ -18,7 +18,7 @@ import {
 
 export function Doctors() {
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
             {/* Hero */}
             <Box sx={{ bgcolor: 'grey.900', color: 'common.white', py: 12 }}>
                 <Container sx={{ textAlign: 'center' }}>

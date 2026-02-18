@@ -5,25 +5,25 @@ import logger from '../config/logger.js';
  * Execute a database transaction
  * Automatically handles BEGIN, COMMIT, and ROLLBACK
  * 
- * @param {Function} callback - Async function that receives the client
+ * @param {Function} callback - Async function that receives the connection
  * @returns {Promise<any>} - Result from the callback
  * @throws {Error} - Throws error if transaction fails
  */
 export const executeTransaction = async (callback) => {
-    const client = await pool.connect();
+    const connection = await pool.getConnection();
 
     try {
-        await client.query('BEGIN');
+        await connection.beginTransaction();
 
-        const result = await callback(client);
+        const result = await callback(connection);
 
-        await client.query('COMMIT');
+        await connection.commit();
 
         logger.info('Transaction committed successfully');
 
         return result;
     } catch (error) {
-        await client.query('ROLLBACK');
+        await connection.rollback();
 
         logger.error('Transaction rolled back', {
             error: error.message,
@@ -32,14 +32,14 @@ export const executeTransaction = async (callback) => {
 
         throw error;
     } finally {
-        client.release();
+        connection.release();
     }
 };
 
 /**
- * Execute a query within a transaction client
- * Convenience wrapper for client.query
+ * Execute a query within a transaction connection
+ * Convenience wrapper for connection.query
  */
-export const transactionQuery = async (client, query, params) => {
-    return await client.query(query, params);
+export const transactionQuery = async (connection, query, params) => {
+    return await connection.query(query, params);
 };

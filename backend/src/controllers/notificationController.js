@@ -6,7 +6,7 @@ export const subscribe = async (req, res, next) => {
         const { subscription } = req.body;
         const userAgent = req.headers['user-agent'];
 
-        await notificationService.subscribe(req.user.id, subscription, userAgent);
+        await notificationService.subscribe(req.user.user_id, subscription, userAgent);
 
         res.status(201).json({ message: 'Subscribed to notifications' });
     } catch (error) {
@@ -19,7 +19,7 @@ export const sendTestNotification = async (req, res, next) => {
         const { userId, title, body } = req.body;
 
         // Only allow admins or self
-        if (req.user.role !== 'admin' && req.user.id !== userId) {
+        if (req.user.role !== 'admin' && req.user.user_id !== userId) {
             return res.status(403).json({ error: 'Unauthorized' });
         }
 

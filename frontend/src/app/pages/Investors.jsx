@@ -3,7 +3,7 @@ import { Box, Button, Card, CardContent, Container, Grid, Typography, Stack, Chi
 
 export function Investors() {
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'common.white' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'common.white' }}>
             {/* Hero */}
             <Box component="section" sx={{
                 background: 'linear-gradient(to right, #dc2626, #b91c1c)', // from-red-600 to-red-700

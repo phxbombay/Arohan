@@ -20,7 +20,7 @@ import { Link } from 'react-router-dom';
 
 export function Services() {
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ bgcolor: 'primary.dark', color: 'common.white', py: 10, textAlign: 'center' }}>
                 <Container>
                     <Typography variant="h3" fontWeight="bold" gutterBottom>Our Services</Typography>

@@ -21,7 +21,7 @@ import { Circle as CircleIcon } from '@mui/icons-material';
 
 export function Corporate() {
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
             <Box sx={{ py: 10, bgcolor: 'background.paper' }}>
                 <Container>
                     <Grid container spacing={8} alignItems="center">

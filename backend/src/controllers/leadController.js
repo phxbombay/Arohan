@@ -1,6 +1,7 @@
 import pool from '../config/db.js';
 import logger from '../config/logger.js';
 import xss from 'xss';
+import crypto from 'crypto';
 
 /**
  * Handle Early Access form submission
@@ -25,13 +26,14 @@ export const submitEarlyAccess = async (req, res, next) => {
         const sanitizedCity = xss(city || '');
         const sanitizedUseCase = xss(useCase || '');
 
+        const leadId = crypto.randomUUID();
         const query = `
-            INSERT INTO early_access_leads (name, email, phone, city, use_case)
-            VALUES ($1, $2, $3, $4, $5)
-            RETURNING id, created_at
+            INSERT INTO early_access_leads (id, name, email, phone, city, use_case)
+            VALUES (?, ?, ?, ?, ?, ?)
         `;
 
-        const result = await pool.query(query, [
+        await pool.query(query, [
+            leadId,
             sanitizedName,
             sanitizedEmail,
             sanitizedPhone,
@@ -40,7 +42,7 @@ export const submitEarlyAccess = async (req, res, next) => {
         ]);
 
         logger.info('Early Access lead captured', {
-            leadId: result.rows[0].id,
+            leadId,
             email: sanitizedEmail
         });
 
@@ -48,7 +50,7 @@ export const submitEarlyAccess = async (req, res, next) => {
             status: 'success',
             message: 'Thank you for joining our Early Access program!',
             data: {
-                id: result.rows[0].id
+                id: leadId
             }
         });
 
@@ -68,16 +70,16 @@ export const getAllLeads = async (req, res, next) => {
             SELECT * FROM early_access_leads
             ORDER BY created_at DESC
         `;
-        const result = await pool.query(query).catch(err => {
+        const [rows] = await pool.query(query).catch(err => {
             logger.error('Admin Leads Query Error:', err);
-            return { rows: [] };
+            return [[]];
         });
 
         res.status(200).json({
             status: 'success',
-            results: result.rows.length,
+            results: rows.length,
             data: {
-                leads: result.rows
+                leads: rows
             }
         });
     } catch (err) {

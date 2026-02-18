@@ -26,7 +26,9 @@ import {
 import { useTheme, alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 // @ts-ignore
+// @ts-ignore
 import api from '../../services/api';
+import { safeDate } from '../../utils/date-utils';
 
 const INITIAL_MESSAGES = [
     {
@@ -217,14 +219,14 @@ export function Chatbot() {
                         elevation={0}
                         sx={{
                             ...clayContainer,
-                            width: { xs: 'calc(100vw - 48px)', sm: 380 },
+                            width: { xs: 'calc(100vw - 40px)', sm: 340 },
                             height: 'auto',
-                            maxHeight: 'calc(100vh - 120px)',
+                            maxHeight: '75vh',
                             display: 'flex',
                             flexDirection: 'column',
                             overflow: 'hidden',
                             position: 'absolute',
-                            bottom: 150,
+                            bottom: 84,
                             right: 0,
                             transformOrigin: 'bottom right'
                         }}
@@ -270,13 +272,13 @@ export function Chatbot() {
                         {/* Messages Area */}
                         <Box sx={{
                             flex: 1,
-                            p: 2,
+                            p: 1.5,
                             overflowY: 'auto',
                             bgcolor: 'transparent',
                             display: 'flex',
                             flexDirection: 'column',
-                            gap: 2,
-                            minHeight: 300
+                            gap: 1.5,
+                            minHeight: 250
                         }}>
                             {connectionError && (
                                 <Box sx={{ textAlign: 'center', my: 2 }}>
@@ -297,7 +299,7 @@ export function Chatbot() {
                                     <Paper
                                         elevation={0}
                                         sx={{
-                                            p: 2,
+                                            p: 1.5,
                                             borderRadius: 3,
                                             position: 'relative',
                                             bgcolor: msg.sender === 'user' ? 'primary.main' : 'white',
@@ -340,7 +342,7 @@ export function Chatbot() {
                                         </Stack>
                                     )}
                                     <Typography variant="caption" sx={{ ml: 1, mt: 0.5, opacity: 0.6, fontSize: '0.7rem' }}>
-                                        {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                                        {safeDate(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </Typography>
                                 </Box>
                             ))}
@@ -403,7 +405,7 @@ export function Chatbot() {
                         )}
 
                         {/* Input Area */}
-                        <Box sx={{ p: 2, bgcolor: alpha('#ffffff', 0.6), borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}` }}>
+                        <Box sx={{ p: 1.5, bgcolor: alpha('#ffffff', 0.6), borderTop: `1px solid ${alpha(theme.palette.divider, 0.1)}` }}>
                             <Stack direction="row" spacing={1.5}>
                                 <TextField
                                     fullWidth

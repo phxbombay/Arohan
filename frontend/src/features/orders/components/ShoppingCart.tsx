@@ -105,7 +105,7 @@ export function ShoppingCart() {
     }
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 6 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 6 }}>
             <Container>
                 <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
                     <ShoppingBagIcon color="error" fontSize="large" />
@@ -137,7 +137,7 @@ export function ShoppingCart() {
                     // Cart with Items
                     <Grid container spacing={4}>
                         {/* Cart Items */}
-                        <Grid item xs={12} md={8}>
+                        <Grid size={{ xs: 12, md: 8 }}>
                             <Stack spacing={2}>
                                 {cart.map((item) => (
                                     <Card key={item.id} sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -202,7 +202,7 @@ export function ShoppingCart() {
                         </Grid>
 
                         {/* Order Summary */}
-                        <Grid item xs={12} md={4}>
+                        <Grid size={{ xs: 12, md: 4 }}>
                             <Card>
                                 <CardContent>
                                     <Typography variant="h6" fontWeight="bold" gutterBottom>

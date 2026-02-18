@@ -210,7 +210,7 @@ export function NearbyHospitals() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 10 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 10 }}>
             <Container maxWidth="xl">
                 {/* Header */}
                 <Box sx={{ textAlign: 'center', mb: 8 }}>

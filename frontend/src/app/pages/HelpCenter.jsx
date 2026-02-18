@@ -111,7 +111,7 @@ export function HelpCenter() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50' }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50' }}>
             {/* Hero */}
             <Box sx={{ background: 'linear-gradient(to right, #7b1fa2, #9c27b0)', color: 'common.white', py: 10, px: 2, textAlign: 'center' }}>
                 <Container>

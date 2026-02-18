@@ -1,28 +1,39 @@
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 import pool from './src/config/db.js';
 import logger from './src/config/logger.js';
+
+// Helper to generate UUID
+const generateUUID = () => {
+    return crypto.randomUUID();
+};
 
 const seedAdmin = async () => {
     try {
         const email = 'admin@arohan.com';
         const password = 'admin123';
         const hashedPassword = await bcrypt.hash(password, 10);
+        
+        console.log('🚀 Starting Database Seed...');
 
         // 1. Ensure Admin Exists
-        const check = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+        // MySQL uses ? for placeholders, not $1
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
         let userId;
 
-        if (check.rows.length > 0) {
+        if (rows.length > 0) {
             console.log('✅ Admin already exists. Updating password to ensure access...');
-            await pool.query('UPDATE users SET password_hash = $1 WHERE email = $2', [hashedPassword, email]);
-            userId = check.rows[0].user_id;
+            await pool.query('UPDATE users SET password_hash = ? WHERE email = ?', [hashedPassword, email]);
+            userId = rows[0].user_id;
         } else {
+            userId = generateUUID();
             const query = `
-                INSERT INTO users (full_name, email, password_hash, role, is_active)
-                VALUES ($1, $2, $3, $4, $5)
-                RETURNING user_id
+                INSERT INTO users (user_id, full_name, email, password_hash, role, is_active)
+                VALUES (?, ?, ?, ?, ?, ?)
             `;
-            const result = await pool.query(query, [
+            // MySQL2 returns [result, fields]
+            await pool.query(query, [
+                userId,
                 'System Admin',
                 email,
                 hashedPassword,
@@ -30,86 +41,97 @@ const seedAdmin = async () => {
                 true
             ]);
             console.log('✅ Admin user created successfully');
-            userId = result.rows[0].user_id;
         }
 
         // VERIFY IMMEDIATE LOGIN
         console.log('🔐 Verifying admin login capability...');
-        const verifyUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        const savedHash = verifyUser.rows[0].password_hash;
+        const [verifyRows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (verifyRows.length === 0) {
+             throw new Error('Admin user not found after creation!');
+        }
+        
+        const savedHash = verifyRows[0].password_hash;
         const isMatch = await bcrypt.compare(password, savedHash);
         console.log(`🔑 Password 'admin123' match check: ${isMatch ? 'PASSED ✅' : 'FAILED ❌'}`);
+        
         if (!isMatch) {
             console.log('⚠️ Hash mismatch! Re-hashing...');
             const newHash = await bcrypt.hash(password, 10);
-            await pool.query('UPDATE users SET password_hash = $1 WHERE email = $2', [newHash, email]);
+            await pool.query('UPDATE users SET password_hash = ? WHERE email = ?', [newHash, email]);
             console.log('🔄 Password forcibly updated.');
         }
 
-        // 2. Seed Early Access Leads (Fixes "Failed to load leads")
-        const leadCheck = await pool.query('SELECT COUNT(*) FROM early_access_leads');
-        if (parseInt(leadCheck.rows[0].count) === 0) {
+        // 2. Seed Early Access Leads
+        const [leadCountRows] = await pool.query('SELECT COUNT(*) as count FROM early_access_leads');
+        if (leadCountRows[0].count === 0) {
             console.log('🌱 Seeding sample leads...');
+            const leadId1 = generateUUID();
+            const leadId2 = generateUUID();
+            
             await pool.query(`
-                INSERT INTO early_access_leads (name, email, phone, city, use_case, status)
+                INSERT INTO early_access_leads (id, name, email, phone, city, use_case, status)
                 VALUES 
-                ('John Lead', 'lead@test.com', '9876543210', 'Bangalore', 'Elderly care at home', 'new'),
-                ('Dr. Smith', 'clinic@hospital.com', '9876543211', 'Mumbai', 'Remote patient monitoring', 'contacted')
-            `);
+                (?, 'John Lead', 'lead@test.com', '9876543210', 'Bangalore', 'Elderly care at home', 'new'),
+                (?, 'Dr. Smith', 'clinic@hospital.com', '9876543211', 'Mumbai', 'Remote patient monitoring', 'contacted')
+            `, [leadId1, leadId2]);
             console.log('✅ Sample leads seeded');
         } else {
             console.log('ℹ️ Leads already exist, skipping seed.');
         }
 
-        // 3. Seed Orders (Fixes "Failed to load orders")
-        const orderCheck = await pool.query('SELECT COUNT(*) FROM orders');
-        if (parseInt(orderCheck.rows[0].count) === 0) {
+        // 3. Seed Orders
+        const [orderCountRows] = await pool.query('SELECT COUNT(*) as count FROM orders');
+        if (orderCountRows[0].count === 0) {
             console.log('📦 Seeding sample orders...');
-            // Need a user for orders, use admin
             await pool.query(`
                 INSERT INTO orders (order_id, user_id, amount, currency, status, receipt)
                 VALUES 
-                ('order_sample_01', $1, 499900, 'INR', 'paid', 'rcpt_001'),
-                ('order_sample_02', $1, 249900, 'INR', 'created', 'rcpt_002')
-            `, [userId]);
+                ('order_sample_01', ?, 499900, 'INR', 'paid', 'rcpt_001'),
+                ('order_sample_02', ?, 249900, 'INR', 'created', 'rcpt_002')
+            `, [userId, userId]);
             console.log('✅ Sample orders seeded');
         } else {
             console.log('ℹ️ Orders already exist, skipping seed.');
         }
 
-        // 4. Create & Seed Contact Messages (Fixes "Failed to load messages")
+        // 4. Create & Seed Contact Messages
+        // Ensure table exists (schema.sql should handle this, but good to be safe if running standalone)
         await pool.query(`
             CREATE TABLE IF NOT EXISTS contact_messages (
-                id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+                id VARCHAR(36) PRIMARY KEY,
                 name VARCHAR(100) NOT NULL,
                 email VARCHAR(255) NOT NULL,
-                phone VARCHAR(255),
+                phone VARCHAR(20),
                 message TEXT NOT NULL,
-                created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+                status VARCHAR(20) DEFAULT 'unread',
+                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             );
         `);
 
-        const messageCheck = await pool.query('SELECT COUNT(*) FROM contact_messages');
-        if (parseInt(messageCheck.rows[0].count) === 0) {
+        const [msgCountRows] = await pool.query('SELECT COUNT(*) as count FROM contact_messages');
+        if (msgCountRows[0].count === 0) {
             console.log('💬 Seeding sample messages...');
+            const msgId = generateUUID();
             await pool.query(`
-                INSERT INTO contact_messages (name, email, message)
-                VALUES ('Alice Visitor', 'alice@example.com', 'Interested in bulk ordering.')
-            `);
+                INSERT INTO contact_messages (id, name, email, message)
+                VALUES (?, 'Alice Visitor', 'alice@example.com', 'Interested in bulk ordering.')
+            `, [msgId]);
             console.log('✅ Sample messages seeded');
         }
 
-        // 5. Seed Audit Logs (Fixes "System Audit Logs" empty)
-        const logCheck = await pool.query('SELECT COUNT(*) FROM audit_logs');
-        if (parseInt(logCheck.rows[0].count) === 0) {
+        // 5. Seed Audit Logs
+        const [logCountRows] = await pool.query('SELECT COUNT(*) as count FROM audit_logs');
+        if (logCountRows[0].count === 0) {
             console.log('📋 Seeding sample audit logs...');
+            const logId = generateUUID();
             await pool.query(`
-                INSERT INTO audit_logs (actor_user_id, action, target_record_id, ip_address, user_agent)
-                VALUES ($1, 'LOGIN_SUCCESS', $1, '127.0.0.1', 'Mozilla/5.0')
-             `, [userId]);
+                INSERT INTO audit_logs (log_id, actor_user_id, action, target_record_id, ip_address, user_agent)
+                VALUES (?, ?, 'LOGIN_SUCCESS', ?, '127.0.0.1', 'Mozilla/5.0')
+             `, [logId, userId, userId]);
             console.log('✅ Sample audit logs seeded');
         }
 
+        console.log('✨ Seed completed successfully!');
         process.exit(0);
     } catch (error) {
         console.error('❌ Error seeding admin:', error);

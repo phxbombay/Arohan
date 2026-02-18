@@ -3,6 +3,7 @@ const router = express.Router();
 import HealthDataGenerator from '../services/healthDataGenerator.js';
 import HealthAnalyzer from '../services/healthAnalyzer.js';
 import pool from '../config/db.js';
+import crypto from 'crypto';
 
 // In-memory store for generators (kept for performance)
 const userHealthData = new Map();
@@ -23,7 +24,7 @@ router.post('/simulate/start', async (req, res) => {
         const generator = new HealthDataGenerator(userId, userProfile);
 
         // Store generator for this user
-        if (!userHealthData.has(userId)) {
+        if (!userHealthData.get(userId)) {
             userHealthData.set(userId, {
                 generator,
                 snapshots: [],
@@ -74,16 +75,17 @@ router.get('/snapshot/:userId', async (req, res) => {
             userData.snapshots.shift();
         }
 
+        const id = crypto.randomUUID();
+
         // Persist to database
         try {
             await pool.query(
-                `INSERT INTO health_simulations (user_id, snapshot_data, analysis_data)
-                 VALUES ($1, $2, $3)`,
-                [userId, JSON.stringify(snapshot), JSON.stringify(analysis)]
+                `INSERT INTO health_simulations (id, user_id, snapshot_data, analysis_data)
+                 VALUES (?, ?, ?, ?)`,
+                [id, userId, JSON.stringify(snapshot), JSON.stringify(analysis)]
             );
         } catch (dbError) {
             console.error('Failed to persist health snapshot:', dbError);
-            // Continue even if DB save fails - data is still in memory
         }
 
         res.json({

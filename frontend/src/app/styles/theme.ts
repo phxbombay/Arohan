@@ -42,6 +42,10 @@ const theme = createTheme({
                     height: '100%',
                     margin: 0,
                     padding: 0,
+                    paddingTop: 'env(safe-area-inset-top)',
+                    paddingBottom: 'env(safe-area-inset-bottom)',
+                    paddingLeft: 'env(safe-area-inset-left)',
+                    paddingRight: 'env(safe-area-inset-right)',
                     overflowX: 'hidden', // Prevent horizontal scroll
                 },
                 '#root': {

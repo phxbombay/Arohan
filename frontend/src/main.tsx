@@ -4,17 +4,21 @@ import App from "./app/App.tsx";
 // import "./styles/global.css";
 
 import { LocationProvider } from "./context/LocationContext";
+import { SocketProvider } from "./context/SocketContext";
 import { initGA } from './utils/analytics';
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+// Service Worker DISABLED — was caching stale content and causing iOS white screen
+// import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 // Initialize Google Analytics 4
 initGA();
 
-// Register Service Worker for PWA
-serviceWorkerRegistration.register();
+// Service Worker DISABLED — was the root cause of iOS white screen (stale cache)
+// serviceWorkerRegistration.register();
 
 createRoot(document.getElementById("root")!).render(
     <LocationProvider>
-        <App />
+        <SocketProvider>
+            <App />
+        </SocketProvider>
     </LocationProvider>
 );

@@ -24,7 +24,11 @@ export const registerSchema = z.object({
         .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
         .regex(/[0-9]/, 'Password must contain at least one number'),
 
-    role: z.enum(['patient', 'doctor', 'admin']).optional().default('patient')
+    phone_number: z.string()
+        .regex(/^\+?[\d\s-]{10,15}$/, 'Phone number must be valid (10-15 digits)')
+        .trim(),
+
+    role: z.enum(['patient', 'doctor', 'admin', 'physician', 'hospital_admin', 'partner']).optional().default('patient')
 });
 
 export const loginSchema = z.object({
@@ -149,6 +153,11 @@ export const validate = (schema) => {
             // Validate and transform the request body
             const validated = schema.parse(req.body);
 
+            // Log validated data (masking password)
+            const safeValidated = { ...validated };
+            if (safeValidated.password) safeValidated.password = `[HIDDEN, length=${safeValidated.password.length}]`;
+            // console.log('✅ Validation Success:', JSON.stringify(safeValidated));
+
             // Replace req.body with validated & transformed data
             req.body = validated;
 
@@ -160,6 +169,13 @@ export const validate = (schema) => {
                     field: err.path.join('.'),
                     message: err.message
                 }));
+
+                // Mask sensitive data before logging
+                const safeBody = { ...req.body };
+                if (safeBody.password) safeBody.password = '******';
+
+                console.error('⚠️ Validation Error:', JSON.stringify(errors, null, 2));
+                console.error('⚠️ Request Body:', JSON.stringify(safeBody, null, 2));
 
                 next(new ValidationError('Validation failed', errors));
             } else {

@@ -5,7 +5,7 @@ import { Footer } from './Footer';
 
 export function Layout() {
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100dvh' }}>
             <Header />
             <Box component="main" sx={{ flex: 1 }}>
                 <Outlet />

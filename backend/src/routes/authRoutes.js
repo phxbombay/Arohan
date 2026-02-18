@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerUser, loginUser, refreshToken, logoutUser } from '../controllers/authController.js';
+import { registerUser, loginUser, refreshToken, logoutUser, verifyOTP, resendOTP } from '../controllers/authController.js';
 import { validate, registerSchema, loginSchema } from '../validators/schemas.js';
 import { authLimiter } from '../middleware/rateLimiter.js';
 import { setupTwoFactor, verifyTwoFactor, validateTwoFactor } from '../controllers/twoFactorController.js';
@@ -62,6 +62,8 @@ const router = express.Router();
  *               $ref: '#/components/schemas/Error'
  */
 router.post('/register', authLimiter, validate(registerSchema), registerUser);
+router.post('/verify-otp', authLimiter, verifyOTP);
+router.post('/resend-otp', authLimiter, resendOTP);
 
 /**
  * @swagger

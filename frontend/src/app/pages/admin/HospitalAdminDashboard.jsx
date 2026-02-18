@@ -70,7 +70,7 @@ export function HospitalAdminDashboard() {
     if (loading) return <LinearProgress />;
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 4 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 4 }}>
             <Container maxWidth="xl">
                 <Box sx={{ mb: 4 }}>
                     <Typography variant="h4" fontWeight="bold" gutterBottom>
@@ -113,9 +113,20 @@ export function HospitalAdminDashboard() {
                     <Grid item xs={12} md={4}>
                         <DashboardWidget title="Recent Critical Alerts">
                             <Stack spacing={2}>
-                                {[1, 2, 3].map((i) => (
-                                    <Alert key={i} severity="error" variant="outlined">
-                                        Patient #{100 + i}: High Heart Rate detected in ICU
+                                {[
+                                    { id: 101, patient: 'John Doe', issue: 'High Heart Rate detected in ICU', time: '10m ago' },
+                                    { id: 105, patient: 'Sarah Connor', issue: 'Low Oxygen saturation level', time: '25m ago' },
+                                    { id: 110, patient: 'Mike Ross', issue: 'Abnormal BP detected', time: '1h ago' }
+                                ].map((alert) => (
+                                    <Alert
+                                        key={alert.id}
+                                        severity="error"
+                                        variant="outlined"
+                                        sx={{ borderRadius: 2, bgcolor: 'error.50' }}
+                                    >
+                                        <Typography variant="subtitle2" fontWeight="bold">{alert.patient} (#{alert.id})</Typography>
+                                        <Typography variant="body2">{alert.issue}</Typography>
+                                        <Typography variant="caption" color="text.secondary">{alert.time}</Typography>
                                     </Alert>
                                 ))}
                             </Stack>

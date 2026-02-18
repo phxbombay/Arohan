@@ -40,11 +40,11 @@ const Services = lazy(() => import("./pages/Services").then(module => ({ default
 const PartnerHospitals = lazy(() => import("./pages/PartnerHospitals").then(module => ({ default: module.PartnerHospitals })));
 const NearbyHospitals = lazy(() => import("./pages/NearbyHospitals").then(module => ({ default: module.NearbyHospitals })));
 const HelpCenter = lazy(() => import("./pages/HelpCenter").then(module => ({ default: module.HelpCenter })));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard").then(module => ({ default: module.AdminDashboard })));
-const HospitalAdminDashboard = lazy(() => import("./pages/admin/HospitalAdminDashboard").then(module => ({ default: module.HospitalAdminDashboard })));
-const PhysicianDashboard = lazy(() => import("./pages/physician/PhysicianDashboard").then(module => ({ default: module.PhysicianDashboard })));
-const PatientDashboard = lazy(() => import("./pages/patient/PatientDashboard").then(module => ({ default: module.PatientDashboard })));
-const UsersPage = lazy(() => import("./pages/admin/UsersPage").then(module => ({ default: module.UsersPage })));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard.jsx").then(module => ({ default: module.AdminDashboard })));
+const HospitalAdminDashboard = lazy(() => import("./pages/admin/HospitalAdminDashboard.jsx").then(module => ({ default: module.HospitalAdminDashboard })));
+const PhysicianDashboard = lazy(() => import("./pages/physician/PhysicianDashboard.jsx").then(module => ({ default: module.PhysicianDashboard })));
+const PatientDashboard = lazy(() => import("./pages/patient/PatientDashboard.jsx").then(module => ({ default: module.PatientDashboard })));
+const UsersPage = lazy(() => import("./pages/admin/UsersPage.jsx").then(module => ({ default: module.UsersPage })));
 // ... imports
 
 // ... routes
@@ -104,7 +104,7 @@ export default function App() {
         <Router>
           <ScrollToTop />
           <Toaster position="top-right" richColors />
-          <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
             <Header />
             <main style={{ flex: 1 }}>
               <Suspense fallback={<LoadingFallback />}>

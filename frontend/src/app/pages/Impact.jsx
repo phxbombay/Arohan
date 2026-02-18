@@ -30,7 +30,7 @@ export function Impact() {
     ];
 
     return (
-        <Box sx={{ minHeight: '100vh' }}>
+        <Box sx={{ minHeight: '100dvh' }}>
             {/* Hero Section */}
             <Box sx={{ py: 12, bgcolor: 'grey.50' }}>
                 <Container>

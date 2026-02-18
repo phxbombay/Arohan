@@ -20,7 +20,7 @@ export const auditLog = async (action, resource, metadata = {}) => {
 
         await pool.query(
             `INSERT INTO audit_logs (actor_user_id, action, target_record_id, ip_address, user_agent, timestamp)
-       VALUES ($1, $2, $3, $4, $5, NOW())`,
+       VALUES (?, ?, ?, ?, ?, NOW())`,
             [userId, action, targetId, ipAddress, userAgent]
         );
 

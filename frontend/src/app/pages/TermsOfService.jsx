@@ -2,7 +2,7 @@ import { Box, Container, Typography, Paper, Divider } from '@mui/material';
 
 export function TermsOfService() {
     return (
-        <Box sx={{ py: 12, bgcolor: 'grey.50', minHeight: '100vh' }}>
+        <Box sx={{ py: 12, bgcolor: 'grey.50', minHeight: '100dvh' }}>
             <Container maxWidth="md">
                 <Paper elevation={0} sx={{ p: { xs: 4, md: 8 }, borderRadius: 3 }}>
                     <Typography variant="h3" fontWeight="bold" gutterBottom>

@@ -14,9 +14,9 @@ export const setupTwoFactor = async (req, res, next) => {
             name: `ArohanHealth (${req.user.email})`,
         });
 
-        // Store temp secret in DB (or memory - here we store but not enable yet)
+        // Store temp secret in DB
         await pool.query(
-            'UPDATE users SET two_factor_secret = $1 WHERE user_id = $2',
+            'UPDATE users SET two_factor_secret = ? WHERE user_id = ?',
             [secret.base32, userId]
         );
 
@@ -37,16 +37,16 @@ export const verifyTwoFactor = async (req, res, next) => {
         const { token } = req.body;
         const userId = req.user.user_id;
 
-        const result = await pool.query(
-            'SELECT two_factor_secret FROM users WHERE user_id = $1',
+        const [rows] = await pool.query(
+            'SELECT two_factor_secret FROM users WHERE user_id = ?',
             [userId]
         );
 
-        if (result.rows.length === 0) {
+        if (rows.length === 0) {
             throw new AppError('User not found', 404);
         }
 
-        const { two_factor_secret } = result.rows[0];
+        const { two_factor_secret } = rows[0];
 
         const verified = speakeasy.totp.verify({
             secret: two_factor_secret,
@@ -57,7 +57,7 @@ export const verifyTwoFactor = async (req, res, next) => {
         if (verified) {
             // Enable 2FA
             await pool.query(
-                'UPDATE users SET two_factor_enabled = TRUE WHERE user_id = $1',
+                'UPDATE users SET two_factor_enabled = TRUE WHERE user_id = ?',
                 [userId]
             );
 
@@ -74,25 +74,21 @@ export const verifyTwoFactor = async (req, res, next) => {
 
 export const validateTwoFactor = async (req, res, next) => {
     try {
-        const { token, userId } = req.body; // userId provided if coming from login flow intermediate step
-
-        // In a real login flow, userId would come from a temporary session or signed partial token
-        // For simplicity here, we assume standard auth middleware might be skipped or handle this
-        // This controller method is usually for the /auth/2fa/verify endpoint during login
+        const { token, userId } = req.body;
 
         let targetUserId = userId;
         if (req.user) targetUserId = req.user.user_id;
 
-        const result = await pool.query(
-            'SELECT two_factor_secret FROM users WHERE user_id = $1',
+        const [rows] = await pool.query(
+            'SELECT two_factor_secret FROM users WHERE user_id = ?',
             [targetUserId]
         );
 
-        if (result.rows.length === 0) {
+        if (rows.length === 0) {
             throw new AppError('User not found', 404);
         }
 
-        const { two_factor_secret } = result.rows[0];
+        const { two_factor_secret } = rows[0];
 
         const verified = speakeasy.totp.verify({
             secret: two_factor_secret,
@@ -101,7 +97,6 @@ export const validateTwoFactor = async (req, res, next) => {
         });
 
         if (verified) {
-            // If this was part of login, we would issue the full JWT here
             res.json({ verified: true });
         } else {
             throw new AppError('Invalid token', 400);

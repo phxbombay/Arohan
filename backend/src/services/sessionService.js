@@ -34,12 +34,13 @@ export const createSession = async (userId, refreshToken, deviceInfo = {}) => {
     try {
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 7); // 7 days
+        const session_id = crypto.randomUUID();
 
-        const { rows } = await pool.query(
-            `INSERT INTO user_sessions (user_id, refresh_token, device_info, ip_address, user_agent, expires_at)
-             VALUES ($1, $2, $3, $4, $5, $6)
-             RETURNING session_id`,
+        await pool.query(
+            `INSERT INTO user_sessions (session_id, user_id, refresh_token, device_info, ip_address, user_agent, expires_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
             [
+                session_id,
                 userId,
                 refreshToken,
                 JSON.stringify(deviceInfo),
@@ -49,8 +50,8 @@ export const createSession = async (userId, refreshToken, deviceInfo = {}) => {
             ]
         );
 
-        logger.info('Session created', { userId, sessionId: rows[0].session_id });
-        return rows[0].session_id;
+        logger.info('Session created', { userId, sessionId: session_id });
+        return session_id;
     } catch (error) {
         logger.error('Failed to create session', { error: error.message, userId });
         throw error;
@@ -73,10 +74,10 @@ export const refreshAccessToken = async (refreshToken) => {
         }
 
         // Check if session exists and is active
-        const { rows } = await pool.query(
+        const [rows] = await pool.query(
             `SELECT user_id, expires_at, is_active 
              FROM user_sessions 
-             WHERE refresh_token = $1`,
+             WHERE refresh_token = ?`,
             [refreshToken]
         );
 
@@ -103,7 +104,7 @@ export const refreshAccessToken = async (refreshToken) => {
 
         // Update session activity
         await pool.query(
-            'UPDATE user_sessions SET last_activity = NOW() WHERE refresh_token = $1',
+            'UPDATE user_sessions SET last_activity = NOW() WHERE refresh_token = ?',
             [refreshToken]
         );
 
@@ -122,7 +123,7 @@ export const refreshAccessToken = async (refreshToken) => {
 export const revokeSession = async (refreshToken) => {
     try {
         await pool.query(
-            'UPDATE user_sessions SET is_active = false WHERE refresh_token = $1',
+            'UPDATE user_sessions SET is_active = false WHERE refresh_token = ?',
             [refreshToken]
         );
 
@@ -139,7 +140,7 @@ export const revokeSession = async (refreshToken) => {
 export const revokeAllSessions = async (userId) => {
     try {
         await pool.query(
-            'UPDATE user_sessions SET is_active = false WHERE user_id = $1',
+            'UPDATE user_sessions SET is_active = false WHERE user_id = ?',
             [userId]
         );
 
@@ -155,10 +156,10 @@ export const revokeAllSessions = async (userId) => {
  */
 export const getUserSessions = async (userId) => {
     try {
-        const { rows } = await pool.query(
+        const [rows] = await pool.query(
             `SELECT session_id, device_info, ip_address, created_at, last_activity, expires_at
              FROM user_sessions
-             WHERE user_id = $1 AND is_active = true AND expires_at > NOW()
+             WHERE user_id = ? AND is_active = true AND expires_at > NOW()
              ORDER BY last_activity DESC`,
             [userId]
         );
@@ -181,7 +182,7 @@ export const createPasswordResetToken = async (userId) => {
 
         await pool.query(
             `INSERT INTO password_reset_tokens (user_id, token, expires_at)
-             VALUES ($1, $2, $3)`,
+             VALUES (?, ?, ?)`,
             [userId, token, expiresAt]
         );
 
@@ -198,10 +199,10 @@ export const createPasswordResetToken = async (userId) => {
  */
 export const verifyPasswordResetToken = async (token) => {
     try {
-        const { rows } = await pool.query(
+        const [rows] = await pool.query(
             `SELECT user_id, expires_at, used
              FROM password_reset_tokens
-             WHERE token = $1`,
+             WHERE token = ?`,
             [token]
         );
 
@@ -232,7 +233,7 @@ export const verifyPasswordResetToken = async (token) => {
 export const markTokenAsUsed = async (token) => {
     try {
         await pool.query(
-            'UPDATE password_reset_tokens SET used = true WHERE token = $1',
+            'UPDATE password_reset_tokens SET used = true WHERE token = ?',
             [token]
         );
 
@@ -248,15 +249,17 @@ export const markTokenAsUsed = async (token) => {
  */
 export const cleanupExpired = async () => {
     try {
-        const { rowCount: sessionsDeleted } = await pool.query(
+        const [result1] = await pool.query(
             'DELETE FROM user_sessions WHERE expires_at < NOW()'
         );
-
-        const { rowCount: tokensDeleted } = await pool.query(
+        const [result2] = await pool.query(
             'DELETE FROM password_reset_tokens WHERE expires_at < NOW() OR used = true'
         );
 
-        logger.info('Cleanup completed', { sessionsDeleted, tokensDeleted });
+        logger.info('Cleanup completed', {
+            sessionsDeleted: result1.affectedRows,
+            tokensDeleted: result2.affectedRows
+        });
     } catch (error) {
         logger.error('Cleanup failed', { error: error.message });
     }

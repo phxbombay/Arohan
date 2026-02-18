@@ -20,7 +20,7 @@ export const createOrder = async (req, res) => {
 
     try {
         const options = {
-            amount: amount * 100, // Razorpay works in paise
+            amount: Math.round(amount * 100), // Razorpay works in paise
             currency,
             receipt: receipt_id || `rcpt_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
         };
@@ -29,7 +29,7 @@ export const createOrder = async (req, res) => {
 
         // Store order intent in DB
         await pool.query(
-            'INSERT INTO orders (order_id, user_id, amount, currency, receipt, status) VALUES ($1, $2, $3, $4, $5, $6)',
+            'INSERT INTO orders (order_id, user_id, amount, currency, receipt, status) VALUES (?, ?, ?, ?, ?, ?)',
             [order.id, userId, order.amount, order.currency, order.receipt, 'created']
         );
 
@@ -53,37 +53,35 @@ export const verifyPayment = async (req, res) => {
         .digest('hex');
 
     if (expectedSignature === razorpay_signature) {
-        const client = await pool.connect();
+        let connection;
 
         try {
-            await client.query('BEGIN');
+            connection = await pool.getConnection();
+            await connection.beginTransaction();
 
             // 1. Update Order Status
-            await client.query(
-                'UPDATE orders SET status = $1 WHERE order_id = $2',
+            await connection.query(
+                'UPDATE orders SET status = ? WHERE order_id = ?',
                 ['paid', razorpay_order_id]
             );
 
-            // 2. Fetch Payment Details from Razorpay (Optional but recommended for fee info)
-            // const paymentDetails = await razorpay.payments.fetch(razorpay_payment_id);
-
-            // 3. Insert Payment Record
-            await client.query(
+            // 2. Insert Payment Record
+            await connection.query(
                 `INSERT INTO payments (payment_id, order_id, signature, amount, method, status) 
-                 VALUES ($1, $2, $3, $4, $5, 'success')`,
-                [razorpay_payment_id, razorpay_order_id, razorpay_signature, 0, 'unknown'] // Placeholder amount/method, ideally fetch from RP
-             );
+                 VALUES (?, ?, ?, ?, ?, 'success')`,
+                [razorpay_payment_id, razorpay_order_id, razorpay_signature, 0, 'unknown']
+            );
 
-             await client.query('COMMIT');
+            await connection.commit();
 
-             res.json({ message: 'Payment verified successfully', paymentId: razorpay_payment_id });
+            res.json({ message: 'Payment verified successfully', paymentId: razorpay_payment_id });
 
         } catch (error) {
-            await client.query('ROLLBACK');
+            if (connection) await connection.rollback();
             console.error('Payment Verification DB Error:', error);
             res.status(500).json({ message: 'Internal Server Error during verification' });
         } finally {
-            client.release();
+            if (connection) connection.release();
         }
     } else {
         res.status(400).json({ message: 'Invalid signature' });
@@ -103,33 +101,35 @@ export const handleWebhook = async (req, res) => {
         const event = req.body;
         const { id: eventId, event: eventType, payload } = event;
 
-        // Idempotency Check
-        const existingLog = await pool.query('SELECT 1 FROM webhook_logs WHERE event_id = $1', [eventId]);
-        if (existingLog.rows.length > 0) {
-            console.log(`Webhook ${eventId} already processed.`);
-            return res.json({ status: 'ok', message: 'Already processed' });
-        }
+        try {
+            // Idempotency Check
+            const [existingLog] = await pool.query('SELECT 1 FROM webhook_logs WHERE event_id = ?', [eventId]);
+            if (existingLog.length > 0) {
+                console.log(`Webhook ${eventId} already processed.`);
+                return res.json({ status: 'ok', message: 'Already processed' });
+            }
 
-        // Log the event
-        await pool.query(
-            'INSERT INTO webhook_logs (event_id, event_type, payload) VALUES ($1, $2, $3)',
-            [eventId, eventType, JSON.stringify(payload)]
-        );
-
-        if (eventType === 'payment.captured') {
-            const payment = payload.payment.entity;
-            const orderId = payment.order_id;
-
-            // Full fulfillment logic here (e.g. email receipt, enable subscription)
-            // Note: verifyPayment endpoint usually handles the immediate UI success.
-            // This is for backend robustness.
-             await pool.query(
-                'UPDATE orders SET status = $1 WHERE order_id = $2',
-                ['paid', orderId]
+            // Log the event
+            await pool.query(
+                'INSERT INTO webhook_logs (event_id, event_type, payload) VALUES (?, ?, ?)',
+                [eventId, eventType, JSON.stringify(payload)]
             );
-        }
 
-        res.json({ status: 'ok' });
+            if (eventType === 'payment.captured') {
+                const payment = payload.payment.entity;
+                const orderId = payment.order_id;
+
+                await pool.query(
+                    'UPDATE orders SET status = ? WHERE order_id = ?',
+                    ['paid', orderId]
+                );
+            }
+
+            res.json({ status: 'ok' });
+        } catch (error) {
+            console.error('Webhook processing error:', error);
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
     } else {
         res.status(400).json({ message: 'Invalid signature' });
     }

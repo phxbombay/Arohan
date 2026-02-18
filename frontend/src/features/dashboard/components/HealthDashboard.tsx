@@ -235,7 +235,7 @@ export function HealthDashboard() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', bgcolor: 'grey.50', py: 6 }}>
+        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 6 }}>
             <Container maxWidth="lg">
                 {/* Header */}
                 <Box

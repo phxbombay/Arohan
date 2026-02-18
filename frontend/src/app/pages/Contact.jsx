@@ -49,7 +49,7 @@ export function Contact() {
     };
 
     return (
-        <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
             <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', py: 10, textAlign: 'center' }}>
                 <Container>
                     <Typography variant="h3" fontWeight="bold" gutterBottom align="center">Get in Touch</Typography>
@@ -60,11 +60,8 @@ export function Contact() {
             <Box sx={{ py: 10, bgcolor: 'grey.50', flexGrow: 1 }}>
                 <Container>
                     <Grid container spacing={8}>
-                        {/* Contact Info */}
-                        import smartRingImage from '../../assets/smart_ring.png'; // Make sure to add this import at the top if not using multi_replace
-
-                        {/* Row 1: Image + Contact Info */}
-                        <Grid item xs={12} md={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {/* Row 1: Image - Centered */}
+                        <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 4 }}>
                             <Box
                                 component="img"
                                 src={smartRingImage}
@@ -81,8 +78,9 @@ export function Contact() {
                             />
                         </Grid>
 
-                        <Grid item xs={12} md={6} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'center' }}>
-                            <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 4, textAlign: 'right', width: '100%' }}>Contact Information</Typography>
+                        {/* Row 2: Contact Info - Centered */}
+                        <Grid item xs={12} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', mb: 6 }}>
+                            <Typography variant="h4" fontWeight="bold" gutterBottom sx={{ mb: 4, textAlign: 'center', width: '100%' }}>Contact Information</Typography>
                             <Stack spacing={3} sx={{ width: '100%', maxWidth: 500 }}>
                                 <Card>
                                     <CardContent sx={{ p: 2, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start', gap: 2 }}>

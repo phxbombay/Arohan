@@ -1,6 +1,7 @@
 import pool from '../config/db.js';
 import logger from '../config/logger.js';
 import bcrypt from 'bcryptjs';
+import crypto from 'crypto';
 
 /**
  * @desc    Get dashboard statistics
@@ -9,33 +10,30 @@ import bcrypt from 'bcryptjs';
  */
 export const getDashboardStats = async (req, res) => {
     try {
-        // Run queries in parallel for performance, but handle individual failures
-        const [usersCount, messagesCount, logsCount, activeUsers] = await Promise.all([
-            pool.query('SELECT COUNT(*) FROM users').catch(err => {
-                logger.error('Stats - Users Query Error:', err);
-                return { rows: [{ count: 0 }] };
-            }),
-            pool.query('SELECT COUNT(*) FROM contact_messages').catch(err => {
-                logger.error('Stats - Messages Query Error:', err);
-                return { rows: [{ count: 0 }] };
-            }),
-            pool.query('SELECT COUNT(*) FROM audit_logs').catch(err => {
-                logger.error('Stats - Logs Query Error:', err);
-                return { rows: [{ count: 0 }] };
-            }),
-            pool.query('SELECT COUNT(*) FROM users WHERE is_active = true').catch(err => {
-                logger.error('Stats - Active Users Query Error:', err);
-                return { rows: [{ count: 0 }] };
-            })
-        ]);
+        const [usersCountResult] = await pool.query('SELECT COUNT(*) AS count FROM users').catch(err => {
+            logger.error('Stats - Users Query Error:', err);
+            return [[{ count: 0 }]];
+        });
+        const [messagesCountResult] = await pool.query('SELECT COUNT(*) AS count FROM contact_messages').catch(err => {
+            logger.error('Stats - Messages Query Error:', err);
+            return [[{ count: 0 }]];
+        });
+        const [logsCountResult] = await pool.query('SELECT COUNT(*) AS count FROM audit_logs').catch(err => {
+            logger.error('Stats - Logs Query Error:', err);
+            return [[{ count: 0 }]];
+        });
+        const [activeUsersResult] = await pool.query('SELECT COUNT(*) AS count FROM users WHERE is_active = 1').catch(err => {
+            logger.error('Stats - Active Users Query Error:', err);
+            return [[{ count: 0 }]];
+        });
 
         res.json({
             status: 'success',
             data: {
-                totalUsers: parseInt(usersCount.rows[0]?.count || 0),
-                activeUsers: parseInt(activeUsers.rows[0]?.count || 0),
-                totalMessages: parseInt(messagesCount.rows[0]?.count || 0),
-                totalLogs: parseInt(logsCount.rows[0]?.count || 0),
+                totalUsers: parseInt(usersCountResult[0]?.count || 0),
+                activeUsers: parseInt(activeUsersResult[0]?.count || 0),
+                totalMessages: parseInt(messagesCountResult[0]?.count || 0),
+                totalLogs: parseInt(logsCountResult[0]?.count || 0),
                 generatedAt: new Date().toISOString()
             }
         });
@@ -56,11 +54,10 @@ export const getDashboardStats = async (req, res) => {
  */
 export const getAllUsers = async (req, res) => {
     try {
-        const result = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
+        const [rows] = await pool.query('SELECT * FROM users ORDER BY created_at DESC');
 
-        // Map to remove sensitive fields if they exist
-        const safeUsers = result.rows.map(user => {
-            const { password_hash, mfa_secret, ...safeUser } = user;
+        const safeUsers = rows.map(user => {
+            const { password_hash, mfa_secret, two_factor_secret, ...safeUser } = user;
             return safeUser;
         });
 
@@ -82,17 +79,17 @@ export const getAllUsers = async (req, res) => {
  */
 export const getAllMessages = async (req, res) => {
     try {
-        const result = await pool.query(
+        const [rows] = await pool.query(
             'SELECT * FROM contact_messages ORDER BY created_at DESC'
         ).catch(err => {
             logger.error('Admin Messages Query Error:', err);
-            return { rows: [] };
+            return [[], []];
         });
 
         res.json({
             status: 'success',
-            count: result.rows.length,
-            data: result.rows
+            count: rows.length,
+            data: rows
         });
     } catch (error) {
         logger.error('Admin Messages Global Error:', error);
@@ -112,18 +109,18 @@ export const getAllMessages = async (req, res) => {
 export const getSystemLogs = async (req, res) => {
     try {
         const limit = parseInt(req.query.limit) || 100;
-        const result = await pool.query(
-            'SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT $1',
+        const [rows] = await pool.query(
+            'SELECT * FROM audit_logs ORDER BY timestamp DESC LIMIT ?',
             [limit]
         ).catch(err => {
             logger.error('Admin Logs Query Error:', err);
-            return { rows: [] };
+            return [[], []];
         });
 
         res.json({
             status: 'success',
-            count: result.rows.length,
-            data: result.rows
+            count: rows.length,
+            data: rows
         });
     } catch (error) {
         logger.error('Admin Logs Global Error:', error);
@@ -142,17 +139,17 @@ export const getSystemLogs = async (req, res) => {
  */
 export const getAllOrders = async (req, res) => {
     try {
-        const result = await pool.query(
+        const [rows] = await pool.query(
             'SELECT * FROM orders ORDER BY created_at DESC'
         ).catch(err => {
             logger.error('Admin Orders Query Error:', err);
-            return { rows: [] };
+            return [[], []];
         });
 
         res.json({
             status: 'success',
-            count: result.rows.length,
-            data: result.rows
+            count: rows.length,
+            data: rows
         });
     } catch (error) {
         logger.error('Admin Orders Global Error:', error);
@@ -173,27 +170,25 @@ export const createUser = async (req, res) => {
     try {
         const { full_name, email, password, role, phone_number, address, date_of_birth, gender } = req.body;
 
-        // Check if user exists
-        const userExists = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (userExists.rows.length > 0) {
+        const [rows] = await pool.query('SELECT * FROM users WHERE email = ?', [email]);
+        if (rows.length > 0) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash password
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
+        const user_id = crypto.randomUUID();
+        const created_at = new Date();
 
-        // Insert user
-        const newUser = await pool.query(
-            `INSERT INTO users (full_name, email, password_hash, role, phone_number, address, date_of_birth, gender)
-             VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-             RETURNING user_id, full_name, email, role, created_at`,
-            [full_name, email, hashedPassword, role, phone_number, address, date_of_birth, gender]
+        await pool.query(
+            `INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, address, date_of_birth, gender, created_at)
+             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            [user_id, full_name, email, hashedPassword, role, phone_number, address, date_of_birth, gender, created_at]
         );
 
         res.status(201).json({
             status: 'success',
-            data: newUser.rows[0]
+            data: { user_id, full_name, email, role, created_at }
         });
     } catch (error) {
         logger.error('Create User Error:', error);

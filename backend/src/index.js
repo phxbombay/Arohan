@@ -1,4 +1,6 @@
 import express from 'express';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
@@ -25,6 +27,32 @@ import { metricsMiddleware } from './middleware/metrics.js';
 dotenv.config();
 
 const app = express();
+const server = createServer(app);
+
+// Initialize Socket.IO
+const io = new Server(server, {
+    cors: {
+        origin: process.env.ALLOWED_ORIGINS
+            ? process.env.ALLOWED_ORIGINS.split(',')
+            : ['http://localhost', 'http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:8080'],
+        methods: ['GET', 'POST'],
+        credentials: true
+    }
+});
+
+// Attach io to request object
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
+
+io.on('connection', (socket) => {
+    logger.info(`Socket connected: ${socket.id}`);
+
+    socket.on('disconnect', () => {
+        logger.info(`Socket disconnected: ${socket.id}`);
+    });
+});
 
 // Trust proxy (important for rate limiting behind load balancers)
 app.set('trust proxy', 1);
@@ -136,6 +164,7 @@ import invoiceRoutes from './routes/invoiceRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import whatsappRoutes from './routes/whatsapp.js';
 import chatbotRoutes from './routes/chatbotRoutes.js';
+import physicianRoutes from './routes/physicianRoutes.js';
 
 // API Routes
 app.use('/v1/auth', authRoutes);
@@ -158,6 +187,7 @@ app.use('/v1/invoices', invoiceRoutes);
 app.use('/v1/notifications', notificationRoutes);
 app.use('/v1/whatsapp', whatsappRoutes);
 app.use('/v1/chatbot', chatbotRoutes);
+app.use('/v1/physician', physicianRoutes);
 
 // Health check endpoint (outside rate limiting)
 app.get('/health', async (req, res) => {
@@ -191,7 +221,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     logger.info(`Server started`, {
         port: PORT,
         environment: process.env.NODE_ENV || 'development'

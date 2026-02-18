@@ -63,7 +63,7 @@ export default function EarlyAccess() {
     }
 
     return (
-        <Box sx={{ py: 12, bgcolor: 'grey.50', minHeight: '100vh' }}>
+        <Box sx={{ py: 12, bgcolor: 'grey.50', minHeight: '100dvh' }}>
             <Container>
                 <Box sx={{ textAlign: 'center', mb: 6 }}>
                     <Typography variant="h2" fontWeight="bold" gutterBottom>

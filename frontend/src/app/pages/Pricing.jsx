@@ -21,15 +21,15 @@ import { CheckCircle as CheckIcon, ExpandMore as ExpandMoreIcon, Star as StarIco
 import { trackButtonClick } from '../../utils/eventTracking';
 import SEO from '../components/SEO';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-// import { useCartStore } from '../../context/cartStore'; // Removed
+import { useCartStore } from '../../context/cartStore'; // Uncommented
 import { toast } from 'sonner';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 
 export function Pricing() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { isAuthenticated } = useAuth();
-    // const addToCart = useCartStore((state) => state.addToCart);
+    const { user, isAuthenticated } = useAuth();
+    const addToCart = useCartStore((state) => state.addToCart);
 
     const handlePlanClick = (planName) => {
         if (planName === 'Basic') {
@@ -41,34 +41,24 @@ export function Pricing() {
         }
     };
 
-    const handleAddAnnualDeal = () => {
-        if (!isAuthenticated) {
+    const handleAddAnnualDeal = async () => {
+        if (!isAuthenticated || !user?.user_id) {
             toast.error('Please login to add this deal to your cart');
             navigate('/signin', { state: { from: location.pathname } });
             return;
         }
 
-        const arohanDevice = {
-            id: 'arohan-wearable-v1',
-            name: 'Arohan Smart Wearable',
-            price: 0,
-            description: 'Pre-order: AI-powered health monitoring device for elderly care',
+        const annualBundle = {
+            id: 'arohan-annual-bundle',
+            name: 'Arohan Annual Bundle',
+            price: 5000, // Assuming a price for the bundle
+            description: 'Arohan Smart Wearable + 12 Months Premium Subscription',
             image: '/images/arohan-wearable-hero.png'
         };
 
         try {
-            const existingCart = JSON.parse(localStorage.getItem('arohan-cart') || '[]');
-            const existingItemIndex = existingCart.findIndex(item => item.id === annualBundle.id);
-
-            if (existingItemIndex >= 0) {
-                existingCart[existingItemIndex].quantity += 1;
-                toast.success('Quantity updated in cart!');
-            } else {
-                existingCart.push({ ...annualBundle, quantity: 1 });
-                toast.success('Annual Bundle added to cart!');
-            }
-
-            localStorage.setItem('arohan-cart', JSON.stringify(existingCart));
+            await addToCart(annualBundle, user.user_id);
+            toast.success('Annual Bundle added to cart!');
             navigate('/cart');
         } catch (error) {
             console.error('Error adding to cart:', error);

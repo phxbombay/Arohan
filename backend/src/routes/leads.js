@@ -1,7 +1,8 @@
 import express from 'express';
 import { body, validationResult } from 'express-validator';
-import { pool } from '../config/database.js';
+import pool from '../config/db.js';
 import logger from '../config/logger.js';
+import crypto from 'crypto';
 
 const router = express.Router();
 
@@ -44,17 +45,19 @@ router.post(
                 description
             } = req.body;
 
+            const id = crypto.randomUUID();
+
             // Insert into database
             const query = `
                 INSERT INTO consulting_leads (
-                    name, email, company, phone, service_type, 
+                    id, name, email, company, phone, service_type, 
                     budget, timeline, description, status, created_at
                 )
-                VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, NOW())
-                RETURNING *
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
             `;
 
             const values = [
+                id,
                 name,
                 email,
                 company || null,
@@ -66,22 +69,19 @@ router.post(
                 'new'
             ];
 
-            const result = await pool.query(query, values);
+            await pool.query(query, values);
 
             logger.info('New consulting lead received', {
-                leadId: result.rows[0].id,
+                leadId: id,
                 email,
                 serviceType
             });
-
-            // TODO: Send email notification to admin
-            // TODO: Send confirmation email to customer
 
             res.status(201).json({
                 status: 'success',
                 message: 'Thank you for your inquiry! We will contact you within 24 hours.',
                 data: {
-                    leadId: result.rows[0].id
+                    leadId: id
                 }
             });
 
@@ -108,20 +108,20 @@ router.get('/consulting', async (req, res) => {
         const values = [];
 
         if (status) {
-            query += ' WHERE status = $1';
+            query += ' WHERE status = ?';
             values.push(status);
         }
 
-        query += ' ORDER BY created_at DESC LIMIT $' + (values.length + 1) + ' OFFSET $' + (values.length + 2);
-        values.push(limit, offset);
+        query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
+        values.push(parseInt(limit), parseInt(offset));
 
-        const result = await pool.query(query, values);
+        const [rows] = await pool.query(query, values);
 
         res.json({
             status: 'success',
             data: {
-                leads: result.rows,
-                total: result.rowCount
+                leads: rows,
+                total: rows.length
             }
         });
 
@@ -146,26 +146,27 @@ router.patch('/consulting/:id', async (req, res) => {
 
         const query = `
             UPDATE consulting_leads 
-            SET status = COALESCE($1, status),
-                notes = COALESCE($2, notes),
+            SET status = COALESCE(?, status),
+                notes = COALESCE(?, notes),
                 updated_at = NOW()
-            WHERE id = $3
-            RETURNING *
+            WHERE id = ?
         `;
 
-        const result = await pool.query(query, [status, notes, id]);
+        const [result] = await pool.query(query, [status, notes, id]);
 
-        if (result.rowCount === 0) {
+        if (result.affectedRows === 0) {
             return res.status(404).json({
                 status: 'fail',
                 message: 'Lead not found'
             });
         }
 
+        const [rows] = await pool.query('SELECT * FROM consulting_leads WHERE id = ?', [id]);
+
         res.json({
             status: 'success',
             data: {
-                lead: result.rows[0]
+                lead: rows[0]
             }
         });
 

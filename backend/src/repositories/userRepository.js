@@ -1,9 +1,18 @@
 import pool from '../config/db.js';
+import crypto from 'crypto';
 
 /**
  * User Repository - Data Access Layer
  * Handles all database operations for users
  */
+
+// Helper for Node 14 compatibility (crypto.randomUUID is Node 15.6+)
+const generateUUID = () => {
+    if (crypto.randomUUID) return crypto.randomUUID();
+    return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+    );
+};
 
 export const userRepository = {
     /**
@@ -12,11 +21,11 @@ export const userRepository = {
      * @returns {Promise<Object|null>}
      */
     async findByEmail(email) {
-        const result = await pool.query(
-            'SELECT * FROM users WHERE email = $1',
+        const [rows] = await pool.query(
+            'SELECT * FROM users WHERE email = ?',
             [email]
         );
-        return result.rows[0] || null;
+        return rows[0] || null;
     },
 
     /**
@@ -25,11 +34,11 @@ export const userRepository = {
      * @returns {Promise<Object|null>}
      */
     async findById(userId) {
-        const result = await pool.query(
-            'SELECT * FROM users WHERE user_id = $1',
+        const [rows] = await pool.query(
+            'SELECT * FROM users WHERE user_id = ?',
             [userId]
         );
-        return result.rows[0] || null;
+        return rows[0] || null;
     },
 
     /**
@@ -38,16 +47,23 @@ export const userRepository = {
      * @returns {Promise<Object>}
      */
     async create(userData) {
-        const { full_name, email, password_hash, role = 'patient' } = userData;
+        const { full_name, email, password_hash, role = 'patient', phone_number, is_active = true } = userData;
+        const user_id = generateUUID();
 
-        const result = await pool.query(
-            `INSERT INTO users (full_name, email, password_hash, role) 
-             VALUES ($1, $2, $3, $4) 
-             RETURNING user_id, full_name, email, role`,
-            [full_name, email, password_hash, role]
+        // Check if this is the FIRST user in the system
+        const [userCount] = await pool.query('SELECT COUNT(*) as count FROM users');
+        const isFirstUser = userCount[0].count === 0;
+
+        // If first user, force ADMIN role
+        const finalRole = isFirstUser ? 'admin' : (role || 'patient');
+
+        await pool.query(
+            `INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, is_active) 
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [user_id, full_name, email, password_hash, finalRole, phone_number, is_active]
         );
 
-        return result.rows[0];
+        return { user_id, full_name, email, role: finalRole };
     },
 
     /**
@@ -57,11 +73,11 @@ export const userRepository = {
      * @returns {Promise<boolean>}
      */
     async updatePassword(userId, passwordHash) {
-        const result = await pool.query(
-            'UPDATE users SET password_hash = $1 WHERE user_id = $2',
+        const [result] = await pool.query(
+            'UPDATE users SET password_hash = ? WHERE user_id = ?',
             [passwordHash, userId]
         );
-        return result.rowCount > 0;
+        return result.affectedRows > 0;
     },
 
     /**
@@ -70,11 +86,11 @@ export const userRepository = {
      * @returns {Promise<boolean>}
      */
     async emailExists(email) {
-        const result = await pool.query(
-            'SELECT 1 FROM users WHERE email = $1',
+        const [rows] = await pool.query(
+            'SELECT 1 FROM users WHERE email = ?',
             [email]
         );
-        return result.rows.length > 0;
+        return rows.length > 0;
     },
 
     /**
@@ -83,10 +99,17 @@ export const userRepository = {
      * @returns {Promise<Object|null>}
      */
     async getProfile(userId) {
-        const result = await pool.query(
-            'SELECT user_id, full_name, email, role, created_at FROM users WHERE user_id = $1',
+        const [rows] = await pool.query(
+            'SELECT user_id, full_name, email, role, created_at FROM users WHERE user_id = ?',
             [userId]
         );
-        return result.rows[0] || null;
+        return rows[0] || null;
+    },
+
+    async activateAccount(userId) {
+        await pool.query(
+            'UPDATE users SET is_active = TRUE WHERE user_id = ?',
+            [userId]
+        );
     }
 };

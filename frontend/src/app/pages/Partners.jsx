@@ -96,7 +96,7 @@ export default function Partners() {
     }
 
     return (
-        <Box sx={{ minHeight: '100vh' }}>
+        <Box sx={{ minHeight: '100dvh' }}>
             {/* Hero Section */}
             <Box sx={{ py: 12, bgcolor: 'primary.main', color: 'white' }}>
                 <Container>

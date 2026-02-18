@@ -53,5 +53,26 @@ export const authApi = {
     async getProfile(): Promise<User> {
         const { data } = await apiClient.get<User>(API_ENDPOINTS.AUTH.PROFILE);
         return data;
+    },
+
+    /**
+     * Verify Registration OTP
+     */
+    async verifyOTP(user_id: string, otp_code: string): Promise<AuthResponse> {
+        const { data } = await apiClient.post<AuthResponse>('/v1/auth/verify-otp', {
+            user_id,
+            otp_code
+        });
+        return data;
+    },
+
+    /**
+     * Resend Registration OTP
+     */
+    async resendOTP(user_id: string): Promise<{ message: string }> {
+        const { data } = await apiClient.post<{ message: string }>('/v1/auth/resend-otp', {
+            user_id
+        });
+        return data;
     }
 };

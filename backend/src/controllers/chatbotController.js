@@ -1,5 +1,6 @@
 import pool from '../config/db.js';
 import logger from '../config/logger.js';
+import crypto from 'crypto';
 
 /**
  * @desc    Create a new chat session
@@ -8,26 +9,29 @@ import logger from '../config/logger.js';
  */
 export const createChat = async (req, res) => {
     try {
-        const userId = req.user.user_id; // from protect middleware
+        const userId = req.user.user_id;
         const { title } = req.body;
+        const chat_id = crypto.randomUUID();
+        const created_at = new Date();
+        const status = 'active';
 
-        const newChat = await pool.query(
-            `INSERT INTO chats (user_id, title) 
-             VALUES ($1, $2) 
-             RETURNING chat_id, title, status, created_at`,
-            [userId, title || 'New Chat']
+        await pool.query(
+            `INSERT INTO chats (chat_id, user_id, title, status, created_at) 
+             VALUES (?, ?, ?, ?, ?)`,
+            [chat_id, userId, title || 'New Chat', status, created_at]
         );
 
         // Add initial bot greeting
+        const msg_id = crypto.randomUUID();
         await pool.query(
-            `INSERT INTO chat_messages (chat_id, sender, content)
-             VALUES ($1, 'bot', $2)`,
-            [newChat.rows[0].chat_id, "Hi! I'm Arohan's AI Assistant. How can I help you today?"]
+            `INSERT INTO chat_messages (id, chat_id, sender, content)
+             VALUES (?, ?, 'bot', ?)`,
+            [msg_id, chat_id, "Hi! I'm Arohan's AI Assistant. How can I help you today?"]
         );
 
         res.status(201).json({
             status: 'success',
-            data: newChat.rows[0]
+            data: { chat_id, title: title || 'New Chat', status, created_at }
         });
     } catch (error) {
         logger.error('Create Chat Error:', error);
@@ -45,28 +49,28 @@ export const getChatHistory = async (req, res) => {
         const { chatId } = req.params;
 
         // Verify ownership
-        const chatCheck = await pool.query(
-            'SELECT user_id FROM chats WHERE chat_id = $1',
+        const [rows] = await pool.query(
+            'SELECT user_id FROM chats WHERE chat_id = ?',
             [chatId]
         );
 
-        if (chatCheck.rows.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({ message: 'Chat not found' });
         }
 
-        if (chatCheck.rows[0].user_id !== req.user.user_id) {
+        if (rows[0].user_id !== req.user.user_id) {
             return res.status(403).json({ message: 'Not active user' });
         }
 
-        const messages = await pool.query(
-            'SELECT * FROM chat_messages WHERE chat_id = $1 ORDER BY created_at ASC',
+        const [messages] = await pool.query(
+            'SELECT * FROM chat_messages WHERE chat_id = ? ORDER BY created_at ASC',
             [chatId]
         );
 
         res.json({
             status: 'success',
-            count: messages.rows.length,
-            data: messages.rows
+            count: messages.length,
+            data: messages
         });
     } catch (error) {
         logger.error('Get Chat History Error:', error);
@@ -90,43 +94,46 @@ export const sendMessage = async (req, res) => {
         }
 
         // Verify ownership
-        const chatCheck = await pool.query(
-            'SELECT user_id FROM chats WHERE chat_id = $1',
+        const [rows] = await pool.query(
+            'SELECT user_id FROM chats WHERE chat_id = ?',
             [chatId]
         );
 
-        if (chatCheck.rows.length === 0) {
+        if (rows.length === 0) {
             return res.status(404).json({ message: 'Chat not found' });
         }
 
-        if (chatCheck.rows[0].user_id !== userId) {
+        if (rows[0].user_id !== userId) {
             return res.status(403).json({ message: 'Not allowed' });
         }
 
         // 1. Save User Message
-        const userMsg = await pool.query(
-            `INSERT INTO chat_messages (chat_id, sender, content)
-             VALUES ($1, 'user', $2)
-             RETURNING *`,
-            [chatId, text]
+        const userMsgId = crypto.randomUUID();
+        const userCreatedAt = new Date();
+        await pool.query(
+            `INSERT INTO chat_messages (id, chat_id, sender, content, created_at)
+             VALUES (?, ?, 'user', ?, ?)`,
+            [userMsgId, chatId, text, userCreatedAt]
         );
 
-        // 2. Generate Bot Response (Mock AI Logic for now - can replace with OpenAI call)
+        // 2. Generate Bot Response
         const botResponse = generateBotResponse(text);
 
         // 3. Save Bot Message
-        const botMsg = await pool.query(
-            `INSERT INTO chat_messages (chat_id, sender, content, metadata)
-             VALUES ($1, 'bot', $2, $3)
-             RETURNING *`,
-            [chatId, botResponse.text, JSON.stringify({ action: botResponse.action })]
+        const botMsgId = crypto.randomUUID();
+        const botCreatedAt = new Date();
+        const metadata = JSON.stringify({ action: botResponse.action });
+        await pool.query(
+            `INSERT INTO chat_messages (id, chat_id, sender, content, metadata, created_at)
+             VALUES (?, ?, 'bot', ?, ?, ?)`,
+            [botMsgId, chatId, botResponse.text, metadata, botCreatedAt]
         );
 
         res.status(201).json({
             status: 'success',
             data: {
-                userMessage: userMsg.rows[0],
-                botMessage: botMsg.rows[0]
+                userMessage: { id: userMsgId, chat_id: chatId, sender: 'user', content: text, created_at: userCreatedAt },
+                botMessage: { id: botMsgId, chat_id: chatId, sender: 'bot', content: botResponse.text, metadata: botResponse.action, created_at: botCreatedAt }
             }
         });
 
@@ -136,7 +143,7 @@ export const sendMessage = async (req, res) => {
     }
 };
 
-// Simple Rule-Based Logic (Moved from Frontend to Backend)
+// Simple Rule-Based Logic
 const generateBotResponse = (text) => {
     const lowerText = text.toLowerCase();
 

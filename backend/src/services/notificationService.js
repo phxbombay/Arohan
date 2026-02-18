@@ -21,23 +21,24 @@ class NotificationService {
      * Save a user's push subscription
      */
     async subscribe(userId, subscription, userAgent) {
-        const client = await pool.connect();
+        let connection;
         try {
-            await client.query('BEGIN');
+            connection = await pool.getConnection();
+            await connection.beginTransaction();
 
             const { endpoint, keys } = subscription;
 
             // Check if subscription already exists
-            const existing = await client.query(
-                'SELECT id FROM push_subscriptions WHERE user_id = $1 AND endpoint = $2',
+            const [existing] = await connection.query(
+                'SELECT id FROM push_subscriptions WHERE user_id = ? AND endpoint = ?',
                 [userId, endpoint]
             );
 
-            if (existing.rows.length === 0) {
-                await client.query(
+            if (existing.length === 0) {
+                await connection.query(
                     `INSERT INTO push_subscriptions 
                     (user_id, endpoint, p256dh, auth, user_agent) 
-                    VALUES ($1, $2, $3, $4, $5)`,
+                    VALUES (?, ?, ?, ?, ?)`,
                     [
                         userId,
                         endpoint,
@@ -48,14 +49,14 @@ class NotificationService {
                 );
             }
 
-            await client.query('COMMIT');
+            await connection.commit();
             return { subscribed: true };
         } catch (error) {
-            await client.query('ROLLBACK');
+            if (connection) await connection.rollback();
             logger.error('Error saving subscription', { error: error.message, userId });
             throw new DatabaseError('Failed to save subscription');
         } finally {
-            client.release();
+            if (connection) connection.release();
         }
     }
 
@@ -65,12 +66,11 @@ class NotificationService {
     async sendNotification(userId, payload) {
         try {
             // Get all subscriptions for user
-            const result = await pool.query(
-                'SELECT endpoint, p256dh, auth FROM push_subscriptions WHERE user_id = $1',
+            const [subscriptions] = await pool.query(
+                'SELECT endpoint, p256dh, auth FROM push_subscriptions WHERE user_id = ?',
                 [userId]
             );
 
-            const subscriptions = result.rows;
             if (subscriptions.length === 0) {
                 logger.info(`No subscriptions found for user ${userId}`);
                 return { sent: 0, failed: 0 };
@@ -108,7 +108,7 @@ class NotificationService {
 
     async removeSubscription(endpoint) {
         try {
-            await pool.query('DELETE FROM push_subscriptions WHERE endpoint = $1', [endpoint]);
+            await pool.query('DELETE FROM push_subscriptions WHERE endpoint = ?', [endpoint]);
         } catch (error) {
             logger.error('Error removing subscription', { error: error.message });
         }

@@ -20,7 +20,7 @@ export function useAsync<T = any>(
     const [state, setState] = useState<AsyncState<T>>({
         data: null,
         loading: false,
-        error: null | null,
+        error: null,
     });
 
     const execute = useCallback(

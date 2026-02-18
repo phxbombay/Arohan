@@ -1,32 +1,36 @@
-import pg from 'pg';
+import mysql from 'mysql2/promise';
 import dotenv from 'dotenv';
+import logger from './logger.js';
 
 dotenv.config();
 
-const { Pool } = pg;
+const dbConfig = {
+    host: process.env.DB_HOST || 'localhost',
+    user: process.env.DB_USER || 'root',
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+    dateStrings: true // Return dates as strings to format consistently
+};
 
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    max: parseInt(process.env.DB_POOL_MAX) || 20, // Maximum number of clients in the pool
-    idleTimeoutMillis: parseInt(process.env.DB_POOL_IDLE_TIMEOUT) || 30000, // Close idle clients after 30 seconds
-    connectionTimeoutMillis: parseInt(process.env.DB_POOL_CONNECTION_TIMEOUT) || 2000, // Return error if connection takes longer than 2 seconds
-});
+// Create the pool
+const pool = mysql.createPool(dbConfig);
 
-pool.on('connect', () => {
-    console.log('Connected to the PostgreSQL database');
-});
+// Test connection on startup
+const testConnection = async () => {
+    try {
+        const connection = await pool.getConnection();
+        const [rows] = await connection.query('SELECT NOW() as now');
+        connection.release();
+        logger.info('✅ Database connected successfully', { time: rows[0].now });
+    } catch (err) {
+        logger.error('❌ Database connection failed:', { error: err.message });
+        // Don't exit process, let it retry or fail on request
+    }
+};
 
-pool.on('error', (err) => {
-    console.error('Unexpected error on idle client', err);
-    process.exit(-1);
-});
-
-// Test connection immediately to log errors on startup
-pool.query('SELECT NOW()').catch(err => {
-    console.error("❌ Database Connection Error:", err.message);
-    if (err.code === '28P01') console.error("   -> Wrong Password for user");
-    if (err.code === '3D000') console.error("   -> Database 'arohan_health_db' does not exist");
-    if (err.code === 'ECONNREFUSED') console.error("   -> PostgreSQL not running on localhost:5432");
-});
+testConnection();
 
 export default pool;

@@ -11,10 +11,11 @@ const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST || 'smtp.gmail.com',
     port: parseInt(process.env.SMTP_PORT) || 587,
     secure: false, // true for 465, false for other ports
-    auth: {
+    secure: false, // true for 465, false for other ports
+    auth: (process.env.SMTP_USER && process.env.SMTP_PASSWORD) ? {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD
-    },
+    } : undefined,
     // Timeout settings
     connectionTimeout: 10000,
     greetingTimeout: 10000,

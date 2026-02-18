@@ -11,13 +11,32 @@ export function RoleDashboard({ children }: { children: React.ReactNode }) {
 
     console.log('🔍 RoleDashboard - Checking user role:', user?.role);
 
-    // If user is admin, redirect to admin dashboard
-    if (user?.role && user.role.toLowerCase() === 'admin') {
-        console.log('✅ Admin user detected - Redirecting to /admin');
-        return <Navigate to="/admin" replace />;
+    // Role-based redirection
+    if (user?.role) {
+        const role = user.role.toLowerCase();
+
+        if (role === 'admin') {
+            console.log('✅ Admin user detected - Redirecting to /admin');
+            return <Navigate to="/admin" replace />;
+        }
+
+        if (['physician', 'doctor'].includes(role)) {
+            console.log('✅ Physician/Doctor detected - Redirecting to /physician/dashboard');
+            return <Navigate to="/physician/dashboard" replace />;
+        }
+
+        if (role === 'hospital_admin') {
+            console.log('✅ Hospital Admin detected - Redirecting to /hospital/dashboard');
+            return <Navigate to="/hospital/dashboard" replace />;
+        }
+
+        if (role === 'patient') {
+            console.log('✅ Patient detected - Redirecting to /patient/dashboard');
+            return <Navigate to="/patient/dashboard" replace />;
+        }
     }
 
-    // Regular users see the health dashboard
-    console.log('📍 Regular user - Showing health dashboard');
+    // Default: Show children (HealthDashboard)
+    console.log('📍 Default - Showing children');
     return <>{children}</>;
 }

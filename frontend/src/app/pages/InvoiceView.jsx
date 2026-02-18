@@ -25,6 +25,7 @@ import {
     CheckCircle as CheckIcon
 } from '@mui/icons-material';
 import axios from 'axios';
+import { safeDate } from '../../utils/date-utils';
 
 export function InvoiceView() {
     const { id } = useParams();
@@ -131,7 +132,7 @@ export function InvoiceView() {
                     </Grid>
                     <Grid item xs={6} sx={{ textAlign: 'right' }}>
                         <Typography variant="body2"><strong>Invoice #:</strong> {invoice.invoiceNumber}</Typography>
-                        <Typography variant="body2"><strong>Date:</strong> {new Date(invoice.invoiceDate).toLocaleDateString()}</Typography>
+                        <Typography variant="body2"><strong>Date:</strong> {safeDate(invoice.invoiceDate).toLocaleDateString()}</Typography>
                         <Typography variant="body2"><strong>Order #:</strong> {invoice.orderNumber}</Typography>
                     </Grid>
                 </Grid>

@@ -5,7 +5,7 @@ import AntigravityQr from '../components/payment/AntigravityQr';
 
 export function PaymentDemo() {
     return (
-        <Box sx={{ bgcolor: 'grey.50', minHeight: '100vh', py: 8 }}>
+        <Box sx={{ bgcolor: 'grey.50', minHeight: '100dvh', py: 8 }}>
             <Container maxWidth="lg">
                 <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
                     New Payment Integrations

@@ -36,6 +36,7 @@ const errorHandler = (err, req, res, next) => {
     if (process.env.NODE_ENV === 'development') {
         return res.status(err.statusCode).json({
             status: err.status,
+            message: err.message, // Ensure top-level message exists
             error: {
                 name: err.name,
                 message: err.message,

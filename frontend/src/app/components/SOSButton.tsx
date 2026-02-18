@@ -11,7 +11,9 @@ import {
   Stack,
   keyframes
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSocket } from "../../context/SocketContext";
+import { toast } from 'sonner';
 
 const ripple = keyframes`
   0% {
@@ -26,6 +28,24 @@ const ripple = keyframes`
 
 export function SOSButton() {
   const [isPressed, setIsPressed] = useState(false);
+  const { socket } = useSocket();
+
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleAlertUpdate = (data: any) => {
+      console.log('Realtime Alert Update:', data);
+      if (data.status === 'dispatched') {
+        toast.success('Ambulance dispatched! ETA: ' + (data.eta || 'unknown'));
+      }
+    };
+
+    socket.on('alert:update', handleAlertUpdate);
+
+    return () => {
+      socket.off('alert:update', handleAlertUpdate);
+    };
+  }, [socket]);
 
   const handleSOSClick = () => {
     setIsPressed(true);
