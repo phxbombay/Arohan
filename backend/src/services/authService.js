@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
+import speakeasy from 'speakeasy';
 import { userRepository } from '../repositories/userRepository.js';
 import { tokenRepository } from '../repositories/tokenRepository.js';
 import { generateAccessToken, generateRefreshToken } from '../utils/generateToken.js';
@@ -72,37 +73,54 @@ export const authService = {
      * Login user
      * @param {string} email 
      * @param {string} password 
+     * @param {string} [totpToken]
      * @returns {Promise<Object>}
      */
-    async login(email, password) {
-        console.log('👉 [DEBUG] AuthService.login called with:', email);
-        logger.info('AuthService login() - Start', { email, passwordLength: password ? password.length : 0 });
+    async login(email, password, totpToken) {
+        logger.info('AuthService login attempt', { email });
 
         // Find user
         const user = await userRepository.findByEmail(email);
         if (!user) {
-            console.log('👉 [DEBUG] User not found for email:', email);
-            logger.warn('AuthService login() - User not found in DB', { email });
-            throw new AuthenticationError('Invalid email or password (User Not Found)');
+            logger.warn('AuthService login failure - User not found', { email });
+            throw new AuthenticationError('Invalid email or password');
         }
-
-        console.log('👉 [DEBUG] User found:', user.user_id, 'Hash:', user.password_hash);
-        logger.info('AuthService login() - User found', { userId: user.user_id, savedHashLength: user.password_hash ? user.password_hash.length : 0 });
 
         // Verify password
         const isValid = await bcrypt.compare(password, user.password_hash);
-        console.log('👉 [DEBUG] Password valid?:', isValid);
-        logger.info('AuthService login() - Password check', { isValid });
-
         if (!isValid) {
-            console.log('👉 [DEBUG] Password mismatch');
-            logger.warn('AuthService login() - Password mismatch');
-            throw new AuthenticationError('Invalid email or password (Password Mismatch)');
+            logger.warn('AuthService login failure - Invalid password', { email });
+            throw new AuthenticationError('Invalid email or password');
         }
 
         // Check if account is active
         if (!user.is_active) {
             throw new AuthenticationError('Account not verified. Please verify your account via OTP.', { unverified: true, email: user.email, user_id: user.user_id });
+        }
+
+        // Two-Factor Authentication interjection
+        if (user.two_factor_enabled) {
+            if (!totpToken) {
+                logger.info('AuthService login() - 2FA required', { email });
+                return {
+                    twoFactorRequired: true,
+                    user_id: user.user_id,
+                    email: user.email,
+                    role: user.role,
+                    message: 'Two-factor authentication required.'
+                };
+            }
+
+            const verified = speakeasy.totp.verify({
+                secret: user.two_factor_secret,
+                encoding: 'base32',
+                token: totpToken,
+            });
+
+            if (!verified) {
+                logger.warn('AuthService login failure - Invalid 2FA token', { email });
+                throw new AuthenticationError('Invalid two-factor authentication code');
+            }
         }
 
         // Generate tokens
@@ -168,12 +186,9 @@ export const authService = {
      */
     async resendRegistrationOTP(userId) {
         const user = await userRepository.findById(userId);
-        if (!user) {
-            throw new NotFoundError('User');
-        }
-
-        if (user.is_active) {
-            throw new ConflictError('Account is already verified');
+        // Fail silently if user doesn't exist or is already verified to prevent account enumeration
+        if (!user || user.is_active) {
+            return true;
         }
 
         await otpService.sendRegistrationOTP(user);

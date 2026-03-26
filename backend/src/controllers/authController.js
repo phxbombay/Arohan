@@ -7,11 +7,10 @@ import logger from '../config/logger.js';
 const setTokenCookie = (res, token) => {
     const cookieOptions = {
         httpOnly: true,
-        secure: false, // process.env.NODE_ENV === 'production', // FORCE FALSE FOR DEBUGGING
-        sameSite: 'lax', // Relaxed from strict for debugging
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
     };
-    console.log('🍪 Setting Cookie:', { token: token?.substring(0, 10) + '...', options: cookieOptions });
     res.cookie('refreshToken', token, cookieOptions);
 };
 
@@ -54,6 +53,9 @@ export const registerUser = async (req, res, next) => {
 export const verifyOTP = async (req, res, next) => {
     try {
         const { user_id, otp_code } = req.body;
+        if (!user_id || !otp_code) {
+            return res.status(400).json({ status: 'fail', message: 'user_id and otp_code are required' });
+        }
 
         const result = await authService.verifyRegistration(user_id, otp_code);
 
@@ -79,6 +81,9 @@ export const verifyOTP = async (req, res, next) => {
 export const resendOTP = async (req, res, next) => {
     try {
         const { user_id } = req.body;
+        if (!user_id) {
+            return res.status(400).json({ status: 'fail', message: 'user_id is required' });
+        }
 
         await authService.resendRegistrationOTP(user_id);
 
@@ -93,11 +98,16 @@ export const resendOTP = async (req, res, next) => {
 // @access  Public
 export const loginUser = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { email, password, totp_token } = req.body;
 
-        logger.info('Login attempt', { email });
+        logger.info('Login attempt', { email, hasTotp: !!totp_token });
 
-        const result = await authService.login(email, password);
+        const result = await authService.login(email, password, totp_token);
+
+        if (result.twoFactorRequired) {
+            // Halt JWT issuance
+            return res.json(result);
+        }
 
         setTokenCookie(res, result.refreshToken);
 
@@ -110,12 +120,7 @@ export const loginUser = async (req, res, next) => {
             refreshToken: result.refreshToken // Return refresh token for non-browser clients
         };
 
-        // DEBUG: Write to file
-        const fs = await import('fs');
-        const logMsg = `LOGIN SUCCESS: ${new Date().toISOString()} - Email: ${email} - Role: ${result.user.role}\n`;
-        try {
-            fs.appendFileSync('login_debug.log', logMsg);
-        } catch (e) { console.error("Log failed", e); }
+        // Removed insecure debug logging to filesystem
 
         logger.info('Login successful - sending response', {
             email: loginResponse.email,

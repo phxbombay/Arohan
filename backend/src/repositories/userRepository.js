@@ -1,5 +1,6 @@
 import pool from '../config/db.js';
 import crypto from 'crypto';
+import { DatabaseError } from '../utils/errors.js';
 
 /**
  * User Repository - Data Access Layer
@@ -21,11 +22,15 @@ export const userRepository = {
      * @returns {Promise<Object|null>}
      */
     async findByEmail(email) {
-        const [rows] = await pool.query(
-            'SELECT * FROM users WHERE email = ?',
-            [email]
-        );
-        return rows[0] || null;
+        try {
+            const [rows] = await pool.query(
+                'SELECT * FROM users WHERE email = ?',
+                [email]
+            );
+            return rows[0] || null;
+        } catch (error) {
+            throw new DatabaseError('Failed to fetch user by email', error);
+        }
     },
 
     /**
@@ -34,11 +39,15 @@ export const userRepository = {
      * @returns {Promise<Object|null>}
      */
     async findById(userId) {
-        const [rows] = await pool.query(
-            'SELECT * FROM users WHERE user_id = ?',
-            [userId]
-        );
-        return rows[0] || null;
+        try {
+            const [rows] = await pool.query(
+                'SELECT * FROM users WHERE user_id = ?',
+                [userId]
+            );
+            return rows[0] || null;
+        } catch (error) {
+            throw new DatabaseError('Failed to fetch user by ID', error);
+        }
     },
 
     /**
@@ -47,23 +56,22 @@ export const userRepository = {
      * @returns {Promise<Object>}
      */
     async create(userData) {
-        const { full_name, email, password_hash, role = 'patient', phone_number, is_active = true } = userData;
-        const user_id = generateUUID();
+        try {
+            const { full_name, email, password_hash, role = 'patient', phone_number, is_active = true } = userData;
+            const user_id = generateUUID();
 
-        // Check if this is the FIRST user in the system
-        const [userCount] = await pool.query('SELECT COUNT(*) as count FROM users');
-        const isFirstUser = userCount[0].count === 0;
+            const finalRole = role || 'patient';
 
-        // If first user, force ADMIN role
-        const finalRole = isFirstUser ? 'admin' : (role || 'patient');
+            await pool.query(
+                `INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, is_active) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [user_id, full_name, email, password_hash, finalRole, phone_number, is_active]
+            );
 
-        await pool.query(
-            `INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, is_active) 
-             VALUES (?, ?, ?, ?, ?, ?, ?)`,
-            [user_id, full_name, email, password_hash, finalRole, phone_number, is_active]
-        );
-
-        return { user_id, full_name, email, role: finalRole };
+            return { user_id, full_name, email, role: finalRole };
+        } catch (error) {
+            throw new DatabaseError('Failed to create new user', error);
+        }
     },
 
     /**
@@ -73,11 +81,15 @@ export const userRepository = {
      * @returns {Promise<boolean>}
      */
     async updatePassword(userId, passwordHash) {
-        const [result] = await pool.query(
-            'UPDATE users SET password_hash = ? WHERE user_id = ?',
-            [passwordHash, userId]
-        );
-        return result.affectedRows > 0;
+        try {
+            const [result] = await pool.query(
+                'UPDATE users SET password_hash = ? WHERE user_id = ?',
+                [passwordHash, userId]
+            );
+            return result.affectedRows > 0;
+        } catch (error) {
+            throw new DatabaseError('Failed to update user password', error);
+        }
     },
 
     /**
@@ -86,11 +98,15 @@ export const userRepository = {
      * @returns {Promise<boolean>}
      */
     async emailExists(email) {
-        const [rows] = await pool.query(
-            'SELECT 1 FROM users WHERE email = ?',
-            [email]
-        );
-        return rows.length > 0;
+        try {
+            const [rows] = await pool.query(
+                'SELECT 1 FROM users WHERE email = ?',
+                [email]
+            );
+            return rows.length > 0;
+        } catch (error) {
+            throw new DatabaseError('Failed to check if email exists', error);
+        }
     },
 
     /**
@@ -99,17 +115,25 @@ export const userRepository = {
      * @returns {Promise<Object|null>}
      */
     async getProfile(userId) {
-        const [rows] = await pool.query(
-            'SELECT user_id, full_name, email, role, created_at FROM users WHERE user_id = ?',
-            [userId]
-        );
-        return rows[0] || null;
+        try {
+            const [rows] = await pool.query(
+                'SELECT user_id, full_name, email, role, created_at FROM users WHERE user_id = ?',
+                [userId]
+            );
+            return rows[0] || null;
+        } catch (error) {
+            throw new DatabaseError('Failed to fetch user profile', error);
+        }
     },
 
     async activateAccount(userId) {
-        await pool.query(
-            'UPDATE users SET is_active = TRUE WHERE user_id = ?',
-            [userId]
-        );
+        try {
+            await pool.query(
+                'UPDATE users SET is_active = TRUE WHERE user_id = ?',
+                [userId]
+            );
+        } catch (error) {
+            throw new DatabaseError('Failed to activate user account', error);
+        }
     }
 };

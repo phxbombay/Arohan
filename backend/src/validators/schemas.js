@@ -38,7 +38,9 @@ export const loginSchema = z.object({
         .trim(),
 
     password: z.string()
-        .min(1, 'Password is required')
+        .min(1, 'Password is required'),
+
+    totp_token: z.string().optional()
 });
 
 // User Schemas

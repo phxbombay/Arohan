@@ -1,5 +1,6 @@
 import winston from 'winston';
 import net from 'net';
+import WinstonCloudWatch from 'winston-cloudwatch';
 
 class LogstashTransport extends winston.Transport {
     constructor(opts) {
@@ -134,11 +135,21 @@ const logger = winston.createLogger({
                 json()
             )
         }),
-        // Send logs to Logstash
         // new LogstashTransport({
         //     host: 'logstash',
         //     port: 5000
-        // })
+        // }),
+        // Stream all critical faults to AWS CloudWatch
+        new WinstonCloudWatch({
+            logGroupName: process.env.CLOUDWATCH_GROUP_NAME || 'ArohanHealth_Production',
+            logStreamName: process.env.CLOUDWATCH_STREAM_NAME || `ExpressServer_${process.env.NODE_ENV || 'prod'}`,
+            awsRegion: process.env.AWS_REGION || 'ap-south-1',
+            level: 'error',
+            jsonMessage: true,
+            // Only enabled if AWS keys exist (to prevent local crash loops)
+            awsAccessKeyId: process.env.AWS_ACCESS_KEY_ID,
+            awsSecretKey: process.env.AWS_SECRET_ACCESS_KEY
+        })
     ]
 });
 

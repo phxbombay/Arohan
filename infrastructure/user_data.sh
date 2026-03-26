@@ -1,4 +1,9 @@
-#!/bin/bash
+# Setup Swap Space (Prevents OOM on t3.micro)
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/etc/fstab
 
 # Update and install Docker
 sudo apt-get update
@@ -26,8 +31,21 @@ sudo apt-get install -y git
 mkdir -p /home/ubuntu/app
 chown ubuntu:ubuntu /home/ubuntu/app
 
-# NOTE: The user must clone the repo or copy files manually in this simple setup.
-# Ideally, we would clone here if the repo was public or keys were provided.
-# For now, we just prepare the environment.
+cd /home/ubuntu/app
+sudo -u ubuntu rm -rf ./* ./.* 2>/dev/null
+sudo -u ubuntu git clone https://github.com/phxbombay/Arohan.git .
 
-echo "Docker Installed Successfully" > /home/ubuntu/install_status.txt
+# Create .env file with DB configuration
+cat <<EOF > /home/ubuntu/app/.env
+DB_HOST=${db_host}
+DB_NAME=${db_name}
+DB_USER=${db_user}
+DB_PASSWORD=${db_password}
+NODE_ENV=production
+EOF
+chown ubuntu:ubuntu /home/ubuntu/app/.env
+
+# Start containers
+sudo docker compose up --build -d
+
+echo "Docker & App Configured Successfully" > /home/ubuntu/install_status.txt

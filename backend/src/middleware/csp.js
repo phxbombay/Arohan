@@ -40,9 +40,8 @@ export const cspMiddleware = helmet.contentSecurityPolicy({
         fontSrc: [
             "'self'",
             "data:",
-            // Add Google Fonts if needed
-            // "https://fonts.googleapis.com",
-            // "https://fonts.gstatic.com"
+            "https://fonts.googleapis.com",
+            "https://fonts.gstatic.com"
         ],
 
         objectSrc: ["'none'"],
@@ -51,13 +50,14 @@ export const cspMiddleware = helmet.contentSecurityPolicy({
 
         frameSrc: ["'none'"],
 
-        baseUri: ["'self'"],
+        baseUri: ["'none'"],
 
         formAction: ["'self'"],
 
         frameAncestors: ["'none'"], // Prevent clickjacking
 
-        upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null,
+        // upgradeInsecureRequests: process.env.NODE_ENV === 'production' ? [] : null,
+        // Relaxing for iOS compatibility in case of non-SSL production
     },
     reportOnly: process.env.NODE_ENV === 'development', // Report-only in dev, enforce in prod
 });

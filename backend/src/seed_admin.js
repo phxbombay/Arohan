@@ -4,8 +4,10 @@ import crypto from 'crypto';
 
 const seedAdmin = async () => {
     try {
-        const email = 'admin@arohan.com';
-        const password = 'admin123';
+        const email = process.env.DEFAULT_ADMIN_EMAIL || 'admin@arohanhealth.com';
+        const password = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin123!';
+        
+        console.log(`Seeding admin for: ${email}`);
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Check if exists

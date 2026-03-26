@@ -6,8 +6,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import swaggerUi from 'swagger-ui-express';
-import addRequestId from 'express-request-id';
+import expressRequestId from 'express-request-id';
 import cookieParser from 'cookie-parser';
+import hpp from 'hpp';
 import pool from './config/db.js';
 import logger from './config/logger.js';
 import errorHandler from './middleware/errorHandler.js';
@@ -23,6 +24,31 @@ import {
     securityAuditLog
 } from './middleware/security.js';
 import { metricsMiddleware } from './middleware/metrics.js';
+
+// Import routes
+import authRoutes from './routes/authRoutes.js';
+import vitalsRoutes from './routes/vitalsRoutes.js';
+import alertsRoutes from './routes/alertsRoutes.js';
+import devicesRoutes from './routes/devicesRoutes.js';
+import healthRoutes from './routes/health.js';
+import cartRoutes from './routes/cart.js';
+import metricsRoutes from './routes/metrics.js';
+import contactRoutes from './routes/contact.js';
+import adminRoutes from './routes/adminRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import integrationRoutes from './routes/integrationRoutes.js';
+import phonePeRoutes from './routes/phonePeRoutes.js';
+import leadRoutes from './routes/leadRoutes.js';
+import blogRoutes from './routes/blogRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import invoiceRoutes from './routes/invoiceRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
+import whatsappRoutes from './routes/whatsapp.js';
+import chatbotRoutes from './routes/chatbotRoutes.js';
+import physicianRoutes from './routes/physicianRoutes.js';
+import { generateSitemap } from './controllers/seoController.js';
+import { register } from './utils/metrics.js';
 
 dotenv.config();
 
@@ -58,7 +84,6 @@ io.on('connection', (socket) => {
 app.set('trust proxy', 1);
 
 // Security Middleware
-// Using our enhanced security headers instead of basic helmet
 app.use(securityHeaders);
 
 // Performance Monitoring Middleware (must be early)
@@ -82,16 +107,14 @@ app.use(preventXSS);
 // Response compression
 app.use(compression());
 
-// CORS Configuration - Allow only specific origins
+// CORS Configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS
     ? process.env.ALLOWED_ORIGINS.split(',')
     : ['http://localhost', 'http://localhost:3000', 'http://localhost:5173', 'http://localhost:5174', 'http://localhost:8080', 'http://127.0.0.1:8080', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://127.0.0.1:5000'];
 
 app.use(cors({
     origin: function (origin, callback) {
-        // Allow requests with no origin (mobile apps, Postman, etc.)
         if (!origin) return callback(null, true);
-
         if (allowedOrigins.indexOf(origin) === -1) {
             const msg = `The CORS policy for this site does not allow access from origin ${origin}.`;
             logger.warn('CORS blocked request', { origin, allowedOrigins });
@@ -103,15 +126,16 @@ app.use(cors({
     optionsSuccessStatus: 200
 }));
 
-// Request ID for tracking
-app.use(addRequestId());
+app.use(expressRequestId());
 app.use(cookieParser());
 
 // Body parser
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Request logging with Winston
+app.use(hpp());
+
+// Request logging
 app.use((req, res, next) => {
     logger.info('Incoming request', {
         method: req.method,
@@ -122,10 +146,7 @@ app.use((req, res, next) => {
     next();
 });
 
-// Apply rate limiting to all routes
 app.use('/v1/', apiLimiter);
-
-// Security audit logging for sensitive endpoints
 app.use(securityAuditLog);
 
 // API Documentation
@@ -142,29 +163,6 @@ app.get('/', (req, res) => {
         timestamp: new Date().toISOString()
     });
 });
-
-// Import routes
-import authRoutes from './routes/authRoutes.js';
-import vitalsRoutes from './routes/vitalsRoutes.js';
-import alertsRoutes from './routes/alertsRoutes.js';
-import devicesRoutes from './routes/devicesRoutes.js';
-import healthRoutes from './routes/health.js';
-import cartRoutes from './routes/cart.js';
-import metricsRoutes from './routes/metrics.js';
-import contactRoutes from './routes/contact.js';
-import adminRoutes from './routes/adminRoutes.js';
-import paymentRoutes from './routes/paymentRoutes.js';
-import userRoutes from './routes/userRoutes.js';
-import integrationRoutes from './routes/integrationRoutes.js';
-import phonePeRoutes from './routes/phonePeRoutes.js';
-import leadRoutes from './routes/leadRoutes.js';
-import blogRoutes from './routes/blogRoutes.js';
-import orderRoutes from './routes/orderRoutes.js';
-import invoiceRoutes from './routes/invoiceRoutes.js';
-import notificationRoutes from './routes/notificationRoutes.js';
-import whatsappRoutes from './routes/whatsapp.js';
-import chatbotRoutes from './routes/chatbotRoutes.js';
-import physicianRoutes from './routes/physicianRoutes.js';
 
 // API Routes
 app.use('/v1/auth', authRoutes);
@@ -189,7 +187,17 @@ app.use('/v1/whatsapp', whatsappRoutes);
 app.use('/v1/chatbot', chatbotRoutes);
 app.use('/v1/physician', physicianRoutes);
 
-// Health check endpoint (outside rate limiting)
+app.get('/metrics', async (req, res) => {
+    try {
+        res.set('Content-Type', register.contentType);
+        res.end(await register.metrics());
+    } catch (err) {
+        res.status(500).end(err);
+    }
+});
+
+app.get('/sitemap.xml', generateSitemap);
+
 app.get('/health', async (req, res) => {
     try {
         await pool.query('SELECT NOW()');
@@ -208,7 +216,6 @@ app.get('/health', async (req, res) => {
     }
 });
 
-// 404 handler
 app.use((req, res, next) => {
     res.status(404).json({
         status: 'fail',
@@ -216,7 +223,6 @@ app.use((req, res, next) => {
     });
 });
 
-// Centralized error handling middleware (must be last)
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

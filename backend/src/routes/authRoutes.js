@@ -108,7 +108,7 @@ router.post('/resend-otp', authLimiter, resendOTP);
  *               $ref: '#/components/schemas/Error'
  */
 router.post('/login', authLimiter, validate(loginSchema), loginUser);
-router.post('/refresh-token', refreshToken);
+router.post('/refresh-token', authLimiter, refreshToken);
 router.post('/logout', logoutUser);
 
 // ... previous routes ...
@@ -125,7 +125,7 @@ router.post('/logout', logoutUser);
  *       200:
  *         description: QR code generated
  */
-router.post('/2fa/setup', requireAuth, setupTwoFactor);
+router.post('/2fa/setup', authLimiter, requireAuth, setupTwoFactor);
 
 /**
  * @swagger
@@ -148,7 +148,7 @@ router.post('/2fa/setup', requireAuth, setupTwoFactor);
  *       200:
  *         description: 2FA enabled
  */
-router.post('/2fa/verify', requireAuth, verifyTwoFactor);
+router.post('/2fa/verify', authLimiter, requireAuth, verifyTwoFactor);
 
 /**
  * @swagger
