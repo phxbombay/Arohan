@@ -1,35 +1,4 @@
 services:
-  # MySQL Database
-  mysql:
-    image: mysql:8.0
-    container_name: arohan-db
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
-      MYSQL_DATABASE: ${DB_NAME:-arohan_health_db}
-      MYSQL_USER: ${DB_USER:-arohan_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
-    volumes:
-      - mysql_data:/var/lib/mysql
-      # Initializing with schema
-      - ./backend/schema_mysql.sql:/docker-entrypoint-initdb.d/01-schema.sql
-    ports:
-      - "3306:3306"
-    healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
-  # MailHog (Email Testing)
-  mailhog:
-    image: mailhog/mailhog
-    container_name: arohan-mailhog
-    ports:
-      - "1025:1025" # SMTP server
-      - "8025:8025" # Web UI
-    restart: unless-stopped
-
   # Backend API
   backend:
     build:
@@ -38,37 +7,22 @@ services:
     container_name: arohan-backend
     restart: unless-stopped
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PORT: 5000
-      DB_HOST: ${DB_HOST:-mysql}
-      DB_USER: ${DB_USER:-arohan_user}
-      DB_PASSWORD: ${DB_PASSWORD:-arohan_secure_2026}
-      DB_NAME: ${DB_NAME:-arohan_health_db}
-      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
-      RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID:-test_key_id}
-      RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET:-test_key_secret}
-      RAZORPAY_WEBHOOK_SECRET: ${RAZORPAY_WEBHOOK_SECRET:-test_webhook_secret}
-      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost,http://localhost:3000,http://localhost:5173,http://localhost:8080,http://localhost:80,https://haspranahealth.com}
-      SMTP_HOST: mailhog
-      SMTP_PORT: 1025
-      SMTP_USER: ""
-      SMTP_PASSWORD: ""
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      JWT_SECRET: ${JWT_SECRET:-arohan-prod-secret-2026}
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-https://haspranahealth.com}
       ADMIN_EMAIL: ${ADMIN_EMAIL:-info@haspranahealth.com}
-      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-mock_sid}
-      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-mock_token}
-      TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER:-mock_number}
-      SMS_RATE_LIMIT_PER_MINUTE: ${SMS_RATE_LIMIT_PER_MINUTE:-10}
-      ENCRYPTION_KEY: ${ENCRYPTION_KEY:-a1b2c3d4e5f6071829384a5b6c7d8e9f0a1b2c3d4e5f6071829384a5b6c7d8e9f}
     ports:
       - "5000:5000"
-    depends_on:
-      mysql:
-        condition: service_healthy
     volumes:
       - ./backend/src:/app/src
     command: node src/index.js
 
-  # Frontend (React + Vite)
+  # Frontend (Nginx + React)
   frontend:
     build:
       context: ./frontend
@@ -81,58 +35,14 @@ services:
       - "80:80"
     depends_on:
       - backend
-      # InfluxDB (Time-Series Database)
-      # influxdb:
-      #   image: influxdb:2.7-alpine
-      #   container_name: arohan-influxdb
-      #   volumes:
-      #     - influxdb_data:/var/lib/influxdb2
-      #   ports:
-      #     - "8086:8086"
-      #   environment:
-      #     DOCKER_INFLUXDB_INIT_MODE: setup
-      #     DOCKER_INFLUXDB_INIT_USERNAME: admin
-      #     DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUX_PASSWORD:-arohan_secure_2026}
-      #     DOCKER_INFLUXDB_INIT_ORG: arohan_health
-      #     DOCKER_INFLUXDB_INIT_BUCKET: vitals
-      #   restart: unless-stopped
 
-      # Elasticsearch (Search & Analytics Engine)
-      # elasticsearch:
-      #   image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
-      #   container_name: arohan-elasticsearch
-      #   environment:
-      #     - discovery.type=single-node
-      #     - "ES_JAVA_OPTS=-Xms512m -Xmx512m" # Heap size limit
-      #   volumes:
-      #     - elasticsearch_data:/usr/share/elasticsearch/data
-      #   ports:
-      #     - "9200:9200"
-      #   mem_limit: 1g # Hard container limit
+volumes:
+  mysql_data:
+    driver: local
 
-      # Logstash (Data Processing Pipeline)
-      # logstash:
-      #   image: docker.elastic.co/logstash/logstash:7.17.10
-      #   container_name: arohan-logstash
-      #   volumes:
-      #     - ./backend/elk/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
-      #   ports:
-      #     - "5044:5000"
-      #   depends_on:
-      #     - elasticsearch
-      #   mem_limit: 512m
-
-      # Kibana (Visualization Dashboard)
-      # kibana:
-      #   image: docker.elastic.co/kibana/kibana:7.17.10
-      #   container_name: arohan-kibana
-      #   volumes:
-      #     - ./backend/elk/kibana.yml:/usr/share/kibana/config/kibana.yml
-      #   ports:
-      #     - "5601:5601"
-      #   depends_on:
-      #     - elasticsearch
-      #   mem_limit: 512m
+networks:
+  default:
+    name: arohan-network
 
 volumes:
   mysql_data:
