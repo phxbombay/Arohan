@@ -43,11 +43,3 @@ volumes:
 networks:
   default:
     name: arohan-network
-
-volumes:
-  mysql_data:
-    driver: local
-
-networks:
-  default:
-    name: arohan-network
