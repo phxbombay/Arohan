@@ -21,15 +21,23 @@ const dbConfig = {
 const pool = mysql.createPool(dbConfig);
 
 // Test connection on startup
-const testConnection = async () => {
-    try {
-        const connection = await pool.getConnection();
-        const [rows] = await connection.query('SELECT NOW() as now');
-        connection.release();
-        logger.info('✅ Database connected successfully', { time: rows[0].now });
-    } catch (err) {
-        logger.error('❌ Database connection failed:', { error: err.message });
-        // Don't exit process, let it retry or fail on request
+const testConnection = async (retries = 5) => {
+    while (retries > 0) {
+        try {
+            const connection = await pool.getConnection();
+            const [rows] = await connection.query('SELECT NOW() as now');
+            connection.release();
+            logger.info('✅ Database connected successfully', { time: rows[0].now });
+            return;
+        } catch (err) {
+            logger.error(`❌ Database connection failed (Attempts remaining: ${retries-1}):`, { error: err.message });
+            retries -= 1;
+            if (retries === 0) {
+                logger.error('❌ Max database connection retries reached.');
+            } else {
+                await new Promise(res => setTimeout(res, 5000)); // Wait 5 seconds before retry
+            }
+        }
     }
 };
 

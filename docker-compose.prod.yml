@@ -1,23 +1,21 @@
 services:
-  # PostgreSQL Database
-  postgres:
-    image: postgres:15-alpine
+  # MySQL Database
+  mysql:
+    image: mysql:8.0
     container_name: arohan-db
     restart: always
     environment:
-      POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-      - ./backend/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
-      - ./backend/migrations:/docker-entrypoint-initdb.d/migrations
-    # Do NOT expose database port to public in production
-    # Only backend container should access it
+      - mysql_data:/var/lib/mysql
+      - ./backend/db_dump.sql:/docker-entrypoint-initdb.d/db_dump.sql
     networks:
       - arohan-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,7 +30,10 @@ services:
     environment:
       NODE_ENV: production
       PORT: ${PORT}
-      DATABASE_URL: ${DATABASE_URL}
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
       JWT_SECRET: ${JWT_SECRET}
       RAZORPAY_KEY_ID: ${RAZORPAY_KEY_ID}
       RAZORPAY_KEY_SECRET: ${RAZORPAY_KEY_SECRET}
@@ -52,7 +53,7 @@ services:
     ports:
       - "5000:5000"
     depends_on:
-      postgres:
+      mysql:
         condition: service_healthy
     networks:
       - arohan-network
@@ -85,5 +86,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data:
+  mysql_data:
     driver: local

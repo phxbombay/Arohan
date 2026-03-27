@@ -2,20 +2,23 @@ import pool from './src/config/db.js';
 import logger from './src/config/logger.js';
 
 /**
- * Migration Script: Refine Schema (MySQL 8.0)
- * This script is the main entry point for database schema updates.
+ * Migration Script: Refine Schema
+ * - Adds missing indexes for performance
+ * - Updates data types for efficiency
+ * - Ensures consistent Foreign Key constraints
+ * - Adds missing tables (Chats, Messages) in MySQL format
  */
 
-async function migrate() {
+async function refineSchema() {
     let connection;
     try {
-        console.log('--- Starting Database Migration (MySQL) ---');
+        console.log('--- Starting Schema Refinement ---');
         connection = await pool.getConnection();
 
         // 1. Helper to check if index exists
         const indexExists = async (table, index) => {
             const [rows] = await connection.query(`
-                SHOW INDEX FROM \`${table}\` WHERE Key_name = ?
+                SHOW INDEX FROM ${table} WHERE Key_name = ?
             `, [index]);
             return rows.length > 0;
         };
@@ -23,7 +26,7 @@ async function migrate() {
         // 2. Helper to check if column exists
         const columnExists = async (table, column) => {
             const [rows] = await connection.query(`
-                SHOW COLUMNS FROM \`${table}\` LIKE ?
+                SHOW COLUMNS FROM ${table} LIKE ?
             `, [column]);
             return rows.length > 0;
         };
@@ -37,12 +40,15 @@ async function migrate() {
             await connection.query('CREATE INDEX idx_user_active ON users(is_active)');
         }
         
+        // Ensure updated_at exists and is automatic
         if (!await columnExists('users', 'updated_at')) {
             await connection.query('ALTER TABLE users ADD COLUMN updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP');
         }
 
         // 4. Update Health Vitals (Efficiency)
         console.log('Refining health_vitals table...');
+        // Note: Changing types in a large table can be slow. 
+        // We use MODIFY to improve storage efficiency if they are standard INTs now.
         await connection.query(`
             ALTER TABLE health_vitals 
             MODIFY heart_rate SMALLINT UNSIGNED,
@@ -76,7 +82,7 @@ async function migrate() {
         }
 
         // 7. Chat Tables (MySQL Conversion)
-        console.log('Ensuring Chat tables exist...');
+        console.log('Ensuring Chat tables exist (MySQL)...');
         await connection.query(`
             CREATE TABLE IF NOT EXISTS chats (
                 chat_id VARCHAR(36) PRIMARY KEY,
@@ -113,10 +119,10 @@ async function migrate() {
             await connection.query('CREATE INDEX idx_blogs_category ON blogs(category)');
         }
 
-        console.log('✅ Migration completed successfully!');
+        console.log('✅ Schema refinement completed successfully!');
 
     } catch (error) {
-        logger.error('❌ Migration Failed:', error.message);
+        logger.error('❌ Refinement Failed:', error.message);
         console.error(error);
     } finally {
         if (connection) connection.release();
@@ -124,4 +130,4 @@ async function migrate() {
     }
 }
 
-migrate();
+refineSchema();

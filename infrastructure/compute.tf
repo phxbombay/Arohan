@@ -29,11 +29,23 @@ resource "aws_instance" "app_server" {
   }
 
   user_data = templatefile("${path.module}/user_data.sh", {
-    db_host     = aws_db_instance.default.address
-    db_name     = var.db_name
-    db_user     = var.db_username
-    db_password = var.db_password
+    db_host             = aws_db_instance.default.address
+    db_name             = var.db_name
+    db_user             = var.db_username
+    db_password         = var.db_password
+    jwt_secret          = var.jwt_secret
+    smtp_host           = var.smtp_host
+    smtp_port           = var.smtp_port
+    smtp_user           = var.smtp_user
+    smtp_password       = var.smtp_password
+    admin_email         = var.admin_email
+    razorpay_key_id     = var.razorpay_key_id
+    razorpay_key_secret = var.razorpay_key_secret
+    allowed_origins     = var.allowed_origins
+    vite_api_url        = var.vite_api_url
   })
+
+  user_data_replace_on_change = true
 
   tags = {
     Name = "Arohan-App-Server"

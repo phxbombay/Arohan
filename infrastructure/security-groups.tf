@@ -1,32 +1,44 @@
-provider "aws" {
-  region = "ap-south-1"
-}
-
 # Backend Security Group
 resource "aws_security_group" "backend_sg" {
   name        = "arohan-backend-sg"
   description = "Security group for Arohan Backend API"
   vpc_id      = data.aws_vpc.default.id
 
-  # Allow inbound from ALB only
+  # Allow inbound from ALB
   ingress {
-    description     = "Allow HTTP from ALB"
+    description     = "Allow Port 80 from ALB"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+  }
+
+  ingress {
+    description     = "Allow Backend Port from ALB"
     from_port       = 5000
     to_port         = 5000
     protocol        = "tcp"
     security_groups = [aws_security_group.alb_sg.id]
   }
 
-  # Allow inbound SSH from Bastion
   ingress {
-    description     = "Allow SSH from Bastion"
+    description     = "Allow Frontend Port from ALB"
+    from_port       = 8080
+    to_port         = 8080
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+  }
+
+  # Allow inbound SSH from Bastion (or anywhere for debug if needed)
+  ingress {
+    description     = "SSH from World"
     from_port       = 22
     to_port         = 22
     protocol        = "tcp"
-    security_groups = [aws_security_group.bastion_sg.id]
+    cidr_blocks     = ["0.0.0.0/0"]
   }
 
-  # Outbound to Internet (for external APIs)
+  # Outbound to Internet
   egress {
     from_port   = 0
     to_port     = 0
@@ -50,7 +62,7 @@ resource "aws_security_group" "alb_sg" {
   }
 
   ingress {
-    description = "HTTP from World (Redirect)"
+    description = "HTTP from World"
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
@@ -58,11 +70,11 @@ resource "aws_security_group" "alb_sg" {
   }
 
   egress {
-    description     = "Traffic to Backend"
-    from_port       = 5000
-    to_port         = 5000
-    protocol        = "tcp"
-    security_groups = [aws_security_group.backend_sg.id]
+    description = "Traffic to Backend/Frontend"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 }
 

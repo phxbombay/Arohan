@@ -18,9 +18,6 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL:-info@haspranahealth.com}
     ports:
       - "5000:5000"
-    volumes:
-      - ./backend/src:/app/src
-    command: node src/index.js
 
   # Frontend (Nginx + React)
   frontend:
@@ -35,10 +32,6 @@ services:
       - "80:80"
     depends_on:
       - backend
-
-volumes:
-  mysql_data:
-    driver: local
 
 networks:
   default:

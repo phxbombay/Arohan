@@ -22,7 +22,7 @@ fi
 
 # Check if required environment variables are set
 echo -e "${YELLOW}📋 Checking environment variables...${NC}"
-required_vars=("POSTGRES_PASSWORD" "JWT_SECRET" "SMTP_HOST" "SMTP_USER" "SMTP_PASSWORD")
+required_vars=("DB_PASSWORD" "JWT_SECRET" "SMTP_HOST" "SMTP_USER" "SMTP_PASSWORD")
 missing_vars=()
 
 for var in "${required_vars[@]}"; do
@@ -66,7 +66,7 @@ docker compose -f docker-compose.prod.yml ps
 echo -e "${YELLOW}🏥 Running health checks...${NC}"
 
 # Check database
-if docker exec arohan-db pg_isready -U postgres > /dev/null 2>&1; then
+if docker exec arohan-db mysqladmin ping -h localhost > /dev/null 2>&1; then
     echo -e "${GREEN}✅ Database: Healthy${NC}"
 else
     echo -e "${RED}❌ Database: Not responding${NC}"
@@ -93,7 +93,7 @@ mkdir -p ~/arohan-backups
 
 # Create initial database backup
 echo -e "${YELLOW}💾 Creating initial database backup...${NC}"
-docker exec arohan-db pg_dump -U postgres arohan_health_db > ~/arohan-backups/initial_backup_$(date +%Y%m%d_%H%M%S).sql
+docker exec arohan-db mysqldump -u root -p${DB_PASSWORD} arohan_health_db > ~/arohan-backups/initial_backup_$(date +%Y%m%d_%H%M%S).sql
 echo -e "${GREEN}✅ Backup created${NC}"
 
 echo ""
