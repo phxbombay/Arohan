@@ -53,7 +53,12 @@ export function SOSButton() {
 
   return (
     <>
-      <Box sx={{ position: 'fixed', bottom: 32, right: 32, zIndex: 1200 }}>
+      <Box sx={{ 
+        position: 'fixed', 
+        bottom: { xs: 'calc(16px + env(safe-area-inset-bottom, 0px))', md: 32 }, 
+        right: { xs: 16, md: 32 }, 
+        zIndex: 1200 
+      }}>
         <Box sx={{ position: 'relative' }}>
           {/* Ripple Effect Background */}
           <Box

@@ -82,9 +82,19 @@ export function Header() {
 
   return (
     <>
-      <AppBar position="sticky" color="inherit" elevation={0} sx={{ bgcolor: 'white', borderBottom: '1px solid', borderColor: 'grey.100' }}>
+      <AppBar 
+        position="sticky" 
+        color="inherit" 
+        elevation={0} 
+        sx={{ 
+          bgcolor: 'white', 
+          borderBottom: '1px solid', 
+          borderColor: 'grey.100',
+          pt: 'env(safe-area-inset-top, 0px)' 
+        }}
+      >
         <Container maxWidth={false}>
-          <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: 80 }}>
+          <Toolbar disableGutters sx={{ justifyContent: 'space-between', height: { xs: 64, sm: 80 } }}>
             {/* Logo */}
             <Box
               component={Link}

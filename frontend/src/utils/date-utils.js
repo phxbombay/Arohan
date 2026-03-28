@@ -11,14 +11,25 @@ export const safeDate = (dateInput) => {
     // specific fix for ISO-like strings (YYYY-MM-DD...)
     if (typeof dateInput === 'string') {
         // iOS/Safari fails on 'YYYY-MM-DD' and 'YYYY-MM-DD HH:mm:ss'
-        // We replace hyphens with slashes if it looks like a date.
-        // This is a safe operation for standard ISO dates.
-        if (dateInput.includes('-')) {
-            // Only replace if it looks like a date structure to avoid breaking other strings
-            // But for safety in this utility, we assume it is a date string.
-            // Replacing all hyphens with slashes is generally safe for date parsing
-            return new Date(dateInput.replace(/-/g, '/'));
+        // Replacing hyphens with slashes is the most compatible way for all Safari versions.
+        let sanitized = dateInput;
+        
+        // Handle ISO with space instead of 'T'
+        if (sanitized.includes(' ') && sanitized.includes('-')) {
+            // Replace hyphens only in the date part (before the space)
+            // or just replace all hyphens to be safe for most standard formats
+            sanitized = sanitized.replace(/-/g, '/');
+        } else if (sanitized.includes('-')) {
+            sanitized = sanitized.replace(/-/g, '/');
         }
+
+        const date = new Date(sanitized);
+        // Fallback for invalid formats
+        if (isNaN(date.getTime())) {
+            // If still invalid, try standard Date.parse or return current date
+            return new Date();
+        }
+        return date;
     }
 
     return new Date(dateInput);

@@ -26,15 +26,6 @@ export function register(config?: any) {
             if (isLocalhost) {
                 // This is running on localhost. Let's check if a service worker still exists or not.
                 checkValidServiceWorker(swUrl, config);
-
-                // Add some additional logging to localhost, pointing developers to the
-                // service worker/PWA documentation.
-                navigator.serviceWorker.ready.then(() => {
-                    console.log(
-                        'This web app is being served cache-first by a service ' +
-                        'worker. To learn more, visit https://cra.link/PWA'
-                    );
-                });
             } else {
                 // Is not localhost. Just register service worker
                 registerValidSW(swUrl, config);
@@ -47,12 +38,10 @@ function registerValidSW(swUrl: string, config?: any) {
     navigator.serviceWorker
         .register(swUrl)
         .then((registration) => {
-            console.log('ServiceWorker registered: ', registration);
-
-            // Add listener for service worker updates
-            navigator.serviceWorker.addEventListener('controllerchange', () => {
-                window.location.reload();
-            });
+            // Check for updates every hour
+            setInterval(() => {
+                registration.update();
+            }, 60 * 60 * 1000);
 
             registration.onupdatefound = () => {
                 const installingWorker = registration.installing;
@@ -62,27 +51,18 @@ function registerValidSW(swUrl: string, config?: any) {
                 installingWorker.onstatechange = () => {
                     if (installingWorker.state === 'installed') {
                         if (navigator.serviceWorker.controller) {
-                            // At this point, the updated precached content has been fetched,
-                            // but the previous service worker will still serve the older
-                            // content until all client tabs are closed.
-                            console.log(
-                                'New content is available and will be used when all ' +
-                                'tabs for this page are closed. See https://cra.link/PWA.'
-                            );
+                            // New content is available; please refresh.
+                            console.log('New content is available; please refresh.');
 
                             if (config && config.onUpdate) {
                                 config.onUpdate(registration);
                             }
-
-                            // Optional: auto-refresh or prompt user
-                            if (window.confirm('New version available! Refresh now?')) {
-                                window.location.reload();
-                            }
-
+                            
+                            // Auto-reload on update to prevent "white screen" from missing chunks
+                            // but only if the user hasn't interacted much yet or we are in a safe state.
+                            // For now, we'll let the app handle the notification via config.onUpdate
                         } else {
-                            // At this point, everything has been precached.
-                            // It's the perfect time to display a
-                            // "Content is cached for offline use." message.
+                            // Content is cached for offline use.
                             console.log('Content is cached for offline use.');
 
                             if (config && config.onSuccess) {

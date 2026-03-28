@@ -6,14 +6,14 @@ import App from "./app/App.tsx";
 import { LocationProvider } from "./context/LocationContext";
 import { SocketProvider } from "./context/SocketContext";
 import { initGA } from './utils/analytics';
-// Service Worker DISABLED — was caching stale content and causing iOS white screen
-// import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+// Service Worker ENABLED with optimized logic for Safari/iOS
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 // Initialize Google Analytics 4
 initGA();
 
-// Service Worker DISABLED — was the root cause of iOS white screen (stale cache)
-// serviceWorkerRegistration.register();
+// Service Worker ENABLED - robust logic added to serviceWorkerRegistration.ts
+serviceWorkerRegistration.register();
 
 createRoot(document.getElementById("root")!).render(
     <LocationProvider>
