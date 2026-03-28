@@ -13,6 +13,15 @@ resource "aws_security_group" "backend_sg" {
     security_groups = [aws_security_group.alb_sg.id]
   }
 
+  # DEBUG: Allow HTTP from world
+  ingress {
+    description = "DEBUG: Allow HTTP from all for testing"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   ingress {
     description     = "Allow Backend Port from ALB"
     from_port       = 5000
