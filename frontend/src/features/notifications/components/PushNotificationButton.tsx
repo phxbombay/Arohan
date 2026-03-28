@@ -4,22 +4,34 @@ import { Notifications as NotificationsIcon } from '@mui/icons-material';
 import { subscribeToNotifications } from '../notificationService';
 
 export const PushNotificationButton = () => {
+    const isSupported = typeof window !== 'undefined' && 'Notification' in window && 'serviceWorker' in navigator;
     const [isSubscribed, setIsSubscribed] = useState(false);
-    const [permission, setPermission] = useState(Notification.permission);
+    const [permission, setPermission] = useState<NotificationPermission>(
+        isSupported ? Notification.permission : 'default'
+    );
 
     useEffect(() => {
-        if (permission === 'granted') {
+        if (isSupported && permission === 'granted') {
             setIsSubscribed(true);
         }
-    }, [permission]);
+    }, [permission, isSupported]);
 
     const handleSubscribe = async () => {
-        const result = await Notification.requestPermission();
-        setPermission(result);
+        if (!isSupported) {
+            alert('Push notifications are not supported on this browser. On iOS, please use "Add to Home Screen" to enable this feature.');
+            return;
+        }
 
-        if (result === 'granted') {
-            const success = await subscribeToNotifications();
-            if (success) setIsSubscribed(true);
+        try {
+            const result = await Notification.requestPermission();
+            setPermission(result);
+
+            if (result === 'granted') {
+                const success = await subscribeToNotifications();
+                if (success) setIsSubscribed(true);
+            }
+        } catch (error) {
+            console.error('Error requesting notification permission:', error);
         }
     };
 

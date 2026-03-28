@@ -1,7 +1,15 @@
 export const subscribeToNotifications = async () => {
     try {
-        if (!('serviceWorker' in navigator) || !('PushManager' in window)) {
-            throw new Error('Push notifications not supported');
+        // Feature detection for Web Push APIs (safeguard for iOS/Safari)
+        if (!('serviceWorker' in navigator) || !('PushManager' in window) || !('Notification' in window)) {
+            console.warn('Push notifications not supported in this environment');
+            return false;
+        }
+
+        // Check permission state early
+        if (Notification.permission === 'denied') {
+            console.warn('Notification permission has been denied by the user');
+            return false;
         }
 
         const registration = await navigator.serviceWorker.ready;

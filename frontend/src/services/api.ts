@@ -3,7 +3,7 @@ import { useAuthStore } from '../features/auth/store/authStore';
 
 // Create axios instance
 const api: AxiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/v1',
+    baseURL: import.meta.env.VITE_API_URL || '/v1',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -36,7 +36,7 @@ api.interceptors.response.use(
                 // Attempt to refresh token
                 // We use axios directly to avoid interceptor loop
                 const response = await axios.post(
-                    `${import.meta.env.VITE_API_URL || 'http://localhost:5000/v1'}/auth/refresh-token`,
+                    `${import.meta.env.VITE_API_URL || ''}/v1/auth/refresh-token`,
                     {},
                     { withCredentials: true } // Important for sending cookies
                 );

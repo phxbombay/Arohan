@@ -19,10 +19,11 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
     useEffect(() => {
         // Connect to backend URL (adjust if needed for prod vs dev)
-        const socketUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        // For production, fallback to current origin to satisfy Safari's strict HTTPS policies
+        const socketUrl = import.meta.env.VITE_API_URL || window.location.origin;
 
         // In production (docker), it might be relative if served from same origin
-        // But for dev, we point to localhost:5000
+        // But for dev, we point to the API_URL
         const socketInstance = io(socketUrl, {
             withCredentials: true,
             transports: ['websocket', 'polling'], // Try websocket first
