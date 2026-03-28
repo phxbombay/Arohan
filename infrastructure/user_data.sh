@@ -75,4 +75,26 @@ chown ubuntu:ubuntu /home/ubuntu/app/.env
 cd /home/ubuntu/app
 sudo -u ubuntu docker compose up --build -d
 
+# ---------------------------------------------------------
+# Step 6: Database Initialization (Automated for First Run)
+# ---------------------------------------------------------
+echo "Waiting for containers to stabilize..."
+sleep 60
+
+# Find backend container name dynamically
+BACKEND_CONTAINER=$(sudo docker ps --format '{{.Names}}' | grep "backend" | head -n 1)
+
+if [ -n "$BACKEND_CONTAINER" ]; then
+    echo "Found backend container: $BACKEND_CONTAINER. Initializing DB..."
+    
+    # Initialize DB schema (using the SQL file already copied into the container via build or volume)
+    # The SQL file is in /app/backend/schema_mysql.sql or /app/schema_mysql.sql depending on Dockerfile
+    sudo docker exec $BACKEND_CONTAINER sh -c "mysql -h ${db_host} -u ${db_user} -p'${db_password}' ${db_name} < schema_mysql.sql" || echo "Schema might already exist."
+    
+    # Run migrations
+    sudo docker exec $BACKEND_CONTAINER node migrate.js || echo "Migrations failed or already applied."
+else
+    echo "ERROR: Backend container not found. Skipping DB initialization."
+fi
+
 echo "Docker & App Configured Successfully" > /home/ubuntu/install_status.txt
