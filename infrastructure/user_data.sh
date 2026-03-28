@@ -9,8 +9,8 @@ sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 
 # Update and install Docker
-sudo apt-get update -y
-sudo apt-get install -y ca-certificates curl gnupg lsb-release git mysql-client
+sudo apt-get update
+sudo apt-get install -y ca-certificates curl gnupg lsb-release
 
 # Add Docker GPG
 sudo mkdir -m 0755 -p /etc/apt/keyrings
@@ -21,27 +21,30 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 # Install Docker Engine
-sudo apt-get update -y
+sudo apt-get update
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
 # Add ubuntu user to docker group
 sudo usermod -aG docker ubuntu
 
-# Clone the project from GitHub
+# Install Git and MySQL Client
+sudo apt-get install -y git mysql-client
+
+# Create Project Directory
 mkdir -p /home/ubuntu/app
 chown ubuntu:ubuntu /home/ubuntu/app
+
 cd /home/ubuntu/app
-sudo -u ubuntu rm -rf ./* ./.* 2>/dev/null || true
+sudo -u ubuntu rm -rf ./* ./.* 2>/dev/null
 sudo -u ubuntu git clone https://github.com/phxbombay/Arohan.git .
 
-# Write the production .env file (RDS-backed, no local MySQL)
+# Create .env file with full production configuration
 cat <<EOF > /home/ubuntu/app/.env
-# Database Configuration (AWS RDS MySQL)
+# Database Configuration
 DB_HOST=${db_host}
 DB_NAME=${db_name}
 DB_USER=${db_user}
 DB_PASSWORD=${db_password}
-DB_CONNECTION_LIMIT=20
 NODE_ENV=production
 PORT=5000
 
@@ -68,35 +71,31 @@ VITE_API_URL=${vite_api_url}
 EOF
 chown ubuntu:ubuntu /home/ubuntu/app/.env
 
-# Start containers using the PRODUCTION compose file (no local MySQL - uses RDS)
+# Start containers as ubuntu user (who is in the docker group)
 cd /home/ubuntu/app
+sudo -u ubuntu cp .env /home/ubuntu/app/.env.production
 sudo -u ubuntu docker compose -f docker-compose.prod.yml up --build -d
 
-# Wait for containers to stabilize
-echo "Waiting 90s for containers and DB to stabilize..."
-sleep 90
+# ---------------------------------------------------------
+# Step 6: Database Initialization (Automated for First Run)
+# ---------------------------------------------------------
+echo "Waiting for containers to stabilize..."
+sleep 60
 
-# Seed the database schema against RDS
+# Find backend container name dynamically
 BACKEND_CONTAINER=$(sudo docker ps --format '{{.Names}}' | grep "backend" | head -n 1)
 
 if [ -n "$BACKEND_CONTAINER" ]; then
-    echo "Backend container found: $BACKEND_CONTAINER"
-
-    # Initialize DB schema (idempotent - uses IF NOT EXISTS)
-    echo "Running schema initialization against RDS..."
-    sudo docker exec "$BACKEND_CONTAINER" sh -c \
-      "mysql -h ${db_host} -u ${db_user} -p'${db_password}' ${db_name} < schema_mysql.sql" \
-      && echo "Schema initialized successfully." \
-      || echo "Schema already exists or initialization skipped."
-
+    # Initialize DB schema
+    echo "Running schema initialization..."
+    sudo docker exec $BACKEND_CONTAINER sh -c "mysql -h ${db_host} -u ${db_user} -p'${db_password}' ${db_name} < schema_mysql.sql" && echo "Schema initialized successfully." || echo "Schema already exists or initialization skipped."
+    
     # Run migrations
     echo "Running migrations..."
-    sudo docker exec "$BACKEND_CONTAINER" node migrate.js \
-      && echo "Migrations completed successfully." \
-      || echo "Migrations failed or already applied."
+    sudo docker exec $BACKEND_CONTAINER node migrate.js && echo "Migrations completed successfully." || echo "Migrations failed or already applied."
 else
-    echo "ERROR: Backend container not found after 90s."
+    echo "ERROR: Backend container not found after 60s. Checking logs..."
     sudo docker compose -f docker-compose.prod.yml logs
 fi
 
-echo "Deployment complete." > /home/ubuntu/install_status.txt
+echo "Docker & App Configured Successfully" > /home/ubuntu/install_status.txt

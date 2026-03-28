@@ -1,18 +1,19 @@
-version: '3.8'
-
 services:
-  # Backend API - connects to RDS MySQL in production
+  # Backend API
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
     container_name: arohan-backend
-    restart: unless-stopped
-    env_file: .env
-    environment:
-      NODE_ENV: production
+    restart: always
+    env_file: .env.production
     ports:
       - "5000:5000"
+    networks:
+      - arohan-network
+    # Production: Don't mount source code volumes
+    # Application runs from Docker image
+    command: node src/index.js
 
   # Frontend (Nginx + React)
   frontend:
@@ -20,14 +21,20 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - VITE_API_URL=/v1
+        VITE_API_URL: ${VITE_API_URL}
     container_name: arohan-frontend
-    restart: unless-stopped
+    restart: always
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - backend
+    networks:
+      - arohan-network
+    volumes:
+      # Mount SSL certificates (if using Let's Encrypt)
+      - ./ssl:/etc/nginx/ssl:ro
 
 networks:
-  default:
-    name: arohan-network
+  arohan-network:
+    driver: bridge
