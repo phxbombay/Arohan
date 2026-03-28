@@ -12,7 +12,17 @@ const api: AxiosInstance = axios.create({
 // Request interceptor for adding auth token
 api.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
-        const token = useAuthStore.getState().token || localStorage.getItem('token');
+        let token = useAuthStore.getState().token;
+        
+        // Safe access for Safari Private Mode
+        try {
+            if (!token) {
+                token = localStorage.getItem('token');
+            }
+        } catch (e) {
+            console.warn('LocalStorage access blocked', e);
+        }
+
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

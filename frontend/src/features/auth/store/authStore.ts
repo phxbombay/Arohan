@@ -40,12 +40,16 @@ export const useAuthStore = create<AuthState>()(
                     console.log('🔵 User role:', user.role, 'Type:', typeof user.role);
 
                     // Store token in localStorage for API client
-                    localStorage.setItem('token', response.accessToken);
-                    if (response.refreshToken) {
-                        localStorage.setItem('refreshToken', response.refreshToken);
-                    }
-                    if (response.role) {
-                        localStorage.setItem('user_role', response.role.toLowerCase());
+                    try {
+                        localStorage.setItem('token', response.accessToken);
+                        if (response.refreshToken) {
+                            localStorage.setItem('refreshToken', response.refreshToken);
+                        }
+                        if (response.role) {
+                            localStorage.setItem('user_role', response.role.toLowerCase());
+                        }
+                    } catch (e) {
+                        console.warn('LocalStorage access failed (Safari Private Mode?)', e);
                     }
 
                     set({
@@ -122,12 +126,16 @@ export const useAuthStore = create<AuthState>()(
                         };
 
                         // Store token in localStorage
-                        localStorage.setItem('token', response.accessToken);
-                        if (response.refreshToken) {
-                            localStorage.setItem('refreshToken', response.refreshToken);
-                        }
-                        if (response.role) {
-                            localStorage.setItem('user_role', response.role.toLowerCase());
+                        try {
+                            localStorage.setItem('token', response.accessToken);
+                            if (response.refreshToken) {
+                                localStorage.setItem('refreshToken', response.refreshToken);
+                            }
+                            if (response.role) {
+                                localStorage.setItem('user_role', response.role.toLowerCase());
+                            }
+                        } catch (e) {
+                            console.warn('LocalStorage access failed (Safari Private Mode?)', e);
                         }
 
                         set({
@@ -202,8 +210,12 @@ export const useAuthStore = create<AuthState>()(
                     };
 
                     // Store token in localStorage
-                    if (response.accessToken) {
-                        localStorage.setItem('token', response.accessToken);
+                    try {
+                        if (response.accessToken) {
+                            localStorage.setItem('token', response.accessToken);
+                        }
+                    } catch (e) {
+                        console.warn('LocalStorage access failed (Safari Private Mode?)', e);
                     }
 
                     set({
@@ -241,10 +253,14 @@ export const useAuthStore = create<AuthState>()(
              */
             logout: async () => {
                 // Clear state IMMEDIATELY for realtime UX
-                localStorage.removeItem('token');
-                localStorage.removeItem('refreshToken');
-                localStorage.removeItem('user');
-                localStorage.removeItem('user_role');
+                try {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('refreshToken');
+                    localStorage.removeItem('user');
+                    localStorage.removeItem('user_role');
+                } catch (e) {
+                    console.warn('LocalStorage clear failed', e);
+                }
 
                 set({
                     user: null,
@@ -280,7 +296,11 @@ export const useAuthStore = create<AuthState>()(
              */
             setToken: (token: string) => {
                 set({ token });
-                localStorage.setItem('token', token);
+                try {
+                    localStorage.setItem('token', token);
+                } catch (e) {
+                    console.warn('LocalStorage setToken failed', e);
+                }
             }
         }),
         {
