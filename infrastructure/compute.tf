@@ -23,6 +23,22 @@ resource "aws_instance" "app_server" {
     aws_security_group.backend_sg.id
   ]
 
+  ingress {
+    description = "DEBUG: Allow HTTP from all for testing"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description     = "Allow HTTP from ALB"
+    from_port       = 80
+    to_port         = 80
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb_sg.id]
+  }
+
   root_block_device {
     volume_size = 20
     volume_type = "gp2"

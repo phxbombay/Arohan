@@ -27,8 +27,8 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 # Add ubuntu user to docker group
 sudo usermod -aG docker ubuntu
 
-# Install Git
-sudo apt-get install -y git
+# Install Git and MySQL Client
+sudo apt-get install -y git mysql-client
 
 # Create Project Directory
 mkdir -p /home/ubuntu/app
@@ -84,17 +84,16 @@ sleep 60
 # Find backend container name dynamically
 BACKEND_CONTAINER=$(sudo docker ps --format '{{.Names}}' | grep "backend" | head -n 1)
 
-if [ -n "$BACKEND_CONTAINER" ]; then
-    echo "Found backend container: $BACKEND_CONTAINER. Initializing DB..."
-    
-    # Initialize DB schema (using the SQL file already copied into the container via build or volume)
-    # The SQL file is in /app/backend/schema_mysql.sql or /app/schema_mysql.sql depending on Dockerfile
-    sudo docker exec $BACKEND_CONTAINER sh -c "mysql -h ${db_host} -u ${db_user} -p'${db_password}' ${db_name} < schema_mysql.sql" || echo "Schema might already exist."
+    # Initialize DB schema
+    echo "Running schema initialization..."
+    sudo docker exec $BACKEND_CONTAINER sh -c "mysql -h ${db_host} -u ${db_user} -p'${db_password}' ${db_name} < schema_mysql.sql" && echo "Schema initialized successfully." || echo "Schema already exists or initialization skipped."
     
     # Run migrations
-    sudo docker exec $BACKEND_CONTAINER node migrate.js || echo "Migrations failed or already applied."
+    echo "Running migrations..."
+    sudo docker exec $BACKEND_CONTAINER node migrate.js && echo "Migrations completed successfully." || echo "Migrations failed or already applied."
 else
-    echo "ERROR: Backend container not found. Skipping DB initialization."
+    echo "ERROR: Backend container not found after 60s. Checking logs..."
+    sudo docker compose logs
 fi
 
 echo "Docker & App Configured Successfully" > /home/ubuntu/install_status.txt

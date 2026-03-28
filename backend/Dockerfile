@@ -18,8 +18,8 @@ FROM node:18-alpine AS production
 
 WORKDIR /app
 
-# Install dumb-init for proper signal handling
-RUN apk add --no-cache dumb-init
+# Install dumb-init and mysql client for DB initialization
+RUN apk add --no-cache dumb-init mariadb-client
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
