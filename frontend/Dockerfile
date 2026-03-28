@@ -1,6 +1,6 @@
 # Multi-stage build for optimized production image
 # Stage 1: Build stage
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 
 WORKDIR /app
 
