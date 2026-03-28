@@ -1,0 +1,573 @@
+Setting up swapspace version 1, size = 2 GiB (2147479552 bytes)
+no label, UUID=3d8aca2f-755d-4ef2-9f9c-923a52718cc3
+/swapfile none swap sw 0 0
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy InRelease
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+Get:4 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/universe amd64 Packages [14.1 MB]
+Get:5 http://security.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+Get:6 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/universe Translation-en [5652 kB]
+Get:7 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/universe amd64 c-n-f Metadata [286 kB]
+Get:8 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/multiverse amd64 Packages [217 kB]
+Get:9 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/multiverse Translation-en [112 kB]
+Get:10 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/multiverse amd64 c-n-f Metadata [8372 B]
+Get:11 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3328 kB]
+Get:12 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main Translation-en [508 kB]
+Get:13 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 c-n-f Metadata [19.5 kB]
+Get:14 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [5518 kB]
+Get:15 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/restricted Translation-en [1053 kB]
+Get:16 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1261 kB]
+Get:17 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe Translation-en [315 kB]
+Get:18 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 c-n-f Metadata [30.4 kB]
+Get:19 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [59.0 kB]
+Get:20 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/multiverse Translation-en [13.5 kB]
+Get:21 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 c-n-f Metadata [612 B]
+Get:22 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [69.4 kB]
+Get:23 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/main Translation-en [11.5 kB]
+Get:24 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/main amd64 c-n-f Metadata [412 B]
+Get:25 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/restricted amd64 c-n-f Metadata [116 B]
+Get:26 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [30.4 kB]
+Get:27 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/universe Translation-en [16.9 kB]
+Get:28 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/universe amd64 c-n-f Metadata [672 B]
+Get:29 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports/multiverse amd64 c-n-f Metadata [116 B]
+Get:30 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3067 kB]
+Get:31 http://security.ubuntu.com/ubuntu jammy-security/main Translation-en [437 kB]
+Get:32 http://security.ubuntu.com/ubuntu jammy-security/main amd64 c-n-f Metadata [14.1 kB]
+Get:33 http://security.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [5356 kB]
+Get:34 http://security.ubuntu.com/ubuntu jammy-security/restricted Translation-en [1025 kB]
+Get:35 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1024 kB]
+Get:36 http://security.ubuntu.com/ubuntu jammy-security/universe Translation-en [226 kB]
+Get:37 http://security.ubuntu.com/ubuntu jammy-security/universe amd64 c-n-f Metadata [22.8 kB]
+Get:38 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 Packages [51.9 kB]
+Get:39 http://security.ubuntu.com/ubuntu jammy-security/multiverse Translation-en [10.6 kB]
+Get:40 http://security.ubuntu.com/ubuntu jammy-security/multiverse amd64 c-n-f Metadata [388 B]
+Fetched 44.2 MB in 8s (5623 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+lsb-release is already the newest version (11.1.0ubuntu4).
+lsb-release set to manually installed.
+ca-certificates is already the newest version (20240203~22.04.1).
+ca-certificates set to manually installed.
+curl is already the newest version (7.81.0-1ubuntu1.23).
+curl set to manually installed.
+gnupg is already the newest version (2.2.27-3ubuntu2.5).
+gnupg set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 11 not upgraded.
+Hit:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Get:4 https://download.docker.com/linux/ubuntu jammy InRelease [48.5 kB]
+Hit:5 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Get:6 https://download.docker.com/linux/ubuntu jammy/stable amd64 Packages [72.8 kB]
+Fetched 121 kB in 1s (195 kB/s)
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  docker-ce-rootless-extras libslirp0 pigz slirp4netns
+Suggested packages:
+  cgroupfs-mount | cgroup-lite docker-model-plugin
+The following NEW packages will be installed:
+  containerd.io docker-buildx-plugin docker-ce docker-ce-cli
+  docker-ce-rootless-extras docker-compose-plugin libslirp0 pigz slirp4netns
+0 upgraded, 9 newly installed, 0 to remove and 11 not upgraded.
+Need to get 97.2 MB of archives.
+After this operation, 393 MB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/universe amd64 pigz amd64 2.6-1 [63.6 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 libslirp0 amd64 4.6.1-1build1 [61.5 kB]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/universe amd64 slirp4netns amd64 1.0.1-2 [28.2 kB]
+Get:4 https://download.docker.com/linux/ubuntu jammy/stable amd64 containerd.io amd64 2.2.2-1~ubuntu.22.04~jammy [23.6 MB]
+Get:5 https://download.docker.com/linux/ubuntu jammy/stable amd64 docker-ce-cli amd64 5:29.3.1-1~ubuntu.22.04~jammy [16.4 MB]
+Get:6 https://download.docker.com/linux/ubuntu jammy/stable amd64 docker-ce amd64 5:29.3.1-1~ubuntu.22.04~jammy [22.6 MB]
+Get:7 https://download.docker.com/linux/ubuntu jammy/stable amd64 docker-buildx-plugin amd64 0.31.1-1~ubuntu.22.04~jammy [20.3 MB]
+Get:8 https://download.docker.com/linux/ubuntu jammy/stable amd64 docker-ce-rootless-extras amd64 5:29.3.1-1~ubuntu.22.04~jammy [6391 kB]
+Get:9 https://download.docker.com/linux/ubuntu jammy/stable amd64 docker-compose-plugin amd64 5.1.1-1~ubuntu.22.04~jammy [7847 kB]
+dpkg-preconfigure: unable to re-open stdin: No such file or directory
+Fetched 97.2 MB in 1s (88.8 MB/s)
+Selecting previously unselected package containerd.io.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 66073 files and directories currently installed.)
+Preparing to unpack .../0-containerd.io_2.2.2-1~ubuntu.22.04~jammy_amd64.deb ...
+Unpacking containerd.io (2.2.2-1~ubuntu.22.04~jammy) ...
+Selecting previously unselected package docker-ce-cli.
+Preparing to unpack .../1-docker-ce-cli_5%3a29.3.1-1~ubuntu.22.04~jammy_amd64.deb ...
+Unpacking docker-ce-cli (5:29.3.1-1~ubuntu.22.04~jammy) ...
+Selecting previously unselected package docker-ce.
+Preparing to unpack .../2-docker-ce_5%3a29.3.1-1~ubuntu.22.04~jammy_amd64.deb ...
+Unpacking docker-ce (5:29.3.1-1~ubuntu.22.04~jammy) ...
+Selecting previously unselected package pigz.
+Preparing to unpack .../3-pigz_2.6-1_amd64.deb ...
+Unpacking pigz (2.6-1) ...
+Selecting previously unselected package docker-buildx-plugin.
+Preparing to unpack .../4-docker-buildx-plugin_0.31.1-1~ubuntu.22.04~jammy_amd64.deb ...
+Unpacking docker-buildx-plugin (0.31.1-1~ubuntu.22.04~jammy) ...
+Selecting previously unselected package docker-ce-rootless-extras.
+Preparing to unpack .../5-docker-ce-rootless-extras_5%3a29.3.1-1~ubuntu.22.04~jammy_amd64.deb ...
+Unpacking docker-ce-rootless-extras (5:29.3.1-1~ubuntu.22.04~jammy) ...
+Selecting previously unselected package docker-compose-plugin.
+Preparing to unpack .../6-docker-compose-plugin_5.1.1-1~ubuntu.22.04~jammy_amd64.deb ...
+Unpacking docker-compose-plugin (5.1.1-1~ubuntu.22.04~jammy) ...
+Selecting previously unselected package libslirp0:amd64.
+Preparing to unpack .../7-libslirp0_4.6.1-1build1_amd64.deb ...
+Unpacking libslirp0:amd64 (4.6.1-1build1) ...
+Selecting previously unselected package slirp4netns.
+Preparing to unpack .../8-slirp4netns_1.0.1-2_amd64.deb ...
+Unpacking slirp4netns (1.0.1-2) ...
+Setting up docker-buildx-plugin (0.31.1-1~ubuntu.22.04~jammy) ...
+Setting up containerd.io (2.2.2-1~ubuntu.22.04~jammy) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/containerd.service → /lib/systemd/system/containerd.service.
+Setting up docker-compose-plugin (5.1.1-1~ubuntu.22.04~jammy) ...
+Setting up docker-ce-cli (5:29.3.1-1~ubuntu.22.04~jammy) ...
+Setting up libslirp0:amd64 (4.6.1-1build1) ...
+Setting up pigz (2.6-1) ...
+Setting up docker-ce-rootless-extras (5:29.3.1-1~ubuntu.22.04~jammy) ...
+Setting up slirp4netns (1.0.1-2) ...
+Setting up docker-ce (5:29.3.1-1~ubuntu.22.04~jammy) ...
+Created symlink /etc/systemd/system/multi-user.target.wants/docker.service → /lib/systemd/system/docker.service.
+Created symlink /etc/systemd/system/sockets.target.wants/docker.socket → /lib/systemd/system/docker.socket.
+Processing triggers for man-db (2.10.2-1) ...
+Processing triggers for libc-bin (2.35-0ubuntu3.13) ...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+Reading package lists...
+Building dependency tree...
+Reading state information...
+git is already the newest version (1:2.34.1-1ubuntu1.17).
+git set to manually installed.
+The following additional packages will be installed:
+  mysql-client-8.0 mysql-client-core-8.0 mysql-common
+The following NEW packages will be installed:
+  mysql-client mysql-client-8.0 mysql-client-core-8.0 mysql-common
+0 upgraded, 4 newly installed, 0 to remove and 11 not upgraded.
+Need to get 2746 kB of archives.
+After this operation, 62.2 MB of additional disk space will be used.
+Get:1 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 mysql-client-core-8.0 amd64 8.0.45-0ubuntu0.22.04.1 [2707 kB]
+Get:2 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy/main amd64 mysql-common all 5.8+1.0.8 [7212 B]
+Get:3 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 mysql-client-8.0 amd64 8.0.45-0ubuntu0.22.04.1 [22.7 kB]
+Get:4 http://ap-south-1.ec2.archive.ubuntu.com/ubuntu jammy-updates/main amd64 mysql-client all 8.0.45-0ubuntu0.22.04.1 [9352 B]
+dpkg-preconfigure: unable to re-open stdin: No such file or directory
+Fetched 2746 kB in 1s (5189 kB/s)
+Selecting previously unselected package mysql-client-core-8.0.
+(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 66323 files and directories currently installed.)
+Preparing to unpack .../mysql-client-core-8.0_8.0.45-0ubuntu0.22.04.1_amd64.deb ...
+Unpacking mysql-client-core-8.0 (8.0.45-0ubuntu0.22.04.1) ...
+Selecting previously unselected package mysql-common.
+Preparing to unpack .../mysql-common_5.8+1.0.8_all.deb ...
+Unpacking mysql-common (5.8+1.0.8) ...
+Selecting previously unselected package mysql-client-8.0.
+Preparing to unpack .../mysql-client-8.0_8.0.45-0ubuntu0.22.04.1_amd64.deb ...
+Unpacking mysql-client-8.0 (8.0.45-0ubuntu0.22.04.1) ...
+Selecting previously unselected package mysql-client.
+Preparing to unpack .../mysql-client_8.0.45-0ubuntu0.22.04.1_all.deb ...
+Unpacking mysql-client (8.0.45-0ubuntu0.22.04.1) ...
+Setting up mysql-common (5.8+1.0.8) ...
+update-alternatives: using /etc/mysql/my.cnf.fallback to provide /etc/mysql/my.cnf (my.cnf) in auto mode
+Setting up mysql-client-core-8.0 (8.0.45-0ubuntu0.22.04.1) ...
+Setting up mysql-client-8.0 (8.0.45-0ubuntu0.22.04.1) ...
+Setting up mysql-client (8.0.45-0ubuntu0.22.04.1) ...
+Processing triggers for man-db (2.10.2-1) ...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+Cloning into '.'...
+ Image app-backend Building 
+ Image app-frontend Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 992B done
+#1 DONE 0.0s
+
+#2 [backend internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.38kB done
+#2 DONE 0.1s
+
+#3 [frontend internal] load build definition from Dockerfile
+#3 transferring dockerfile: 915B done
+#3 DONE 0.1s
+
+#4 [frontend internal] load metadata for docker.io/library/nginx:1.25-alpine
+#4 ...
+
+#5 [frontend internal] load metadata for docker.io/library/node:20
+#5 DONE 2.2s
+
+#6 [backend internal] load metadata for docker.io/library/node:20-alpine
+#6 DONE 2.2s
+
+#4 [frontend internal] load metadata for docker.io/library/nginx:1.25-alpine
+#4 DONE 2.2s
+
+#7 [backend internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [backend internal] load build context
+#8 DONE 0.0s
+
+#9 [frontend internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.0s
+
+#10 [frontend production 1/4] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b4221a00
+#10 resolve docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b4221a00
+#10 resolve docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b4221a00 0.1s done
+#10 ...
+
+#8 [backend internal] load build context
+#8 transferring context: 722.26kB 0.1s done
+#8 DONE 0.3s
+
+#11 [frontend internal] load build context
+#11 transferring context: 9.68MB 0.2s done
+#11 DONE 0.4s
+
+#12 [backend builder 1/5] FROM docker.io/library/node:20-alpine@sha256:f598378b5240225e6beab68fa9f356db1fb8efe55173e6d4d8153113bb8f333c
+#12 resolve docker.io/library/node:20-alpine@sha256:f598378b5240225e6beab68fa9f356db1fb8efe55173e6d4d8153113bb8f333c 0.1s done
+#12 DONE 0.4s
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 resolve docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520 0.1s done
+#13 DONE 0.7s
+
+#10 [frontend production 1/4] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b4221a00
+#10 sha256:8a3742a9529dc5c00974dfcf5e465be9f1606ff8a1911527b3928cf86ad57465 0B / 1.40kB 0.2s
+#10 sha256:0d0c16747d2c6b6c26c064652afcb964c15f1b1e596ec052b2aa19b83948ae27 0B / 13.04MB 0.2s
+#10 sha256:8a3742a9529dc5c00974dfcf5e465be9f1606ff8a1911527b3928cf86ad57465 1.40kB / 1.40kB 0.5s done
+#10 sha256:5406ed7b06d9a94b5bd15843d2a1c7e38796a3ec5dc7f40f16f70cc1d045f453 0B / 1.21kB 0.2s
+#10 sha256:d4bca490e609acaaf54ca73363442d31a31fd136a47a20a12370cf2025f0a10b 0B / 393B 0.2s
+#10 sha256:0d0c16747d2c6b6c26c064652afcb964c15f1b1e596ec052b2aa19b83948ae27 3.15MB / 13.04MB 0.8s
+#10 sha256:0d0c16747d2c6b6c26c064652afcb964c15f1b1e596ec052b2aa19b83948ae27 13.04MB / 13.04MB 0.9s done
+#10 sha256:5406ed7b06d9a94b5bd15843d2a1c7e38796a3ec5dc7f40f16f70cc1d045f453 1.21kB / 1.21kB 0.6s done
+#10 sha256:d4bca490e609acaaf54ca73363442d31a31fd136a47a20a12370cf2025f0a10b 393B / 393B 0.5s done
+#10 sha256:13fcfbc94648785b918ecc1af675ac5187cdfc30f4fdaf9afa8bd2e9dedf548b 0B / 954B 0.2s
+#10 sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8 0B / 3.41MB 0.2s
+#10 sha256:e6ef242c157026935bf8a69e6cf19f8f6635e44507c813daf0cc644f2e22396b 0B / 629B 0.2s
+#10 sha256:fc21a1d387f514f53589abea6d67cd6b329dfd3c9059bc96a552af3b3c97b413 0B / 3.99MB 0.2s
+#10 sha256:13fcfbc94648785b918ecc1af675ac5187cdfc30f4fdaf9afa8bd2e9dedf548b 954B / 954B 0.5s done
+#10 sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8 3.41MB / 3.41MB 0.6s done
+#10 sha256:e6ef242c157026935bf8a69e6cf19f8f6635e44507c813daf0cc644f2e22396b 629B / 629B 0.6s done
+#10 extracting sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8
+#10 sha256:fc21a1d387f514f53589abea6d67cd6b329dfd3c9059bc96a552af3b3c97b413 2.10MB / 3.99MB 0.6s
+#10 sha256:fc21a1d387f514f53589abea6d67cd6b329dfd3c9059bc96a552af3b3c97b413 3.99MB / 3.99MB 0.6s done
+#10 extracting sha256:4abcf20661432fb2d719aaf90656f55c287f8ca915dc1c92ec14ff61e67fbaf8 0.3s done
+#10 extracting sha256:fc21a1d387f514f53589abea6d67cd6b329dfd3c9059bc96a552af3b3c97b413
+#10 extracting sha256:fc21a1d387f514f53589abea6d67cd6b329dfd3c9059bc96a552af3b3c97b413 0.5s done
+#10 extracting sha256:e6ef242c157026935bf8a69e6cf19f8f6635e44507c813daf0cc644f2e22396b 0.1s done
+#10 extracting sha256:13fcfbc94648785b918ecc1af675ac5187cdfc30f4fdaf9afa8bd2e9dedf548b
+#10 extracting sha256:13fcfbc94648785b918ecc1af675ac5187cdfc30f4fdaf9afa8bd2e9dedf548b 0.0s done
+#10 extracting sha256:d4bca490e609acaaf54ca73363442d31a31fd136a47a20a12370cf2025f0a10b
+#10 extracting sha256:d4bca490e609acaaf54ca73363442d31a31fd136a47a20a12370cf2025f0a10b 0.1s done
+#10 extracting sha256:5406ed7b06d9a94b5bd15843d2a1c7e38796a3ec5dc7f40f16f70cc1d045f453 0.1s done
+#10 extracting sha256:8a3742a9529dc5c00974dfcf5e465be9f1606ff8a1911527b3928cf86ad57465
+#10 extracting sha256:8a3742a9529dc5c00974dfcf5e465be9f1606ff8a1911527b3928cf86ad57465 0.1s done
+#10 extracting sha256:0d0c16747d2c6b6c26c064652afcb964c15f1b1e596ec052b2aa19b83948ae27
+#10 ...
+
+#12 [backend builder 1/5] FROM docker.io/library/node:20-alpine@sha256:f598378b5240225e6beab68fa9f356db1fb8efe55173e6d4d8153113bb8f333c
+#12 sha256:c7734204880fafbd6297ce1844e07c137d82ee814ac8b5fa6ac1a3659101d503 446B / 446B 0.5s done
+#12 sha256:62e0e1181d88da8ed0e2fda221e9446ad0f09a004a375193ad7a38e31ec4eab4 1.26MB / 1.26MB 0.5s done
+#12 sha256:d7f6aca05b78f475975eeac3898b7ef0a618937174c469650e05e81cbf8c5f46 43.23MB / 43.23MB 1.3s done
+#12 sha256:589002ba0eaed121a1dbf42f6648f29e5be55d5c8a6ee0f8eaa0285cc21ac153 3.86MB / 3.86MB 0.8s done
+#12 extracting sha256:589002ba0eaed121a1dbf42f6648f29e5be55d5c8a6ee0f8eaa0285cc21ac153 0.3s done
+#12 extracting sha256:d7f6aca05b78f475975eeac3898b7ef0a618937174c469650e05e81cbf8c5f46 3.4s done
+#12 DONE 5.3s
+
+#12 [backend builder 1/5] FROM docker.io/library/node:20-alpine@sha256:f598378b5240225e6beab68fa9f356db1fb8efe55173e6d4d8153113bb8f333c
+#12 extracting sha256:62e0e1181d88da8ed0e2fda221e9446ad0f09a004a375193ad7a38e31ec4eab4
+#12 extracting sha256:62e0e1181d88da8ed0e2fda221e9446ad0f09a004a375193ad7a38e31ec4eab4 0.3s done
+#12 extracting sha256:c7734204880fafbd6297ce1844e07c137d82ee814ac8b5fa6ac1a3659101d503
+#12 extracting sha256:c7734204880fafbd6297ce1844e07c137d82ee814ac8b5fa6ac1a3659101d503 0.1s done
+#12 DONE 5.7s
+
+#14 [backend builder 2/5] WORKDIR /app
+#14 ...
+
+#10 [frontend production 1/4] FROM docker.io/library/nginx:1.25-alpine@sha256:516475cc129da42866742567714ddc681e5eed7b9ee0b9e9c015e464b4221a00
+#10 extracting sha256:0d0c16747d2c6b6c26c064652afcb964c15f1b1e596ec052b2aa19b83948ae27 2.2s done
+#10 DONE 5.8s
+
+#14 [backend builder 2/5] WORKDIR /app
+#14 DONE 0.3s
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 sha256:83b3c9125d633249553bda5951068dae62502188829666829f9768c44d16f8f8 446B / 446B 0.5s done
+#13 sha256:ba468facea84d496a5f44f7447a16bba62311b49fbd1ebfc24f111d9449822c8 1.25MB / 1.25MB 0.5s done
+#13 sha256:37a9c0f04e9764654a76f94e4495dfb9b0bc55759635a2f718a412e0b64ea371 48.62MB / 48.62MB 2.8s done
+#13 sha256:fc696972ee168f8c0fda74937421afa1f74174fb7b92fc2e7457952bc2c85ce4 3.33kB / 3.33kB 0.5s done
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 54.53MB / 211.53MB 3.0s
+#13 sha256:6cf051f1897bf7109af670b243c7791c62723fc1ebbfa516af2522da6c8c99a9 48.23MB / 64.40MB 2.9s
+#13 sha256:9d2f29087bcd6d99efd909a99095549425cd63e27c71b3bf37f108c6b7c370f9 41.94MB / 48.49MB 2.6s
+#13 sha256:26fa3468d221545a43d2151f3977695a31857f9342ba842627d03c9fa1b2ae02 0B / 24.04MB 0.5s
+#13 sha256:9d2f29087bcd6d99efd909a99095549425cd63e27c71b3bf37f108c6b7c370f9 46.14MB / 48.49MB 2.7s
+#13 sha256:6cf051f1897bf7109af670b243c7791c62723fc1ebbfa516af2522da6c8c99a9 53.48MB / 64.40MB 3.2s
+#13 sha256:26fa3468d221545a43d2151f3977695a31857f9342ba842627d03c9fa1b2ae02 3.15MB / 24.04MB 0.8s
+#13 ...
+
+#15 [backend builder 3/5] COPY package*.json ./
+#15 DONE 0.4s
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 sha256:9d2f29087bcd6d99efd909a99095549425cd63e27c71b3bf37f108c6b7c370f9 48.49MB / 48.49MB 2.9s done
+#13 ...
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#17 [frontend production 2/4] RUN apk add --no-cache curl
+#17 1.022 fetch https://dl-cdn.alpinelinux.org/alpine/v3.19/main/x86_64/APKINDEX.tar.gz
+#17 1.513 fetch https://dl-cdn.alpinelinux.org/alpine/v3.19/community/x86_64/APKINDEX.tar.gz
+#17 3.012 OK: 46 MiB in 66 packages
+#17 DONE 3.5s
+
+#18 [backend production 3/7] RUN apk add --no-cache dumb-init mariadb-client
+#18 2.589 (1/5) Installing dumb-init (1.2.5-r3)
+#18 2.604 (2/5) Installing mariadb-common (11.4.9-r0)
+#18 2.672 (3/5) Installing ncurses-terminfo-base (6.5_p20251123-r0)
+#18 2.688 (4/5) Installing libncursesw (6.5_p20251123-r0)
+#18 2.700 (5/5) Installing mariadb-client (11.4.9-r0)
+#18 3.203 Executing busybox-1.37.0-r30.trigger
+#18 3.232 OK: 50.0 MiB in 23 packages
+#18 DONE 3.4s
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 110.10MB / 211.53MB 6.6s
+#13 sha256:6cf051f1897bf7109af670b243c7791c62723fc1ebbfa516af2522da6c8c99a9 64.40MB / 64.40MB 4.4s done
+#13 sha256:26fa3468d221545a43d2151f3977695a31857f9342ba842627d03c9fa1b2ae02 24.04MB / 24.04MB 2.7s done
+#13 extracting sha256:9d2f29087bcd6d99efd909a99095549425cd63e27c71b3bf37f108c6b7c370f9
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 123.73MB / 211.53MB 7.1s
+#13 ...
+
+#19 [backend production 4/7] RUN addgroup -g 1001 -S nodejs &&   adduser -S nodejs -u 1001
+#19 DONE 0.6s
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 137.36MB / 211.53MB 7.4s
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 148.90MB / 211.53MB 7.5s
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 165.68MB / 211.53MB 7.8s
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 179.31MB / 211.53MB 8.1s
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 192.94MB / 211.53MB 8.4s
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 204.47MB / 211.53MB 8.7s
+#13 sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 211.53MB / 211.53MB 8.9s done
+#13 extracting sha256:9d2f29087bcd6d99efd909a99095549425cd63e27c71b3bf37f108c6b7c370f9 6.2s done
+#13 DONE 12.7s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 extracting sha256:26fa3468d221545a43d2151f3977695a31857f9342ba842627d03c9fa1b2ae02
+#13 extracting sha256:26fa3468d221545a43d2151f3977695a31857f9342ba842627d03c9fa1b2ae02 0.7s done
+#13 DONE 13.4s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 extracting sha256:6cf051f1897bf7109af670b243c7791c62723fc1ebbfa516af2522da6c8c99a9
+#13 extracting sha256:6cf051f1897bf7109af670b243c7791c62723fc1ebbfa516af2522da6c8c99a9 2.6s done
+#13 DONE 15.9s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 extracting sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb
+#13 extracting sha256:505954b662451663b30768d461d6881e47bb272f6bc64e4d297f5cf79b9000cb 7.2s done
+#13 DONE 23.2s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 extracting sha256:fc696972ee168f8c0fda74937421afa1f74174fb7b92fc2e7457952bc2c85ce4 0.0s done
+#13 extracting sha256:37a9c0f04e9764654a76f94e4495dfb9b0bc55759635a2f718a412e0b64ea371
+#13 extracting sha256:37a9c0f04e9764654a76f94e4495dfb9b0bc55759635a2f718a412e0b64ea371 2.3s done
+#13 DONE 25.4s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#13 [frontend builder 1/6] FROM docker.io/library/node:20@sha256:a4545fc6f4f1483384ad5f4c71d34d71781c3779da407173ec6058079a718520
+#13 extracting sha256:ba468facea84d496a5f44f7447a16bba62311b49fbd1ebfc24f111d9449822c8 0.1s done
+#13 extracting sha256:83b3c9125d633249553bda5951068dae62502188829666829f9768c44d16f8f8 0.0s done
+#13 DONE 25.6s
+
+#20 [frontend builder 2/6] WORKDIR /app
+#20 DONE 0.2s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#21 [frontend builder 3/6] COPY package*.json ./
+#21 DONE 0.1s
+
+#22 [frontend builder 4/6] RUN npm install --legacy-peer-deps && npm cache clean --force
+#22 ...
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 45.51 npm warn deprecated scmp@2.1.0: Just use Node.js's crypto.timingSafeEqual()
+#16 47.19 npm warn deprecated lodash.get@4.4.2: This package is deprecated. Use the optional chaining (?.) operator instead.
+#16 47.40 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
+#16 47.68 npm warn deprecated lodash.isequal@4.5.0: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
+#16 48.14 npm warn deprecated crypto@1.0.1: This package is no longer supported. It's now a built-in Node module. If you've depended on crypto, you should switch to the one that's built-in.
+#16 52.32 npm warn deprecated glob@7.1.6: Glob versions prior to v9 are no longer supported
+#16 53.01 npm warn deprecated jpeg-exif@1.1.4: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+#16 ...
+
+#22 [frontend builder 4/6] RUN npm install --legacy-peer-deps && npm cache clean --force
+#22 37.35 
+#22 37.35 added 424 packages, and audited 425 packages in 37s
+#22 37.35 
+#22 37.35 40 packages are looking for funding
+#22 37.35   run `npm fund` for details
+#22 37.44 
+#22 37.44 7 vulnerabilities (3 moderate, 4 high)
+#22 37.44 
+#22 37.44 To address issues that do not require attention, run:
+#22 37.44   npm audit fix
+#22 37.44 
+#22 37.44 To address all issues, run:
+#22 37.44   npm audit fix --force
+#22 37.44 
+#22 37.44 Run `npm audit` for details.
+#22 37.45 npm notice
+#22 37.45 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+#22 37.45 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+#22 37.45 npm notice To update run: npm install -g npm@11.12.1
+#22 37.45 npm notice
+#22 37.99 npm warn using --force Recommended protections disabled.
+#22 DONE 40.5s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#23 [frontend builder 5/6] COPY . .
+#23 DONE 5.2s
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 ...
+
+#24 [frontend builder 6/6] RUN npm run build
+#24 1.717 
+#24 1.717 > arohan-frontend@0.0.1 build
+#24 1.717 > vite build
+#24 1.717 
+#24 2.339 plugin-legacy overrode 'build.target'. You should pass 'targets' as an option to this plugin with the list of legacy browsers to support instead.
+#24 2.342 vite v6.3.5 building for production...
+#24 2.467 transforming...
+#24 ...
+
+#16 [backend builder 4/5] RUN npm install && npm cache clean --force
+#16 70.08 
+#16 70.08 > backend@1.0.0 prepare
+#16 70.08 > husky || true
+#16 70.08 
+#16 70.25 .git can't be found
+#16 70.41 added 661 packages, and audited 662 packages in 1m
+#16 70.42 
+#16 70.42 104 packages are looking for funding
+#16 70.42   run `npm fund` for details
+#16 70.71 
+#16 70.71 13 vulnerabilities (2 low, 3 moderate, 8 high)
+#16 70.71 
+#16 70.71 To address issues that do not require attention, run:
+#16 70.71   npm audit fix
+#16 70.71 
+#16 70.71 To address all issues (including breaking changes), run:
+#16 70.71   npm audit fix --force
+#16 70.71 
+#16 70.71 Run `npm audit` for details.
+#16 70.75 npm notice
+#16 70.75 npm notice New major version of npm available! 10.8.2 -> 11.12.1
+#16 70.75 npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.12.1
+#16 70.75 npm notice To update run: npm install -g npm@11.12.1
+#16 70.75 npm notice
+#16 71.44 npm warn using --force Recommended protections disabled.
+#16 DONE 74.1s
+
+#24 [frontend builder 6/6] RUN npm run build
+#24 ...
+
+#25 [backend builder 5/5] COPY . .
+#25 DONE 6.6s
+
+#24 [frontend builder 6/6] RUN npm run build
+#24 37.61 
+#24 37.61 <--- Last few GCs --->
+#24 37.61 
+#24 37.61 [18:0x44195ad0]    34203 ms: Mark-Compact 448.5 (466.3) -> 444.8 (467.1) MB, 717.31 / 0.08 ms  (average mu = 0.148, current mu = 0.083) allocation failure; scavenge might not succeed
+#24 37.61 [18:0x44195ad0]    35009 ms: Mark-Compact 449.6 (467.7) -> 445.2 (467.6) MB, 693.60 / 0.07 ms  (average mu = 0.144, current mu = 0.139) allocation failure; scavenge might not succeed
+#24 37.61 
+#24 37.61 
+#24 37.61 <--- JS stacktrace --->
+#24 37.61 
+#24 37.61 FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory
+#24 37.61 ----- Native stack trace -----
+#24 37.61 
+#24 37.65  1: 0xb78db3 node::OOMErrorHandler(char const*, v8::OOMDetails const&) [node]
+#24 37.65  2: 0xee8300 v8::Utils::ReportOOMFailure(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [node]
+#24 37.65  3: 0xee85e7 v8::internal::V8::FatalProcessOutOfMemory(v8::internal::Isolate*, char const*, v8::OOMDetails const&) [node]
+#24 37.65  4: 0x10fb205  [node]
+#24 37.67  5: 0x10fb794 v8::internal::Heap::RecomputeLimits(v8::internal::GarbageCollector) [node]
+#24 37.68  6: 0x1112684 v8::internal::Heap::PerformGarbageCollection(v8::internal::GarbageCollector, v8::internal::GarbageCollectionReason, char const*) [node]
+#24 37.68  7: 0x1112e9c v8::internal::Heap::CollectGarbage(v8::internal::AllocationSpace, v8::internal::GarbageCollectionReason, v8::GCCallbackFlags) [node]
+#24 37.69  8: 0x10e91f1 v8::internal::HeapAllocator::AllocateRawWithLightRetrySlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment) [node]
+#24 37.69  9: 0x10ea385 v8::internal::HeapAllocator::AllocateRawWithRetryOrFailSlowPath(int, v8::internal::AllocationType, v8::internal::AllocationOrigin, v8::internal::AllocationAlignment) [node]
+#24 37.69 10: 0x10c69a6 v8::internal::Factory::AllocateRaw(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [node]
+#24 37.70 11: 0x10b7e4a v8::internal::FactoryBase<v8::internal::Factory>::AllocateRawArray(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [node]
+#24 37.70 12: 0x10c86a0 v8::internal::Factory::NewPropertyArray(int, v8::internal::AllocationType) [node]
+#24 37.71 13: 0x133ee44 v8::internal::JSObject::MigrateToMap(v8::internal::Isolate*, v8::internal::Handle<v8::internal::JSObject>, v8::internal::Handle<v8::internal::Map>, int) [node]
+#24 37.71 14: 0x13a3aa9 v8::internal::LookupIterator::ApplyTransitionToDataProperty(v8::internal::Handle<v8::internal::JSReceiver>) [node]
+#24 37.72 15: 0x13bb3c3 v8::internal::Object::TransitionAndWriteDataProperty(v8::internal::LookupIterator*, v8::internal::Handle<v8::internal::Object>, v8::internal::PropertyAttributes, v8::Maybe<v8::internal::ShouldThrow>, v8::internal::StoreOrigin) [node]
+#24 37.73 16: 0x1336541 v8::internal::JSObject::CreateDataProperty(v8::internal::LookupIterator*, v8::internal::Handle<v8::internal::Object>, v8::Maybe<v8::internal::ShouldThrow>) [node]
+#24 37.74 17: 0x11ba86e v8::internal::Runtime_DefineNamedOwnIC_Slow(int, unsigned long*, v8::internal::Isolate*) [node]
+#24 37.74 18: 0x195e476  [node]
+#24 38.32 Aborted (core dumped)
+#24 ERROR: process "/bin/sh -c npm run build" did not complete successfully: exit code: 134
+------
+ > [frontend builder 6/6] RUN npm run build:
+37.69 10: 0x10c69a6 v8::internal::Factory::AllocateRaw(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [node]
+37.70 11: 0x10b7e4a v8::internal::FactoryBase<v8::internal::Factory>::AllocateRawArray(int, v8::internal::AllocationType, v8::internal::AllocationAlignment) [node]
+37.70 12: 0x10c86a0 v8::internal::Factory::NewPropertyArray(int, v8::internal::AllocationType) [node]
+37.71 13: 0x133ee44 v8::internal::JSObject::MigrateToMap(v8::internal::Isolate*, v8::internal::Handle<v8::internal::JSObject>, v8::internal::Handle<v8::internal::Map>, int) [node]
+37.71 14: 0x13a3aa9 v8::internal::LookupIterator::ApplyTransitionToDataProperty(v8::internal::Handle<v8::internal::JSReceiver>) [node]
+37.72 15: 0x13bb3c3 v8::internal::Object::TransitionAndWriteDataProperty(v8::internal::LookupIterator*, v8::internal::Handle<v8::internal::Object>, v8::internal::PropertyAttributes, v8::Maybe<v8::internal::ShouldThrow>, v8::internal::StoreOrigin) [node]
+37.73 16: 0x1336541 v8::internal::JSObject::CreateDataProperty(v8::internal::LookupIterator*, v8::internal::Handle<v8::internal::Object>, v8::Maybe<v8::internal::ShouldThrow>) [node]
+37.74 17: 0x11ba86e v8::internal::Runtime_DefineNamedOwnIC_Slow(int, unsigned long*, v8::internal::Isolate*) [node]
+37.74 18: 0x195e476  [node]
+38.32 Aborted (core dumped)
+------
+Dockerfile:17
+
+--------------------
+
+  15 |     
+
+  16 |     # Build the application
+
+  17 | >>> RUN npm run build
+
+  18 |     
+
+  19 |     # Stage 2: Production stage with Nginx
+
+--------------------
+
+target frontend: failed to solve: process "/bin/sh -c npm run build" did not complete successfully: exit code: 134
+

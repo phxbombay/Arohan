@@ -1,6 +1,12 @@
 #!/bin/bash
 set -e
 
+# Redirect all output to log and console
+exec > >(tee -a /var/log/arohan-deploy.log | logger -t user-data -s 2>/dev/console) 2>&1
+
+# Add user's SSH key for recovery (since AWS key name mismatch)
+echo "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDsqZv4dMULmIaU3gcpJjJlraX0nkhsBQppNsUDXvKzA4+tR2eyK3BW00U1kuf1izkB3AAtJyAp9LGdR/b6YunhuAdCpaOtnJ+dKAGSDPFOg4r5QmdWMU38V42qjnZKHg+P59Gd5YBJoEPuFpoXarfLlvfU8KXjxAIlejJRcEopo3B0pW7vneQ69VTtzntlkxICBwFCM5uec3e4rdpwl2mu8t0vlrvTqYH0p7o2ztA5lr8okgTSZJn/dDQiN7qAvexBWES1ulH28IIv5i8WVTpvEpxjaVqOxKGGeiyy2nZ456cwPtM56qwp2soP7T7yveCipmGdzz4+lp6MkZimm/Rf" >> /home/ubuntu/.ssh/authorized_keys
+
 # Setup Swap Space (Prevents OOM on t3.micro)
 sudo fallocate -l 2G /swapfile
 sudo chmod 600 /swapfile
@@ -35,7 +41,8 @@ mkdir -p /home/ubuntu/app
 chown ubuntu:ubuntu /home/ubuntu/app
 
 cd /home/ubuntu/app
-sudo -u ubuntu rm -rf ./* ./.* 2>/dev/null
+# Clear directory safely without failing on . and ..
+sudo -u ubuntu sh -c 'rm -rf ./* ./.??* 2>/dev/null || true'
 sudo -u ubuntu git clone https://github.com/phxbombay/Arohan.git .
 
 # Create .env file with full production configuration
@@ -71,31 +78,37 @@ VITE_API_URL=${vite_api_url}
 EOF
 chown ubuntu:ubuntu /home/ubuntu/app/.env
 
-# Start containers as ubuntu user (who is in the docker group)
+# Start containers (run as root since we are in cloud-init)
 cd /home/ubuntu/app
-sudo -u ubuntu cp .env /home/ubuntu/app/.env.production
-sudo -u ubuntu docker compose -f docker-compose.prod.yml up --build -d
+cp .env /home/ubuntu/app/.env.production
+mkdir -p /home/ubuntu/app/ssl  # Ensure ssl dir exists for volume mount
+docker compose -f docker-compose.prod.yml up --build -d
 
 # ---------------------------------------------------------
 # Step 6: Database Initialization (Automated for First Run)
 # ---------------------------------------------------------
-echo "Waiting for containers to stabilize..."
-sleep 60
-
-# Find backend container name dynamically
-BACKEND_CONTAINER=$(sudo docker ps --format '{{.Names}}' | grep "backend" | head -n 1)
+echo "Waiting for containers to stabilize (120s)..."
+for i in {1..12}; do
+    echo "Check $i of 12..."
+    BACKEND_CONTAINER=$(sudo docker ps --filter "name=backend" --format '{{.Names}}' | head -n 1)
+    if [ -n "$BACKEND_CONTAINER" ]; then
+        echo "Backend is UP: $BACKEND_CONTAINER"
+        break
+    fi
+    sleep 10
+done
 
 if [ -n "$BACKEND_CONTAINER" ]; then
     # Initialize DB schema
     echo "Running schema initialization..."
-    sudo docker exec $BACKEND_CONTAINER sh -c "mysql -h ${db_host} -u ${db_user} -p'${db_password}' ${db_name} < schema_mysql.sql" && echo "Schema initialized successfully." || echo "Schema already exists or initialization skipped."
+    docker exec $BACKEND_CONTAINER sh -c "mysql -h ${db_host} -u ${db_user} -p'${db_password}' ${db_name} < schema_mysql.sql" && echo "Schema initialized successfully." || echo "Schema already exists or initialization skipped."
     
     # Run migrations
     echo "Running migrations..."
-    sudo docker exec $BACKEND_CONTAINER node migrate.js && echo "Migrations completed successfully." || echo "Migrations failed or already applied."
+    docker exec $BACKEND_CONTAINER node migrate.js && echo "Migrations completed successfully." || echo "Migrations failed or already applied."
 else
-    echo "ERROR: Backend container not found after 60s. Checking logs..."
-    sudo docker compose -f docker-compose.prod.yml logs
+    echo "ERROR: Backend container not found after 120s. Checking logs..."
+    docker compose -f docker-compose.prod.yml logs
 fi
 
 echo "Docker & App Configured Successfully" > /home/ubuntu/install_status.txt
