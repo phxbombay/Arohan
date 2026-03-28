@@ -26,12 +26,13 @@ window.addEventListener('unhandledrejection',function(e){var m=e.reason?(e.reaso
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    // criticalScriptsPlugin(), // Removed aggressive error trap
+    criticalScriptsPlugin(), // Re-enabled aggressive error trap for diagnostics
     react(),
     legacy({
-      targets: ['defaults', 'not IE 11'],
-      additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
-      modernPolyfills: true, // Polyfill modern browsers (iOS 11-13)
+      targets: ['defaults', 'not IE 11', 'ios >= 12', 'safari >= 12'],
+      additionalLegacyPolyfills: ['regenerator-runtime/runtime', 'core-js/modules/es.object.from-entries', 'core-js/modules/es.array.flat-map'],
+      renderLegacyChunks: true,
+      modernPolyfills: true, // Auto-detect modern browser polyfills (iOS 11-13)
     })
   ],
 

@@ -104,7 +104,7 @@ export default function App() {
         <Router>
           <ScrollToTop />
           <Toaster position="top-right" richColors />
-          <div style={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
             <Header />
             <main style={{ flex: 1 }}>
               <Suspense fallback={<LoadingFallback />}>

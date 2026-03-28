@@ -39,13 +39,13 @@ const theme = createTheme({
                 },
                 body: {
                     width: '100%',
-                    height: '100%',
+                    minHeight: ['100vh', '-webkit-fill-available'], // Fix for iOS 100vh bug
                     margin: 0,
                     padding: 0,
-                    paddingTop: 'env(safe-area-inset-top)',
-                    paddingBottom: 'env(safe-area-inset-bottom)',
-                    paddingLeft: 'env(safe-area-inset-left)',
-                    paddingRight: 'env(safe-area-inset-right)',
+                    paddingTop: 'env(safe-area-inset-top, 0px)',
+                    paddingBottom: 'env(safe-area-inset-bottom, 0px)',
+                    paddingLeft: 'env(safe-area-inset-left, 0px)',
+                    paddingRight: 'env(safe-area-inset-right, 0px)',
                     overflowX: 'hidden', // Prevent horizontal scroll
                 },
                 '#root': {
