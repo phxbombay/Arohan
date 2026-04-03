@@ -19,14 +19,15 @@ const setTokenCookie = (res, token) => {
 // @access  Public
 export const registerUser = async (req, res, next) => {
     try {
-        const { full_name, email, password, role, phone_number } = req.body;
+        const { full_name, email, password, role, phone_number, date_of_birth } = req.body;
 
         const result = await authService.register({
             full_name,
             email,
             password,
             role,
-            phone_number
+            phone_number,
+            date_of_birth
         });
 
         // Set refresh token cookie

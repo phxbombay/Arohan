@@ -33,6 +33,8 @@ export interface RegisterData {
     email: string;
     password: string;
     role?: UserRole;
+    date_of_birth?: string;
+    phone_number?: string;
 }
 
 /**

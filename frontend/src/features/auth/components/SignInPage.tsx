@@ -32,6 +32,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@features/auth/hooks/useAuth';
 import type { LoginCredentials, RegisterData } from '@features/auth/types/auth.types';
+import SEO from '../../../app/components/SEO';
 
 export function SignInPage() {
     const [isLogin, setIsLogin] = useState(true);
@@ -57,7 +58,8 @@ export function SignInPage() {
         email: '',
         password: '',
         contact: '',
-        countryCode: '+91'
+        countryCode: '+91',
+        dob: ''
     });
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -87,7 +89,7 @@ export function SignInPage() {
                     email: formData.email,
                     password: formData.password,
                     role: 'patient',
-                    // @ts-ignore - added to backend
+                    date_of_birth: formData.dob,
                     phone_number: `${formData.countryCode}${formData.contact}`
                 };
                 console.log('🤠 SignInPage: Calling register with payload:', registerPayload);
@@ -191,6 +193,14 @@ export function SignInPage() {
                 py: 12
             }}
         >
+            <SEO
+                title={isLogin ? 'Sign In - Arohan Health' : 'Create Account - Arohan Health'}
+                description={isLogin ? 'Access your Arohan Health account.' : 'Register for a new Arohan Health account.'}
+                canonical={`https://arohanhealth.com/signin`}
+                keywords="arohan health, sign in, register, login, create account, elderly care platform"
+                image="https://arohanhealth.com/images/default-meta.jpg"
+                url={`https://arohanhealth.com/signin`}
+            />
             <Container maxWidth="sm">
                 {/* Header */}
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 3 }}>
@@ -419,6 +429,21 @@ export function SignInPage() {
                                             }
                                         />
                                     </Box>
+                                )}
+
+                                {/* Date of Birth (Register only) */}
+                                {!isLogin && (
+                                    <TextField
+                                        id="dob"
+                                        name="dob"
+                                        label="Date of Birth"
+                                        type="date"
+                                        required
+                                        fullWidth
+                                        value={formData.dob}
+                                        onChange={handleChange}
+                                        InputLabelProps={{ shrink: true }}
+                                    />
                                 )}
 
                                 <FormControlLabel

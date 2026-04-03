@@ -25,8 +25,13 @@ export const registerSchema = z.object({
         .regex(/[0-9]/, 'Password must contain at least one number'),
 
     phone_number: z.string()
-        .regex(/^\+?[\d\s-]{10,15}$/, 'Phone number must be valid (10-15 digits)')
-        .trim(),
+        .regex(/^\+?[\d\s\-(]{7,20}$/, 'Phone number must be valid (7-20 digits)')
+        .trim()
+        .optional(),
+
+    date_of_birth: z.string()
+        .regex(/^\d{4}-\d{2}-\d{2}$/, 'Date of birth must be in YYYY-MM-DD format')
+        .optional(),
 
     role: z.enum(['patient', 'doctor', 'admin', 'physician', 'hospital_admin', 'partner']).optional().default('patient')
 });

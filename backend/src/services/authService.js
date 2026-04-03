@@ -20,7 +20,7 @@ export const authService = {
      * @returns {Promise<Object>}
      */
     async register(userData) {
-        const { full_name, email, password, role = 'patient', phone_number } = userData;
+        const { full_name, email, password, role = 'patient', phone_number, date_of_birth } = userData;
 
         logger.info('AuthService register() - Start', { email, role, phone_number, passwordLength: password.length });
 
@@ -43,6 +43,7 @@ export const authService = {
             password_hash,
             role,
             phone_number,
+            date_of_birth,
             is_active: true // Auto-activate
         });
 

@@ -57,15 +57,15 @@ export const userRepository = {
      */
     async create(userData) {
         try {
-            const { full_name, email, password_hash, role = 'patient', phone_number, is_active = true } = userData;
+            const { full_name, email, password_hash, role = 'patient', phone_number, date_of_birth, is_active = true } = userData;
             const user_id = generateUUID();
 
             const finalRole = role || 'patient';
 
             await pool.query(
-                `INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, is_active) 
-                 VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [user_id, full_name, email, password_hash, finalRole, phone_number, is_active]
+                `INSERT INTO users (user_id, full_name, email, password_hash, role, phone_number, date_of_birth, is_active) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [user_id, full_name, email, password_hash, finalRole, phone_number || null, date_of_birth || null, is_active]
             );
 
             return { user_id, full_name, email, role: finalRole };
