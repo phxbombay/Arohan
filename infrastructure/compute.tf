@@ -15,9 +15,10 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "app_server" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = var.instance_type
-  key_name      = var.key_name
+  ami                  = data.aws_ami.ubuntu.id
+  instance_type        = var.instance_type
+  key_name             = var.key_name
+  iam_instance_profile = aws_iam_instance_profile.app_instance_profile.name
 
   vpc_security_group_ids = [
     aws_security_group.backend_sg.id
@@ -60,3 +61,34 @@ resource "aws_lb_target_group_attachment" "app_tg_attachment" {
   port             = 80 # Forwarding to Frontend (Standard HTTP)
 }
 
+resource "aws_iam_role" "app_instance_role" {
+  name = "arohan-app-instance-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_policy" {
+  role       = aws_iam_role.app_instance_role.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_policy" {
+  role       = aws_iam_role.app_instance_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "app_instance_profile" {
+  name = "arohan-app-instance-profile"
+  role = aws_iam_role.app_instance_role.name
+}
