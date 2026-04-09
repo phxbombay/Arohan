@@ -51,7 +51,7 @@ export function HowItWorks() {
 
         <Grid container spacing={4}>
           {steps.map((step, index) => (
-            <Grid item xs={12} md={6} lg={3} key={index}>
+            <Grid size={{ xs: 12, md: 6, lg: 3 }} key={index}>
               <Box sx={{ position: 'relative' }}>
                 <Paper
                   elevation={0}

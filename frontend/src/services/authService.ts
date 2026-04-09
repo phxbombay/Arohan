@@ -27,20 +27,20 @@ export const authService = {
         const response = await apiClient.post<AuthResponse>('/auth/login', credentials);
 
         // Store token and user data
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
 
-        return response;
+        return response.data;
     },
 
     async register(data: RegisterData): Promise<AuthResponse> {
         const response = await apiClient.post<AuthResponse>('/auth/register', data);
 
         // Store token and user data
-        localStorage.setItem('token', response.token);
-        localStorage.setItem('user', JSON.stringify(response.user));
+        localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
 
-        return response;
+        return response.data;
     },
 
     logout() {

@@ -77,6 +77,7 @@ export function SOSButton() {
           <Fab
             color="error"
             aria-label="SOS"
+            data-testid="sos-button"
             onClick={handleSOSClick}
             sx={{ width: { xs: 56, md: 64 }, height: { xs: 56, md: 64 } }}
           >

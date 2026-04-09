@@ -223,7 +223,7 @@ export function NearbyHospitals() {
                 {/* Search & Stats */}
                 <Paper elevation={1} sx={{ p: 3, mb: 6, borderRadius: 3 }}>
                     <Grid container spacing={3} alignItems="center">
-                        <Grid xs={12} md={8}>
+                        <Grid size={{ xs: 12, md: 8 }}>
                             <TextField
                                 fullWidth
                                 placeholder="Search hospitals by name or location..."
@@ -238,7 +238,7 @@ export function NearbyHospitals() {
                                 }}
                             />
                         </Grid>
-                        <Grid xs={12} md={4}>
+                        <Grid size={{ xs: 12, md: 4 }}>
                             <Box sx={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -261,7 +261,7 @@ export function NearbyHospitals() {
                 {/* Hospital Grid */}
                 <Grid container spacing={4}>
                     {filteredHospitals.map((hospital) => (
-                        <Grid xs={12} md={6} lg={4} key={hospital.id}>
+                        <Grid size={{ xs: 12, md: 6, lg: 4 }} key={hospital.id}>
                             <Card
                                 sx={{
                                     height: '100%',
@@ -286,7 +286,7 @@ export function NearbyHospitals() {
                                     </Box>
 
                                     <Grid container spacing={2} sx={{ mb: 3 }}>
-                                        <Grid xs={6}>
+                                        <Grid size={{ xs: 6 }}>
                                             <Box sx={{
                                                 p: 1.5,
                                                 borderRadius: 2,
@@ -299,7 +299,7 @@ export function NearbyHospitals() {
                                                 <Typography variant="h6" fontWeight="bold">{hospital.availableBeds} Beds</Typography>
                                             </Box>
                                         </Grid>
-                                        <Grid xs={6}>
+                                        <Grid size={{ xs: 6 }}>
                                             <Box sx={{ p: 1.5, borderRadius: 2, bgcolor: 'info.50', border: 1, borderColor: 'info.light', color: 'info.dark' }}>
                                                 <Typography variant="caption" fontWeight="bold" sx={{ opacity: 0.8, textTransform: 'uppercase' }}>Wait Time</Typography>
                                                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
@@ -311,7 +311,7 @@ export function NearbyHospitals() {
                                     </Grid>
 
                                     <Grid container spacing={2}>
-                                        <Grid xs={6}>
+                                        <Grid size={{ xs: 6 }}>
                                             <Button
                                                 fullWidth
                                                 variant="outlined"
@@ -322,7 +322,7 @@ export function NearbyHospitals() {
                                                 Call Now
                                             </Button>
                                         </Grid>
-                                        <Grid xs={6}>
+                                        <Grid size={{ xs: 6 }}>
                                             <Button
                                                 fullWidth
                                                 variant="contained"

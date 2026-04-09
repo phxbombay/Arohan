@@ -188,7 +188,7 @@ export function FAQ() {
             <Container sx={{ py: { xs: 6, md: 10 } }}>
                 <Grid container spacing={4}>
                     {/* Categories Sidebar */}
-                    <Grid item xs={12} md={3}>
+                    <Grid size={{ xs: 12, md: 3 }}>
                         <Card sx={{ p: 2, position: 'sticky', top: 24 }}>
                             <Typography variant="h6" fontWeight="bold" gutterBottom>
                                 Categories
@@ -209,7 +209,7 @@ export function FAQ() {
                     </Grid>
 
                     {/* FAQ List */}
-                    <Grid item xs={12} md={9}>
+                    <Grid size={{ xs: 12, md: 9 }}>
                         {filteredFAQs.length === 0 ? (
                             <Box sx={{ textAlign: 'center', py: 8 }}>
                                 <Typography variant="h6" color="text.secondary">

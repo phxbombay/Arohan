@@ -99,7 +99,7 @@ export function PaymentButton({ amount, onSuccess, onError }: PaymentButtonProps
                 prefill: {
                     name: user?.full_name,
                     email: user?.email,
-                    contact: user?.contact
+                    contact: (user as any)?.contact
                 },
                 notes: {
                     address: "Arohan Corporate Office"

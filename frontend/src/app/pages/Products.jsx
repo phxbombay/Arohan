@@ -149,6 +149,7 @@ export function Products() {
                             <Stack direction="row" spacing={2} justifyContent="center">
                                 <Button
                                     onClick={handleAddToCart}
+                                    data-testid="add-to-cart-btn"
                                     variant="contained"
                                     size="large"
                                     sx={{
@@ -363,6 +364,7 @@ export function Products() {
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                         <Button
                             onClick={handleAddToCart}
+                            data-testid="add-to-cart-btn-cta"
                             variant="contained"
                             size="large"
                             sx={{
