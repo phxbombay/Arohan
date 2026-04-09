@@ -54,6 +54,7 @@ export function Header() {
     { name: "Nearby Hospitals", path: "/nearby-hospitals" },
     { name: "Blog", path: "/blog" },
     { name: "How It Works", path: "/how-it-works" },
+    { name: "Testimonies", path: "/testimonies" },
   ];
 
   const NavButton = ({ name, path }: { name: string, path: string }) => (
