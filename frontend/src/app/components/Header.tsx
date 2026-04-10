@@ -30,6 +30,8 @@ import logo from "../../assets/logo_v4.jpg";
 import { useAuth } from "../../features/auth/hooks/useAuth";
 // @ts-ignore
 import { useCartStore } from "../../context/cartStore";
+// @ts-ignore
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -127,7 +129,8 @@ export function Header() {
             )}
 
             {/* Actions */}
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <LanguageSwitcher />
               {/* Cart for Desktop */}
               {isDesktop && (
                 <IconButton component={Link} to="/cart" sx={{ color: 'text.primary', '&:hover': { color: 'primary.main', bgcolor: 'primary.50' } }}>

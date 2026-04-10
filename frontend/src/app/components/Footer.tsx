@@ -85,7 +85,6 @@ export function Footer() {
                   { label: 'How It Works', path: '/how-it-works' },
                   { label: 'Nearby Hospitals', path: '/nearby-hospitals' },
                   { label: 'Partner Hospitals', path: '/partner-hospitals' },
-                  { label: 'Testimonies', path: '/testimonies' },
                   { label: 'Careers', path: '/careers' }
                 ].map((link) => (
                   <MuiLink
