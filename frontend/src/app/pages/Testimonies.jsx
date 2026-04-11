@@ -151,7 +151,7 @@ export function Testimonies() {
                 <Container maxWidth="lg">
                     <Grid container spacing={4}>
                         {projects.map((project, i) => (
-                            <Grid item xs={12} key={i}>
+                            <Grid size={{ xs: 12 }} key={i}>
                                 <MotionCard
                                     {...fadeUp(i * 0.15)}
                                     elevation={0}
@@ -175,7 +175,7 @@ export function Testimonies() {
                                         <Grid container spacing={4} alignItems="flex-start">
 
                                             {/* Left column — meta */}
-                                            <Grid item xs={12} md={3}>
+                                            <Grid size={{ xs: 12, md: 3 }}>
                                                 <Stack spacing={2.5}>
                                                     {/* Large number */}
                                                     <Typography
@@ -248,7 +248,7 @@ export function Testimonies() {
                                             </Grid>
 
                                             {/* Right column — content */}
-                                            <Grid item xs={12} md={9}>
+                                            <Grid size={{ xs: 12, md: 9 }}>
                                                 {/* Quote icon */}
                                                 <QuoteIcon sx={{ color: project.accentColor, opacity: 0.25, fontSize: 56, mb: -1, ml: -1 }} />
 

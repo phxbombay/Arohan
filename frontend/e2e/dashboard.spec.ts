@@ -3,19 +3,18 @@ import { test, expect } from '@playwright/test';
 test.describe('Dashboard Functionality', () => {
     // Helper to login before tests
     test.beforeEach(async ({ page }) => {
-        await page.goto('/login');
-        // Use a known seed user or register fresh if needed. 
-        // ideally use a global setup, but for now we register one on fly or assume one exists.
-        // Let's use the one from auth spec if order matters, or creating a new one.
+        await page.goto('/signin');
+        
         const email = `dashboard${Date.now()}@test.com`;
         const password = 'Password@123';
 
-        // Register quickly via API or UI? UI is safer for full flow
-        await page.goto('/register');
-        await page.fill('input[name="full_name"]', 'Dashboard User');
+        // Register quickly via UI
+        await page.click('button:has-text("create a new account")');
+        await page.fill('input[name="name"]', 'Dashboard User');
         await page.fill('input[name="email"]', email);
         await page.fill('input[name="password"]', password);
-        await page.fill('input[name="confirmPassword"]', password);
+        await page.fill('input[name="contact"]', '9876543210');
+        await page.fill('input[name="dob"]', '1990-01-01');
         await page.click('button[type="submit"]');
         await page.waitForURL(/.*dashboard/);
     });

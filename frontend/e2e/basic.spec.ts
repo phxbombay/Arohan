@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('homepage has title and critical elements', async ({ page }) => {
-    await page.goto('http://localhost:8080/');
+    await page.goto('/');
 
     // Check title
     await expect(page).toHaveTitle(/Arohan/);
@@ -21,7 +21,7 @@ test('homepage has title and critical elements', async ({ page }) => {
 test('cookie consent banner appears', async ({ page }) => {
     // Clear cookies context
     await page.context().clearCookies();
-    await page.goto('http://localhost:8080/');
+    await page.goto('/');
 
     // Check for cookie banner
     await expect(page.getByText('We value your privacy')).toBeVisible();

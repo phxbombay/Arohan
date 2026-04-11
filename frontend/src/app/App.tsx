@@ -45,6 +45,7 @@ const HospitalAdminDashboard = lazy(() => import("./pages/admin/HospitalAdminDas
 const PhysicianDashboard = lazy(() => import("./pages/physician/PhysicianDashboard.jsx").then(module => ({ default: module.PhysicianDashboard })));
 const PatientDashboard = lazy(() => import("./pages/patient/PatientDashboard.jsx").then(module => ({ default: module.PatientDashboard })));
 const UsersPage = lazy(() => import("./pages/admin/UsersPage.jsx").then(module => ({ default: module.UsersPage })));
+const Testimonies = lazy(() => import("./pages/Testimonies").then(module => ({ default: module.Testimonies })));
 // ... imports
 
 // ... routes
@@ -186,6 +187,7 @@ export default function App() {
 
                   {/* Payment Demo */}
                   <Route path="/payment-demo" element={<PaymentDemo />} />
+                  <Route path="/testimonies" element={<Testimonies />} />
 
                   <Route path="/admin" element={
                     <ProtectedRoute allowedRoles={['admin']}>
