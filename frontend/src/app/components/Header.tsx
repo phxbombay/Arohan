@@ -26,7 +26,7 @@ import {
   Dashboard as DashboardIcon,
   Logout as LogoutIcon
 } from "@mui/icons-material";
-import logo from "../../assets/logo_v4.jpg";
+import logo from "../../assets/logo.png";
 import { useAuth } from "../../features/auth/hooks/useAuth";
 // @ts-ignore
 import { useCartStore } from "../../context/cartStore";
@@ -56,7 +56,7 @@ export function Header() {
     { name: "Nearby Hospitals", path: "/nearby-hospitals" },
     { name: "Blog", path: "/blog" },
     { name: "How It Works", path: "/how-it-works" },
-    { name: "Testimonies", path: "/testimonies" },
+    { name: "Projects Overview", path: "/projects-overview" },
   ];
 
   const NavButton = ({ name, path }: { name: string, path: string }) => (
@@ -118,8 +118,7 @@ export function Header() {
                   <NavButton
                     name={
                       user?.role === 'admin' ? 'Admin Panel' :
-                        user?.role === 'physician' ? 'Physician Panel' :
-                          user?.role === 'hospital_admin' ? 'Hospital Panel' :
+                        user?.role === 'doctor' ? 'Physician Panel' :
                             'Dashboard'
                     }
                     path="/dashboard"

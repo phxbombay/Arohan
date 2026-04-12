@@ -1,0 +1,7 @@
+[
+    {
+        "Name": "arohan-alb",
+        "DNS": "arohan-alb-532435082.ap-south-1.elb.amazonaws.com",
+        "State": "active"
+    }
+]

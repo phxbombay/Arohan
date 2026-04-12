@@ -45,7 +45,7 @@ const HospitalAdminDashboard = lazy(() => import("./pages/admin/HospitalAdminDas
 const PhysicianDashboard = lazy(() => import("./pages/physician/PhysicianDashboard.jsx").then(module => ({ default: module.PhysicianDashboard })));
 const PatientDashboard = lazy(() => import("./pages/patient/PatientDashboard.jsx").then(module => ({ default: module.PatientDashboard })));
 const UsersPage = lazy(() => import("./pages/admin/UsersPage.jsx").then(module => ({ default: module.UsersPage })));
-const Testimonies = lazy(() => import("./pages/Testimonies").then(module => ({ default: module.Testimonies })));
+const ProjectsOverview = lazy(() => import("./pages/Testimonies").then(module => ({ default: module.ProjectsOverview })));
 // ... imports
 
 // ... routes
@@ -78,7 +78,8 @@ const MonitoringDashboard = lazy(() => import("./pages/admin/MonitoringDashboard
 
 import { ThemeProvider, CssBaseline, Box, CircularProgress } from "@mui/material";
 import theme from "./styles/theme";
-import { AdminLayout } from "./components/layout/AdminLayout";
+// import { AdminLayout } from "./components/layout/AdminLayout";
+import { Outlet } from "react-router-dom";
 import { HelmetProvider } from 'react-helmet-async';
 import { CookieConsent } from './components/CookieConsent';
 import { PWAInstallPrompt } from './components/PWAInstallPrompt';
@@ -121,7 +122,7 @@ export default function App() {
                   <Route path="/blog" element={<Blog />} />
 
                   {/* Segments */}
-                  <Route path="/for-elderly" element={<Elderly />} />
+                  <Route path="/individuals-families" element={<Elderly />} />
                   <Route path="/for-doctors" element={<Doctors />} />
                   <Route path="/for-corporate" element={<Corporate />} />
 
@@ -175,7 +176,7 @@ export default function App() {
                   <Route path="/help" element={<HelpCenter />} />
 
                   {/* New Phase 1 Pages */}
-                  <Route path="/elderly-families" element={<ElderlyEnhanced />} />
+                  <Route path="/for-elderly-legacy" element={<ElderlyEnhanced />} />
                   <Route path="/healthcare-professionals" element={<DoctorsEnhanced />} />
                   <Route path="/corporate-insurance" element={<CorporateEnhanced />} />
                   <Route path="/team" element={<Team />} />
@@ -184,14 +185,15 @@ export default function App() {
                   <Route path="/contact-enhanced" element={<ContactEnhanced />} />
                   <Route path="/early-access" element={<EarlyAccess />} />
                   <Route path="/partners" element={<Partners />} />
+                  <Route path="/impact" element={<Impact />} />
 
                   {/* Payment Demo */}
                   <Route path="/payment-demo" element={<PaymentDemo />} />
-                  <Route path="/testimonies" element={<Testimonies />} />
+                  <Route path="/projects-overview" element={<ProjectsOverview />} />
 
                   <Route path="/admin" element={
                     <ProtectedRoute allowedRoles={['admin']}>
-                      <AdminLayout />
+                      <Outlet />
                     </ProtectedRoute>
                   }>
                     <Route index element={<AdminDashboard />} />

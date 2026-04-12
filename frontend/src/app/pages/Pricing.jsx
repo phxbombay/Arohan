@@ -289,6 +289,7 @@ export function Pricing() {
                         <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
                             <Button
                                 onClick={handleAddAnnualDeal}
+                                data-testid="annual-deal-btn"
                                 variant="contained"
                                 color="success"
                                 size="large"

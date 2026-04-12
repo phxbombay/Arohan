@@ -61,13 +61,13 @@ const fadeUp = (delay = 0) => ({
 });
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export function Testimonies() {
+export function ProjectsOverview() {
     return (
         <Box sx={{ minHeight: '100dvh', bgcolor: 'background.default' }}>
             <SEO
-                title="Testimonies — Arohan Health"
+                title="Projects Overview — Arohan Health"
                 description="Real-world projects and innovations built with Arohan's technology ecosystem — from AI eye-tracking to dynamic portfolio platforms."
-                canonical="https://arohanhealth.com/testimonies"
+                canonical="https://arohanhealth.com/projects-overview"
                 type="website"
             />
 
@@ -125,7 +125,7 @@ export function Testimonies() {
                                 letterSpacing: '-1px'
                             }}
                         >
-                            Testimonies
+                            Projects Overview
                         </Typography>
 
                         <Typography

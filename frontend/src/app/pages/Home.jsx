@@ -31,7 +31,7 @@ import { useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
-import heroImage from '../../assets/images/hero_new_1.jpg';
+import heroImage from '../../assets/images/hero_prevention.png';
 import { trackButtonClick } from '../../utils/eventTracking';
 
 
@@ -59,7 +59,7 @@ export function Home() {
             <SEO
                 title="AI-Powered Emergency Prevention & First Aid"
                 description="A discreet wearable plugin chip and intelligent app that assists in health monitoring and emergency detection, providing alerts to families and guidance for first responders."
-                keywords="health monitoring, elderly care, emergency detection, first aid, AI health, wearable health device, fall detection, heart monitoring"
+                keywords="health monitoring, preventive care, individuals and families, emergency detection, first aid, AI health, wearable health device, health safety, heart monitoring"
                 canonical="https://arohanhealth.com/"
                 type="website"
                 image="https://arohanhealth.com/images/hero-health-monitoring.jpg"
@@ -162,7 +162,7 @@ export function Home() {
 
                                 {/* Main Image Container */}
                                 <Box sx={{ width: '70%', height: '70%', borderRadius: '50%', overflow: 'hidden', border: 8, borderColor: 'white', boxShadow: 10, position: 'relative', zIndex: 2 }}>
-                                    <img src={heroImage} alt="Happy Senior" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                    <img src={heroImage} alt="Proactive Health Care" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                                 </Box>
 
                                 {/* Floating Cards */}
@@ -392,7 +392,7 @@ export function Home() {
                         </Box>
                         <Grid container spacing={4} justifyContent="center">
                             {[
-                                { title: "For Individuals & Families", desc: "Independent living with 24/7 safety monitoring and peace of mind.", link: "/elderly-families", color: "primary.main" },
+                                { title: "For Individuals & Families", desc: "Independent living with 24/7 safety monitoring and peace of mind.", link: "/individuals-families", color: "primary.main" },
                                 { title: "For Doctors", desc: "Real-time patient vitals and seamless API integration.", link: "/healthcare-professionals", color: "secondary.main" },
                                 { title: "For Corporate", desc: "Employee wellness programs and health partnerships.", link: "/corporate-insurance", color: "success.main" }
                             ].map((item, i) => (

@@ -26,6 +26,8 @@ import {
   Close as CloseIcon
 } from "@mui/icons-material";
 
+import logo from "../../assets/logo.png";
+
 export function Footer() {
   const [showContactModal, setShowContactModal] = useState(false);
 
@@ -57,14 +59,12 @@ export function Footer() {
           <Grid container spacing={4} sx={{ mb: 8 }}>
             {/* Brand Section */}
             <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                <Box sx={{ bgcolor: 'primary.main', p: 1, borderRadius: 2, display: 'flex', boxShadow: '0 0 20px rgba(37, 99, 235, 0.3)' }}>
-                  <AmbulanceIcon sx={{ color: 'common.white' }} />
-                </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
+                <Box component="img" src={logo} alt="Arohan" sx={{ height: 40, borderRadius: 1 }} />
                 <Typography variant="h5" fontWeight="800" color="common.white" sx={{ letterSpacing: 1 }}>AROHAN</Typography>
               </Box>
               <Typography variant="body2" color="grey.400" sx={{ mb: 3, lineHeight: 1.8 }}>
-                Saving lives by providing medical help as fast as possible.
+                Revolutionizing proactive healthcare through AI-powered monitoring and emergency prevention.
               </Typography>
               <Stack direction="row" spacing={1.5}>
                 <SocialLink href="https://www.facebook.com/haspranahealth" icon={<FacebookIcon fontSize="small" />} />
@@ -83,6 +83,7 @@ export function Footer() {
                 {[
                   { label: 'About Us', path: '/about' },
                   { label: 'How It Works', path: '/how-it-works' },
+                  { label: 'Projects Overview', path: '/projects-overview' },
                   { label: 'Nearby Hospitals', path: '/nearby-hospitals' },
                   { label: 'Partner Hospitals', path: '/partner-hospitals' },
                   { label: 'Careers', path: '/careers' }
@@ -136,7 +137,7 @@ export function Footer() {
                   <PhoneIcon color="primary" fontSize="small" sx={{ mt: 0.5 }} />
                   <Box>
                     <Typography variant="caption" color="grey.500" display="block">Phone Support</Typography>
-                    <Typography variant="body2" color="grey.300">Enabled Soon</Typography>
+                    <MuiLink href="tel:+917019024300" color="inherit" underline="none" variant="body2" sx={{ '&:hover': { color: 'white' } }}>+91 70190 24300</MuiLink>
                   </Box>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 1.5 }}>
@@ -208,8 +209,8 @@ export function Footer() {
                 <PhoneIcon sx={{ color: 'error.main', mt: 0.5 }} />
                 <Box>
                   <Typography variant="subtitle1" fontWeight="bold" color="text.primary">Phone Support</Typography>
-                  <Typography variant="h6" fontWeight="bold" color="error.main">Coming Soon</Typography>
-                  <Typography variant="body2" color="text.secondary">This feature will be enabled soon</Typography>
+                  <MuiLink href="tel:+917019024300" variant="h6" fontWeight="bold" color="error.main" underline="hover">+91 70190 24300</MuiLink>
+                  <Typography variant="body2" color="text.secondary">Contact us for assistance</Typography>
                 </Box>
               </Stack>
             </Box>

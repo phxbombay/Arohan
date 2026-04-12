@@ -3,10 +3,10 @@ import { Box, Button, Container, Typography, Grid, Paper, Stack, Card, CardConte
 import { useState } from "react";
 
 // Import local images
-import cprImage from "../../assets/images/first_aid_cpr.jpg";
+import cprImage from "../../assets/images/first_aid_cpr_local.png";
 import burnImage from "../../assets/images/first_aid_burn.jpg";
-import bleedingImage from "../../assets/images/first_aid_bleeding.jpg";
-import campImage from "../../assets/images/first_aid_camp.jpg";
+import bleedingImage from "../../assets/images/first_aid_bleeding_local.png";
+import chokingImage from "../../assets/images/first_aid_choking_local.png";
 
 export function FirstAidSection() {
   const [selectedTip, setSelectedTip] = useState(0);
@@ -34,7 +34,7 @@ export function FirstAidSection() {
       bgcolor: "warning.50",
       color: "warning.main",
       borderColor: "warning.light",
-      image: campImage,
+      image: chokingImage,
       videoLink: "https://www.youtube.com/results?search_query=heimlich+maneuver+guide",
       steps: [
         "Encourage coughing if person can breathe",

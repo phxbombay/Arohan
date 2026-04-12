@@ -88,6 +88,54 @@ export function Impact() {
                     </Box>
                 </Container>
             </Box>
+            
+            {/* Security Section */}
+            <Box sx={{ py: 12, bgcolor: 'background.paper', borderTop: 1, borderColor: 'grey.100' }}>
+                <Container>
+                    <Box sx={{ textAlign: 'center', mb: 8 }}>
+                        <Typography variant="h3" fontWeight="bold" gutterBottom>
+                            Security & Data Governance
+                        </Typography>
+                        <Typography variant="h6" color="text.secondary">
+                            Your health data is protected by industry-leading security protocols
+                        </Typography>
+                    </Box>
+
+                    <Grid container spacing={4}>
+                        {[
+                            {
+                                title: "End-to-End Encryption",
+                                description: "All data transmitted between the wearable, the app, and our servers is encrypted using AES-256 standards with rotating secure keys.",
+                                icon: "🔒"
+                            },
+                            {
+                                title: "AWS Cloud Guard",
+                                description: "Our infrastructure is protected by AWS Shield and WAF (Web Application Firewall) to prevent unauthorized access and DDoS attacks.",
+                                icon: "🛡️"
+                            },
+                            {
+                                title: "Spam & Bot Protection",
+                                description: "Automated filters prevent spam alerts and ensure that emergency triggers are validated against authenticated user profiles.",
+                                icon: "🚫"
+                            },
+                            {
+                                title: "Privacy First (HIPAA)",
+                                description: "Health records are stored in HIPAA-compliant isolated environments, ensuring that only you and authorized responders have access.",
+                                icon: "✅"
+                            }
+                        ].map((item, index) => (
+                            <Grid item xs={12} sm={6} key={index}>
+                                <Paper elevation={0} sx={{ p: 4, bgcolor: 'grey.50', borderRadius: 3, border: 1, borderColor: 'grey.200' }}>
+                                    <Typography variant="h2" sx={{ mb: 2, fontSize: '2rem' }}>{item.icon}</Typography>
+                                    <Typography variant="h5" fontWeight="bold" gutterBottom>{item.title}</Typography>
+                                    <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.6 }}>{item.description}</Typography>
+                                </Paper>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Container>
+            </Box>
+
 
             {/* Trends Section */}
             <Box sx={{ py: 12, bgcolor: 'grey.50' }}>

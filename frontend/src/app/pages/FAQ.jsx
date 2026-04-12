@@ -78,24 +78,24 @@ const faqCategories = [
         icon: "🔬",
         questions: [
             {
-                q: "Is Arohan clinically validated?",
-                a: "Arohan is currently a prototype undergoing clinical validation. We are conducting rigorous testing and validation studies in partnership with medical institutions to ensure safety, accuracy, and efficacy. The device is not yet certified for medical use and should not be used as a substitute for professional medical advice or diagnosis."
+                q: "Is Arohan a certified medical device?",
+                a: "Arohan is currently a prototype undergoing clinical validation. While our technology is based on medical-grade sensors and research-backed algorithms, it has not yet received final regulatory certification (e.g., CDSCO, FDA) for use as a diagnostic tool. It is designed to be a supportive monitoring and alert system, NOT a replacement for professional medical equipment or clinical diagnosis."
             },
             {
-                q: "What about false positives (false alarms)?",
-                a: "Like all monitoring systems, Arohan may occasionally trigger alerts for non-emergency situations (false positives). We are continuously refining our algorithms to minimize these occurrences. Similar to fall-detection systems used in senior care facilities, our approach balances sensitivity (catching real emergencies) with specificity (avoiding false alarms). Users can provide feedback on alerts to help improve accuracy over time. During clinical validation, we are establishing baseline false-positive rates and implementing features like confirmation prompts before escalating alerts."
+                q: "What about false positives (unnecessary alerts)?",
+                a: "In emergency monitoring, there is a technical trade-off between sensitivity (catching all events) and specificity (avoiding false alarms). We prioritize sensitivity to ensure no critical emergency is missed. This means that, occasionally, activities like intense exercise or a sudden movement may trigger a 'confirmation prompt' on your device. Users can cancel these prompts within 30 seconds to prevent alert escalation. Our clinical studies focus on optimizing these thresholds to minimize disruption while maintaining life-saving reliability."
             },
             {
-                q: "What about false negatives (missed emergencies)?",
-                a: "A false negative occurs when the system fails to detect an actual emergency. This is a critical concern we take seriously. Our multi-sensor approach (combining heart rate, movement, blood pressure, etc.) is designed to reduce the risk of missed events. However, no monitoring system is 100% perfect. We recommend: (1) Using the manual SOS button if you feel unwell, (2) Maintaining regular medical check-ups, (3) Not relying solely on Arohan for medical care. During our clinical validation phase, we are measuring detection sensitivity across various emergency scenarios to establish performance benchmarks."
+                q: "What about false negatives (missed events)?",
+                a: "A false negative occurs when an actual emergency happens but is not detected. While our multi-sensor fusion (Heart Rate + SpO2 + Accelerometer) significantly reduces this risk, no system is 100% infallible. This is why Arohan includes a high-visibility manual SOS button for cases where the user feels unwell but the sensors haven't yet reached an alert threshold. We also recommend maintaining traditional emergency contact protocols as a redundancy."
             },
             {
-                q: "How accurate is the system?",
-                a: "Arohan uses advanced sensor fusion and machine learning to distinguish falls from normal movements. We are currently establishing our validated accuracy metrics as the prototype undergoes clinical validation. We are committed to transparency and will publish our performance results once our validation is complete and reviewed."
+                q: "Why is the system in 'Validation Phase'?",
+                a: "Clinical validation is the process where we prove our algorithms work accurately in real-world scenarios. We are currently partnering with specialized medical centers to benchmark our detection rates against gold-standard clinical monitors. This phase ensures that when Arohan is fully launched, it meets the highest standards of safety and reliability for emergency response."
             },
             {
-                q: "What medical research supports fall prevention technology?",
-                a: "Extensive medical literature demonstrates that early detection and rapid response significantly improve outcomes in fall-related injuries and cardiac emergencies. Studies published in journals like The Lancet, JAMA, and Age and Ageing show that: (1) Falls are a leading cause of injury-related deaths, (2) Timely intervention reduces complications, (3) Wearable monitoring can enable earlier detection. Arohan's approach is informed by this research, though our specific implementation is still undergoing validation. We encourage users to consult peer-reviewed literature on fall prevention and emergency response systems."
+                q: "What medical research supports your detection technology?",
+                a: "Our proprietary AI models are informed by extensive peer-reviewed literature on geriatric fall patterns and cardiac arrhythmia detection. We follow clinical guidelines established by organizations like the American Heart Association (AHA) and the Indian Council of Medical Research (ICMR) for vital sign thresholds. During validation, we frequently publish white papers on our detection accuracy for transparency with our healthcare partners."
             }
         ]
     },

@@ -1,585 +1,126 @@
-import { useState } from 'react';
-import {
-    Box,
-    Container,
-    Typography,
-    Grid,
-    Card,
-    CardContent,
-    Tab,
-    Tabs,
-    Stack,
-    Chip,
-    Button,
-    Accordion,
-    AccordionSummary,
-    AccordionDetails,
-    Alert,
-    Paper,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Divider
-} from '@mui/material';
-import {
-    ExpandMore as ExpandMoreIcon,
-    Payment as PaymentIcon,
-    Devices as DevicesIcon,
-    Code as CodeIcon,
-    Security as SecurityIcon,
-    CheckCircle as CheckIcon,
-    Api as ApiIcon,
-    CloudUpload as CloudIcon,
-    Description as DocsIcon
-} from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
-
+import { Box, Container, Typography, Grid, Paper, Button, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Api as ApiIcon, Payment as PaymentIcon, Router as RouterIcon, Storage as StorageIcon, CheckCircle as CheckCircleIcon, Security as SecurityIcon } from '@mui/icons-material';
+import SEO from '../components/SEO';
 
 export function Integrations() {
-    const [activeTab, setActiveTab] = useState(0);
-
-    const paymentGateways = [
-        {
-            name: 'Razorpay',
-            logo: '💳',
-            description: 'Primary payment gateway for India',
-            features: [
-                'UPI, Cards, Net Banking, Wallets',
-                'Subscription & recurring billing',
-                'Automatic payment retries',
-                'Instant refunds',
-                'Dashboard analytics'
-            ],
-            status: 'Active',
-            integration: 'REST API',
-            docs: 'https://razorpay.com/docs/'
-        },
-        {
-            name: 'Stripe',
-            logo: '🌐',
-            description: 'International payment processing',
-            features: [
-                'Global payment methods',
-                'Subscription management',
-                'Invoice generation',
-                'Fraud detection',
-                'Multi-currency support'
-            ],
-            status: 'Active',
-            integration: 'REST API',
-            docs: 'https://stripe.com/docs'
-        },
-        {
-            name: 'PayPal',
-            logo: '💰',
-            description: 'Alternative payment option',
-            features: [
-                'PayPal balance payments',
-                'Credit/Debit cards',
-                'Buyer protection',
-                'Express checkout',
-                'Mobile SDK'
-            ],
-            status: 'Coming Soon',
-            integration: 'SDK',
-            docs: 'https://developer.paypal.com/'
-        }
-    ];
-
-    const deviceIntegrations = [
-        {
-            name: 'Wearable Plugins',
-            icon: '⌚',
-            description: 'Bluetooth/BLE enabled health monitoring devices',
-            protocols: ['Bluetooth 5.0', 'BLE', 'ANT+'],
-            dataTypes: ['Heart Rate', 'SpO2', 'Temperature', 'Activity'],
-            sdkAvailable: true
-        },
-        {
-            name: 'Smart Watches',
-            icon: '📱',
-            description: 'Apple Watch, Wear OS, Samsung Galaxy Watch',
-            protocols: ['HealthKit', 'Google Fit', 'Samsung Health'],
-            dataTypes: ['Steps', 'Heart Rate', 'Sleep', 'ECG'],
-            sdkAvailable: true
-        },
-        {
-            name: 'Medical Devices',
-            icon: '🏥',
-            description: 'FDA/CE approved medical monitoring devices',
-            protocols: ['HL7 FHIR', 'DICOM', 'IEEE 11073'],
-            dataTypes: ['BP', 'Glucose', 'Weight', 'ECG'],
-            sdkAvailable: false
-        }
-    ];
-
     return (
-        <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 6 }}>
-            <Helmet>
-                <title>Integrations - Payment Gateway & Device Integration | Arohan Health</title>
-                <meta name="description" content="Integrate with Arohan Health platform. Payment gateways (Razorpay, Stripe), device integrations, and API documentation for partners and developers." />
-            </Helmet>
+        <Box>
+            <SEO 
+                title="API & Integrations - Arohan Health"
+                description="Connect Arohan's AI emergency detection with your existing healthcare ecosystem. API documentation, Payment gateway integration, and device connectivity details."
+                keywords="API integration, payment gateway, healthcare API, medical device connectivity, PayTM integration"
+            />
 
-            <Container maxWidth="lg">
-                {/* Header */}
-                <Box sx={{ mb: 6, textAlign: 'center' }}>
-                    <Typography variant="h3" fontWeight="bold" gutterBottom>
-                        Integrations & API
+            {/* Header */}
+            <Box sx={{ py: 10, bgcolor: 'primary.main', color: 'white' }}>
+                <Container maxWidth="lg">
+                    <Typography variant="h2" fontWeight="bold" gutterBottom>
+                        Integrations & Connectors
                     </Typography>
-                    <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 700, mx: 'auto' }}>
-                        Connect your systems with Arohan Health. Payment processing, device integration, and developer APIs.
+                    <Typography variant="h5" sx={{ opacity: 0.9 }}>
+                        Seamlessly link Arohan to your clinical systems, apps, and payout workflows
                     </Typography>
-                </Box>
+                </Container>
+            </Box>
 
-                {/* Tabs */}
-                <Paper sx={{ mb: 4 }}>
-                    <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} centered>
-                        <Tab icon={<PaymentIcon />} label="Payment Gateways" />
-                        <Tab icon={<DevicesIcon />} label="Device Integration" />
-                        <Tab icon={<ApiIcon />} label="API Documentation" />
-                    </Tabs>
-                </Paper>
+            <Container maxWidth="lg" sx={{ py: 10 }}>
+                <Grid container spacing={8}>
+                    {/* API Section */}
+                    <Grid item xs={12} md={6}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
+                            <ApiIcon color="primary" sx={{ fontSize: 40 }} />
+                            <Typography variant="h4" fontWeight="bold">Healthcare APIs</Typography>
+                        </Box>
+                        <Typography variant="body1" paragraph color="text.secondary">
+                            Our RESTful APIs allow hospitals and gated communities to pull real-time health alerts and historical vitals into their own management dashboards.
+                        </Typography>
+                        <List>
+                            <ListItem>
+                                <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
+                                <ListItemText primary="Webhook notifications for emergency events" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
+                                <ListItemText primary="Batch retrieval of heart rate and SpO2 data" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
+                                <ListItemText primary="FHIR/HL7 compliant data formatting" />
+                            </ListItem>
+                        </List>
+                        <Button variant="outlined" sx={{ mt: 3 }}>Request API Docs</Button>
+                    </Grid>
 
-                {/* Tab 1: Payment Gateways */}
-                {activeTab === 0 && (
-                    <Box>
-                        <Alert severity="info" sx={{ mb: 4 }}>
-                            <Typography variant="body2">
-                                <strong>Secure Payment Processing:</strong> All transactions are encrypted with TLS 1.3 and comply with PCI DSS standards.
-                            </Typography>
-                        </Alert>
-
-                        <Grid container spacing={3}>
-                            {paymentGateways.map((gateway, index) => (
-                                <Grid item xs={12} md={4} key={index}>
-                                    <Card sx={{ height: '100%', position: 'relative' }}>
-                                        <CardContent>
-                                            <Stack spacing={2}>
-                                                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                                                    <Typography variant="h1" sx={{ fontSize: 48 }}>
-                                                        {gateway.logo}
-                                                    </Typography>
-                                                    <Chip
-                                                        label={gateway.status}
-                                                        color={gateway.status === 'Active' ? 'success' : 'default'}
-                                                        size="small"
-                                                    />
-                                                </Box>
-
-                                                <Box>
-                                                    <Typography variant="h6" fontWeight="bold">
-                                                        {gateway.name}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary">
-                                                        {gateway.description}
-                                                    </Typography>
-                                                </Box>
-
-                                                <Divider />
-
-                                                <Box>
-                                                    <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-                                                        Features:
-                                                    </Typography>
-                                                    <List dense>
-                                                        {gateway.features.map((feature, i) => (
-                                                            <ListItem key={i} sx={{ py: 0.5 }}>
-                                                                <ListItemIcon sx={{ minWidth: 32 }}>
-                                                                    <CheckIcon color="success" fontSize="small" />
-                                                                </ListItemIcon>
-                                                                <ListItemText
-                                                                    primary={feature}
-                                                                    primaryTypographyProps={{ variant: 'body2' }}
-                                                                />
-                                                            </ListItem>
-                                                        ))}
-                                                    </List>
-                                                </Box>
-
-                                                <Stack direction="row" spacing={1}>
-                                                    <Chip label={gateway.integration} size="small" variant="outlined" />
-                                                </Stack>
-
-                                                <Button
-                                                    variant="outlined"
-                                                    href={gateway.docs}
-                                                    target="_blank"
-                                                    startIcon={<DocsIcon />}
-                                                    fullWidth
-                                                >
-                                                    Documentation
-                                                </Button>
-                                            </Stack>
-                                        </CardContent>
-                                    </Card>
+                    {/* Payment Section */}
+                    <Grid item xs={12} md={6}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
+                            <PaymentIcon color="secondary" sx={{ fontSize: 40 }} />
+                            <Typography variant="h4" fontWeight="bold">Payment Gateways</Typography>
+                        </Box>
+                        <Typography variant="body1" paragraph color="text.secondary">
+                            We support localized payment ecosystems for subscription management and hardware purchases, ensuring a smooth experience for users in India.
+                        </Typography>
+                        <Grid container spacing={2}>
+                            {['PayTM', 'Razorpay', 'UPI / PhonePe', 'Stripe (Global)'].map((p, i) => (
+                                <Grid item xs={6} key={i}>
+                                    <Paper variant="outlined" sx={{ p: 2, textAlign: 'center', bgcolor: 'grey.50' }}>
+                                        <Typography fontWeight="bold">{p}</Typography>
+                                    </Paper>
                                 </Grid>
                             ))}
                         </Grid>
-
-                        {/* Integration Flow */}
-                        <Box sx={{ mt: 6 }}>
-                            <Typography variant="h5" fontWeight="bold" gutterBottom>
-                                Payment Integration Flow
-                            </Typography>
-                            <Paper sx={{ p: 3, mt: 2 }}>
-                                <Stack spacing={2}>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                        <Chip label="1" color="primary" />
-                                        <Typography>User initiates subscription/payment</Typography>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                        <Chip label="2" color="primary" />
-                                        <Typography>Arohan platform creates payment order</Typography>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                        <Chip label="3" color="primary" />
-                                        <Typography>Payment gateway processes transaction</Typography>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                        <Chip label="4" color="primary" />
-                                        <Typography>Webhook notification sent to Arohan</Typography>
-                                    </Box>
-                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                                        <Chip label="5" color="primary" />
-                                        <Typography>Subscription status updated</Typography>
-                                    </Box>
-                                </Stack>
-                            </Paper>
-                        </Box>
-                    </Box>
-                )}
-
-                {/* Tab 2: Device Integration */}
-                {activeTab === 1 && (
-                    <Box>
-                        <Alert severity="info" sx={{ mb: 4 }}>
-                            <Typography variant="body2">
-                                <strong>End-to-End Encryption:</strong> All device data is encrypted in transit and at rest using AES-256-GCM.
-                            </Typography>
-                        </Alert>
-
-                        <Grid container spacing={3}>
-                            {deviceIntegrations.map((device, index) => (
-                                <Grid item xs={12} md={4} key={index}>
-                                    <Card sx={{ height: '100%' }}>
-                                        <CardContent>
-                                            <Stack spacing={2}>
-                                                <Typography variant="h1" sx={{ fontSize: 48, textAlign: 'center' }}>
-                                                    {device.icon}
-                                                </Typography>
-
-                                                <Box>
-                                                    <Typography variant="h6" fontWeight="bold" textAlign="center">
-                                                        {device.name}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="text.secondary" textAlign="center">
-                                                        {device.description}
-                                                    </Typography>
-                                                </Box>
-
-                                                <Divider />
-
-                                                <Box>
-                                                    <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-                                                        Protocols:
-                                                    </Typography>
-                                                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                                        {device.protocols.map((protocol, i) => (
-                                                            <Chip key={i} label={protocol} size="small" />
-                                                        ))}
-                                                    </Stack>
-                                                </Box>
-
-                                                <Box>
-                                                    <Typography variant="subtitle2" fontWeight="bold" gutterBottom>
-                                                        Data Types:
-                                                    </Typography>
-                                                    <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                                                        {device.dataTypes.map((type, i) => (
-                                                            <Chip key={i} label={type} size="small" variant="outlined" />
-                                                        ))}
-                                                    </Stack>
-                                                </Box>
-
-                                                {device.sdkAvailable && (
-                                                    <Chip
-                                                        label="SDK Available"
-                                                        color="success"
-                                                        icon={<CodeIcon />}
-                                                    />
-                                                )}
-                                            </Stack>
-                                        </CardContent>
-                                    </Card>
-                                </Grid>
-                            ))}
-                        </Grid>
-
-                        {/* SDK Features */}
-                        <Box sx={{ mt: 6 }}>
-                            <Typography variant="h5" fontWeight="bold" gutterBottom>
-                                Arohan Device SDK Features
-                            </Typography>
-                            <Grid container spacing={3} sx={{ mt: 1 }}>
-                                <Grid item xs={12} md={6}>
-                                    <Paper sx={{ p: 3 }}>
-                                        <Stack spacing={2}>
-                                            <Typography variant="h6" fontWeight="bold">
-                                                <SecurityIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                                                Security
-                                            </Typography>
-                                            <List dense>
-                                                <ListItem>
-                                                    <ListItemIcon><CheckIcon color="success" /></ListItemIcon>
-                                                    <ListItemText primary="End-to-end encryption (AES-256)" />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemIcon><CheckIcon color="success" /></ListItemIcon>
-                                                    <ListItemText primary="Device authentication & pairing" />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemIcon><CheckIcon color="success" /></ListItemIcon>
-                                                    <ListItemText primary="Secure key exchange" />
-                                                </ListItem>
-                                            </List>
-                                        </Stack>
-                                    </Paper>
-                                </Grid>
-
-                                <Grid item xs={12} md={6}>
-                                    <Paper sx={{ p: 3 }}>
-                                        <Stack spacing={2}>
-                                            <Typography variant="h6" fontWeight="bold">
-                                                <CloudIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                                                Data Management
-                                            </Typography>
-                                            <List dense>
-                                                <ListItem>
-                                                    <ListItemIcon><CheckIcon color="success" /></ListItemIcon>
-                                                    <ListItemText primary="Real-time data synchronization" />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemIcon><CheckIcon color="success" /></ListItemIcon>
-                                                    <ListItemText primary="Offline data buffering" />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemIcon><CheckIcon color="success" /></ListItemIcon>
-                                                    <ListItemText primary="Automatic conflict resolution" />
-                                                </ListItem>
-                                            </List>
-                                        </Stack>
-                                    </Paper>
-                                </Grid>
-                            </Grid>
-                        </Box>
-                    </Box>
-                )}
-
-                {/* Tab 3: API Documentation */}
-                {activeTab === 2 && (
-                    <Box>
-                        <Alert severity="warning" sx={{ mb: 4 }}>
-                            <Typography variant="body2">
-                                <strong>API Access:</strong> Contact our team at <strong>api@arohanhealth.com</strong> to request API credentials.
-                            </Typography>
-                        </Alert>
-
-                        <Grid container spacing={3}>
-                            <Grid item xs={12}>
-                                <Accordion defaultExpanded>
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography variant="h6" fontWeight="bold">
-                                            Authentication
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Stack spacing={2}>
-                                            <Typography variant="body2">
-                                                All API requests require Bearer token authentication.
-                                            </Typography>
-                                            <Paper sx={{ p: 2, bgcolor: 'grey.900', color: 'white', fontFamily: 'monospace' }}>
-                                                <pre style={{ margin: 0, overflow: 'auto' }}>
-                                                    {`POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "your@email.com",
-  "password": "your_password"
-}
-
-Response:
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "refreshToken": "..."
-}`}
-                                                </pre>
-                                            </Paper>
-                                        </Stack>
-                                    </AccordionDetails>
-                                </Accordion>
-
-                                <Accordion>
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography variant="h6" fontWeight="bold">
-                                            Submit Vitals Data
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Stack spacing={2}>
-                                            <Typography variant="body2">
-                                                Submit vital signs data from wearable devices.
-                                            </Typography>
-                                            <Paper sx={{ p: 2, bgcolor: 'grey.900', color: 'white', fontFamily: 'monospace' }}>
-                                                <pre style={{ margin: 0, overflow: 'auto' }}>
-                                                    {`POST /api/integrations/vitals
-Authorization: Bearer YOUR_API_TOKEN
-Content-Type: application/json
-
-{
-  "deviceId": "device_12345",
-  "userId": "user_67890",
-  "timestamp": "2026-02-06T12:00:00Z",
-  "vitals": {
-    "heartRate": 72,
-    "bloodPressure": {
-      "systolic": 120,
-      "diastolic": 80
-    },
-    "oxygenSaturation": 98,
-    "temperature": 36.6
-  }
-}`}
-                                                </pre>
-                                            </Paper>
-                                        </Stack>
-                                    </AccordionDetails>
-                                </Accordion>
-
-                                <Accordion>
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography variant="h6" fontWeight="bold">
-                                            Retrieve Alerts
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Stack spacing={2}>
-                                            <Typography variant="body2">
-                                                Get health alerts for integrated devices.
-                                            </Typography>
-                                            <Paper sx={{ p: 2, bgcolor: 'grey.900', color: 'white', fontFamily: 'monospace' }}>
-                                                <pre style={{ margin: 0, overflow: 'auto' }}>
-                                                    {`GET /api/integrations/alerts?userId=user_67890
-Authorization: Bearer YOUR_API_TOKEN
-
-Response:
-{
-  "alerts": [
-    {
-      "alertId": "alert_123",
-      "type": "high_heart_rate",
-      "severity": "medium",
-      "timestamp": "2026-02-06T11:45:00Z",
-      "value": 145,
-      "threshold": 120
-    }
-  ]
-}`}
-                                                </pre>
-                                            </Paper>
-                                        </Stack>
-                                    </AccordionDetails>
-                                </Accordion>
-
-                                <Accordion>
-                                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                        <Typography variant="h6" fontWeight="bold">
-                                            Webhooks
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Stack spacing={2}>
-                                            <Typography variant="body2">
-                                                Configure webhooks to receive real-time notifications for critical events.
-                                            </Typography>
-                                            <Typography variant="subtitle2" fontWeight="bold">
-                                                Supported Events:
-                                            </Typography>
-                                            <List dense>
-                                                <ListItem>
-                                                    <ListItemText
-                                                        primary="alert.created"
-                                                        secondary="New health alert generated"
-                                                    />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemText
-                                                        primary="vitals.received"
-                                                        secondary="New vitals data received"
-                                                    />
-                                                </ListItem>
-                                                <ListItem>
-                                                    <ListItemText
-                                                        primary="device.connected"
-                                                        secondary="Device connected/disconnected"
-                                                    />
-                                                </ListItem>
-                                            </List>
-                                        </Stack>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Grid>
-                        </Grid>
-
-                        {/* Rate Limits */}
-                        <Box sx={{ mt: 4 }}>
-                            <Typography variant="h5" fontWeight="bold" gutterBottom>
-                                Rate Limits
-                            </Typography>
-                            <Paper sx={{ p: 3, mt: 2 }}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle2" fontWeight="bold">
-                                            Standard API:
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            100 requests per 15 minutes
-                                        </Typography>
-                                    </Grid>
-                                    <Grid item xs={12} md={6}>
-                                        <Typography variant="subtitle2" fontWeight="bold">
-                                            Vitals Upload:
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
-                                            1000 requests per hour
-                                        </Typography>
-                                    </Grid>
-                                </Grid>
-                            </Paper>
-                        </Box>
-                    </Box>
-                )}
-
-                {/* Contact Section */}
-                <Box sx={{ mt: 6, textAlign: 'center' }}>
-                    <Paper sx={{ p: 4, bgcolor: 'primary.main', color: 'white' }}>
-                        <Typography variant="h5" fontWeight="bold" gutterBottom>
-                            Need Integration Support?
+                        <Typography variant="body2" sx={{ mt: 4, fontStyle: 'italic' }}>
+                            Secure 3D-Authentication and recurring billing support are standard across all integrations.
                         </Typography>
-                        <Typography variant="body1" sx={{ mb: 3 }}>
-                            Our integration team is here to help you get started.
-                        </Typography>
-                        <Stack direction="row" spacing={2} justifyContent="center">
-                            <Button variant="contained" color="secondary" href="mailto:api@arohanhealth.com">
-                                Contact API Team
-                            </Button>
-                            <Button variant="outlined" sx={{ color: 'white', borderColor: 'white' }} href="/partners">
-                                Partner with Us
-                            </Button>
-                        </Stack>
-                    </Paper>
-                </Box>
+                    </Grid>
+
+                    <Grid item xs={12}><Divider /></Grid>
+
+                    {/* Hardware Section */}
+                    <Grid item xs={12} md={4}>
+                        <Box sx={{ p: 3, textAlign: 'center' }}>
+                            <RouterIcon sx={{ fontSize: 64, color: 'info.main', mb: 2 }} />
+                            <Typography variant="h5" fontWeight="bold" gutterBottom>Connectivity</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Dual-band WiFi, Bluetooth 5.0 Low Energy, and optional 4G LTE fallover support.
+                            </Typography>
+                        </Box>
+                    </Grid>
+
+                    {/* Cloud Section */}
+                    <Grid item xs={12} md={4}>
+                        <Box sx={{ p: 3, textAlign: 'center' }}>
+                            <StorageIcon sx={{ fontSize: 64, color: 'success.main', mb: 2 }} />
+                            <Typography variant="h5" fontWeight="bold" gutterBottom>Cloud Storage</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Encrypted archival of health data on AWS Mumbai region servers for low latency.
+                            </Typography>
+                        </Box>
+                    </Grid>
+
+                    {/* Security Section */}
+                    <Grid item xs={12} md={4}>
+                        <Box sx={{ p: 3, textAlign: 'center' }}>
+                            <SecurityIcon sx={{ fontSize: 64, color: 'warning.main', mb: 2 }} />
+                            <Typography variant="h5" fontWeight="bold" gutterBottom>IAM Control</Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                Identity and Access Management for role-based dashboard access (Admin/Doctor/Nurse).
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
             </Container>
+
+            {/* Bottom CTA */}
+            <Box sx={{ py: 8, bgcolor: 'grey.50', textAlign: 'center' }}>
+                <Container>
+                    <Typography variant="h4" fontWeight="bold" gutterBottom>Need a Custom Integration?</Typography>
+                    <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+                        Our engineering team can build custom connectors for specialized medical equipment.
+                    </Typography>
+                    <Button variant="contained" size="large">Talk to an Engineer</Button>
+                </Container>
+            </Box>
         </Box>
     );
 }

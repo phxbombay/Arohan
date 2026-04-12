@@ -33,7 +33,7 @@ import { safeDate } from '../../utils/date-utils';
 const INITIAL_MESSAGES = [
     {
         id: 1,
-        text: "Hi! I'm Arohan's AI Assistant. How can I help you today?",
+        text: "Hi! I'm the Proactive Health Assistant (Coming Soon). How can I help you today?",
         sender: 'bot',
         timestamp: new Date()
     }
@@ -251,7 +251,7 @@ export function Chatbot() {
                                 </Avatar>
                                 <Box>
                                     <Typography variant="subtitle1" fontWeight="bold" sx={{ textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
-                                        Arohan Assistant
+                                        Proactive Health Assistant
                                     </Typography>
                                     <Typography variant="caption" sx={{ opacity: 0.9, display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                         <Box component="span" sx={{ width: 8, height: 8, bgcolor: '#4caf50', borderRadius: '50%', display: 'inline-block' }} />

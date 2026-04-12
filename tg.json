@@ -1,4 +1,10 @@
 [
-    "arn:aws:elasticloadbalancing:ap-south-1:787372717036:targetgroup/arohan-tg/57d426ce7623c4e4",
-    "arn:aws:elasticloadbalancing:ap-south-1:787372717036:targetgroup/arohan-tg-80/cf5573685bb5ccdd"
+    {
+        "Name": "arohan-tg",
+        "ARN": "arn:aws:elasticloadbalancing:ap-south-1:787372717036:targetgroup/arohan-tg/57d426ce7623c4e4"
+    },
+    {
+        "Name": "arohan-tg-80",
+        "ARN": "arn:aws:elasticloadbalancing:ap-south-1:787372717036:targetgroup/arohan-tg-80/cf5573685bb5ccdd"
+    }
 ]

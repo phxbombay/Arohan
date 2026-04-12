@@ -65,6 +65,14 @@ export function Team() {
             linkedin: 'https://linkedin.com/in/priya-menon',
             twitter: 'https://twitter.com/priyamenon',
             email: 'priya@arohanhealth.com'
+        },
+        {
+            name: 'Upcoming Director',
+            role: 'Director of Operations',
+            bio: 'Arohan is currently expanding its leadership team. This position will oversee global operations, supply chain, and strategic scaling initiatives.',
+            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop',
+            linkedin: '#',
+            email: 'careers@arohanhealth.com'
         }
     ];
 

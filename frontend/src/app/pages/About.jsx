@@ -56,7 +56,6 @@ export function About() {
 
     // Technical & Operations Team
     const technicalTeam = [
-        { name: 'Mayur S', role: 'Technical Architect', institution: 'VIT/Ramaiah/Dayananda Sagar/Alliance' },
         { name: 'Eswar Goud', role: 'Operations Management', institution: 'MBA Student' },
         { name: 'Pracheth Singh', role: 'Software Engineer', institution: 'Engineering Student' },
         { name: 'Dheeraj A U', role: 'Software Engineer', institution: 'Engineering Student' }
@@ -80,7 +79,7 @@ export function About() {
         },
         {
             title: 'Accessibility',
-            description: 'Affordable care for 159M elderly Indians',
+            description: 'Affordable proactive care for individuals and families across India',
             icon: '🌏'
         }
     ];
@@ -104,8 +103,8 @@ export function About() {
 
             <SEO
                 title="About Us - Mission to Save Lives with AI"
-                description="Learn about Arohan's mission to protect India's elderly with AI technology. Meet our team of doctors, engineers, and healthcare innovators dedicated to emergency care."
-                keywords="about arohan health, health tech startup, AI emergency care, elderly care team, healthcare innovation, Bengaluru startup"
+                description="Learn about Arohan's mission to protect individuals and families with AI technology. Meet our team of doctors, engineers, and healthcare innovators dedicated to proactive care."
+                keywords="about arohan health, health tech startup, AI proactive care, family health team, healthcare innovation, Bengaluru startup"
                 canonical="https://arohanhealth.com/about"
                 type="website"
                 image="https://arohanhealth.com/images/team-arohan.jpg"
@@ -114,16 +113,47 @@ export function About() {
             {/* Hero Section */}
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 6, md: 8 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
+                    <Typography variant="overline" sx={{ letterSpacing: 3, fontWeight: 'bold', mb: 2, display: 'block' }}>
+                        PROTOTYPE UNDERGOING CLINICAL VALIDATION
+                    </Typography>
                     <Typography variant="h2" fontWeight="800" gutterBottom sx={{ letterSpacing: -1 }}>
                         About Arohan
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9, maxWidth: 800, mx: 'auto', fontWeight: 500 }}>
-                        Pioneering AI-powered emergency care to protect India's 159M elderly population
+                        Pioneering AI-powered proactive health monitoring to protect individuals and families across India
                     </Typography>
                 </Container>
             </Box>
 
+
+            {/* Evidence Based Section */}
+            <Box sx={{ bgcolor: 'white', py: { xs: 6, md: 8 } }}>
+                <Container maxWidth="lg">
+                    <Typography variant="h3" fontWeight="bold" align="center" gutterBottom>
+                        Evidence-Based Care
+                    </Typography>
+                    <Typography variant="body1" align="center" color="text.secondary" sx={{ mb: 6 }}>
+                        Our AI models are built on foundations of established medical research and peer-reviewed literature.
+                    </Typography>
+                    <Grid container spacing={3}>
+                        {[
+                            { title: 'Geriatric Fall Dynamics', ref: 'Predictive modeling of fall risks in urban senior environments based on balance and gait analysis.' },
+                            { title: 'Cardiac Arrhythmia Monitoring', ref: 'Continuous PPG-based detection protocols for irregular heart rhythms and tachycardia events.' },
+                            { title: 'Emergency Response Latency', ref: 'Clinical studies proving that 50% reduction in notification time leads to 30% better recovery outcomes.' }
+                        ].map((study, idx) => (
+                            <Grid item xs={12} md={4} key={idx}>
+                                <Paper elevation={0} sx={{ p: 4, border: 1, borderColor: 'grey.200', borderRadius: 3, height: '100%' }}>
+                                    <Typography variant="h6" fontWeight="bold" gutterBottom>{study.title}</Typography>
+                                    <Typography variant="body2" color="text.secondary">{study.ref}</Typography>
+                                </Paper>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Container>
+            </Box>
+
             {/* Mission & Vision */}
+
             <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
                 <Grid container spacing={4} justifyContent="center" alignItems="center">
                     <Grid item xs={12} md={5} sx={{ textAlign: 'center' }}>
@@ -142,7 +172,7 @@ export function About() {
                                 Our Mission
                             </Typography>
                             <Typography variant="body1" fontSize={18}>
-                                Enable elderly urban individuals to stay worry-free by instantly notifying loved ones during health emergencies and equipping first responders with evidence-based guidance.
+                                Enable individuals and families to stay worry-free by instantly notifying loved ones during health emergencies and equipping first responders with evidence-based guidance.
                             </Typography>
                         </Paper>
                     </Grid>
@@ -156,7 +186,7 @@ export function About() {
                         Why We Built Arohan
                     </Typography>
                     <Typography variant="body1" fontSize={18} sx={{ textAlign: 'center', mb: 4, lineHeight: 1.8 }}>
-                        Hasprana Health Care Solutions Private Limited is a Bengaluru-based health-tech startup building deep-tech solutions for emergency and elder-care. Arohan is our flagship product, born from personal experiences of delayed emergency response and informed by discussions with clinicians, caregivers and technologists.
+                        Hasprana Health Care Solutions Private Limited is a Bengaluru-based health-tech startup building deep-tech solutions for emergency and proactive care. Arohan is our flagship product, born from personal experiences of delayed emergency response and informed by discussions with clinicians, caregivers and technologists.
                     </Typography>
                     <Paper elevation={0} sx={{ p: 4, borderLeft: '6px solid', borderColor: 'error.main', bgcolor: 'white', textAlign: 'center', borderRadius: 2 }}>
                         <Typography variant="h5" fontWeight="bold" color="error.main" gutterBottom>
