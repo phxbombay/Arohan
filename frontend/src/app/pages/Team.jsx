@@ -10,7 +10,7 @@ import {
     IconButton
 } from '@mui/material';
 import { LinkedIn as LinkedInIcon, Twitter as TwitterIcon, Email as EmailIcon } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 export function Team() {
     const teamMembers = [
@@ -91,10 +91,12 @@ export function Team() {
 
     return (
         <Box>
-            <Helmet>
-                <title>Our Team - Arohan Health | Wearable Health Tech Experts</title>
-                <meta name="description" content="Meet the Arohan team: PhD engineers, doctors, and healthcare experts building AI-powered emergency detection wearables. IIT alumni, ex-Google, Apollo Hospitals." />
-            </Helmet>
+            <SEO
+                title="Our Team"
+                description="Meet the Arohan Health team: PhD engineers from IIT, cardiologists from Apollo, and ex-Google engineers building AI-powered emergency detection wearables to save lives."
+                keywords="Arohan Health team, IIT engineers, health tech founders India, wearable AI team"
+                canonical="https://arohanhealth.com/team"
+            />
 
             {/* Hero */}
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 8, md: 12 }, textAlign: 'center' }}>

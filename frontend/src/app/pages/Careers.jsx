@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import SEO from '../components/SEO';
 import { Briefcase, ArrowRight, Check, X, Mail, User, FileText, Phone } from 'lucide-react';
 import {
     Box,
@@ -60,6 +61,12 @@ export function Careers() {
 
     return (
         <Box sx={{ minHeight: '100dvh', bgcolor: 'common.white', display: 'flex', flexDirection: 'column' }}>
+            <SEO
+                title="Careers — Build Tech That Saves Lives"
+                description="Join Arohan Health and help build AI-powered emergency detection wearables. Open roles in engineering, AI/ML, healthcare, and business development."
+                keywords="health tech jobs India, AI startup careers, wearable tech jobs, Arohan Health careers, IIT startup hiring"
+                canonical="https://arohanhealth.com/careers"
+            />
             {/* Hero Section */}
             <Box component="section" sx={{
                 position: 'relative',
@@ -212,8 +219,8 @@ export function Careers() {
                             </Typography>
                             <Typography variant="body1" color="primary.main">
                                 We are always looking for talent. Send your resume to{' '}
-                                <Box component="a" href="mailto:careers@haspranahealth.com" sx={{ fontWeight: 'bold', textDecoration: 'underline', color: 'inherit' }}>
-                                    careers@haspranahealth.com
+                                <Box component="a" href="mailto:careers@arohanhealth.com" sx={{ fontWeight: 'bold', textDecoration: 'underline', color: 'inherit' }}>
+                                    careers@arohanhealth.com
                                 </Box>
                             </Typography>
                         </Paper>

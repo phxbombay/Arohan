@@ -6,7 +6,7 @@
 
 export const generateSitemap = (req, res) => {
   try {
-    const baseUrl = process.env.CLIENT_URL || 'https://haspranahealth.com';
+    const baseUrl = process.env.CLIENT_URL || 'https://arohanhealth.com';
     
     const staticRoutes = [
       '',

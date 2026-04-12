@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import SEO from '../components/SEO';
+import { useTranslation } from 'react-i18next';
 import {
     Search as SearchIcon,
     ExpandMore as ExpandMoreIcon,
@@ -20,202 +22,14 @@ import {
     Stack
 } from '@mui/material';
 
-const faqCategories = [
-    {
-        category: "Getting Started",
-        icon: "🚀",
-        questions: [
-            {
-                q: "What is Arohan?",
-                a: "Arohan is an AI-powered wearable health monitoring system designed for proactive health management. It provides 24/7 monitoring of vital signs, early detection of potential health emergencies (falls, cardiac events, etc.), and automatic alerts to family members and emergency services. Note: Arohan is currently a prototype undergoing clinical validation."
-            },
-            {
-                q: "How does Arohan work?",
-                a: "Arohan consists of a comfortable wearable device that continuously monitors your health vitals (heart rate, blood pressure, activity, sleep). Our AI analyzes this data in real-time to identify potential health concerns early. If an anomaly is detected, the system automatically alerts your emergency contacts and can coordinate with nearby hospitals."
-            },
-            {
-                q: "Who should use Arohan?",
-                a: "Arohan is ideal for: (1) Individuals living alone or with limited supervision, (2) People with chronic health conditions like hypertension or arrhythmia, (3) Families who want peace of mind about their relatives' health, (4) Healthcare facilities managing multiple patients, (5) Anyone seeking proactive health monitoring."
-            },
-            {
-                q: "Do I need a smartphone to use Arohan?",
-                a: "No! The Arohan device works independently with cellular connectivity. However, having the mobile app enhances your experience with detailed health insights, but it's not required for emergency alerts to function."
-            }
-        ]
-    },
-    {
-        category: "Device & Technology",
-        icon: "⌚",
-        questions: [
-            {
-                q: "What health metrics does Arohan monitor?",
-                a: "Arohan tracks: Heart rate (continuous), Blood pressure, Oxygen saturation (SpO2), Body temperature, Respiratory rate, Activity (steps, calories, distance), Sleep quality and duration, Fall detection via accelerometer."
-            },
-            {
-                q: "How accurate is fall detection?",
-                a: "Our fall detection system uses advanced motion sensors and AI to distinguish between actual falls and normal activities. We are currently validating the system's accuracy through clinical trials. Like other fall-detection providers (used in senior living facilities and medical alert systems), we balance sensitivity to catch real falls while minimizing false alarms from activities like sitting down quickly or exercising. Accuracy depends on factors like device placement, individual movement patterns, and fall type."
-            },
-            {
-                q: "What is the battery life?",
-                a: "The battery is designed for multi-day continuous monitoring. Detailed battery specifications and charging times will be finalized while the prototype is undergoing clinical validation."
-            },
-            {
-                q: "Is the device waterproof?",
-                a: "Arohan features splash resistance for daily durability. Specific IP ratings will be finalized as the prototype undergoes clinical validation."
-            },
-            {
-                q: "How do I set up my Arohan device?",
-                a: "Setup is simple: (1) Charge the device fully, (2) Download the Arohan app (iOS/Android), (3) Create your account, (4) Pair the device via Bluetooth, (5) Complete the health profile, (6) Add emergency contacts. The entire process takes about 10 minutes."
-            },
-            {
-                q: "Can I wear Arohan during sleep?",
-                a: "Absolutely! In fact, we encourage nighttime wear as Arohan monitors sleep quality and can detect emergencies that occur during sleep, which are often the most critical."
-            }
-        ]
-    },
-    {
-        category: "Clinical Validation & Accuracy",
-        icon: "🔬",
-        questions: [
-            {
-                q: "Is Arohan a certified medical device?",
-                a: "Arohan is currently a prototype undergoing clinical validation. While our technology is based on medical-grade sensors and research-backed algorithms, it has not yet received final regulatory certification (e.g., CDSCO, FDA) for use as a diagnostic tool. It is designed to be a supportive monitoring and alert system, NOT a replacement for professional medical equipment or clinical diagnosis."
-            },
-            {
-                q: "What about false positives (unnecessary alerts)?",
-                a: "In emergency monitoring, there is a technical trade-off between sensitivity (catching all events) and specificity (avoiding false alarms). We prioritize sensitivity to ensure no critical emergency is missed. This means that, occasionally, activities like intense exercise or a sudden movement may trigger a 'confirmation prompt' on your device. Users can cancel these prompts within 30 seconds to prevent alert escalation. Our clinical studies focus on optimizing these thresholds to minimize disruption while maintaining life-saving reliability."
-            },
-            {
-                q: "What about false negatives (missed events)?",
-                a: "A false negative occurs when an actual emergency happens but is not detected. While our multi-sensor fusion (Heart Rate + SpO2 + Accelerometer) significantly reduces this risk, no system is 100% infallible. This is why Arohan includes a high-visibility manual SOS button for cases where the user feels unwell but the sensors haven't yet reached an alert threshold. We also recommend maintaining traditional emergency contact protocols as a redundancy."
-            },
-            {
-                q: "Why is the system in 'Validation Phase'?",
-                a: "Clinical validation is the process where we prove our algorithms work accurately in real-world scenarios. We are currently partnering with specialized medical centers to benchmark our detection rates against gold-standard clinical monitors. This phase ensures that when Arohan is fully launched, it meets the highest standards of safety and reliability for emergency response."
-            },
-            {
-                q: "What medical research supports your detection technology?",
-                a: "Our proprietary AI models are informed by extensive peer-reviewed literature on geriatric fall patterns and cardiac arrhythmia detection. We follow clinical guidelines established by organizations like the American Heart Association (AHA) and the Indian Council of Medical Research (ICMR) for vital sign thresholds. During validation, we frequently publish white papers on our detection accuracy for transparency with our healthcare partners."
-            }
-        ]
-    },
-    {
-        category: "Health & Safety",
-        icon: "🏥",
-        questions: [
-            {
-                q: "How does emergency detection work?",
-                a: "Arohan uses AI algorithms to analyze your vitals against personalized baselines and medical guidelines. The system looks for patterns that may indicate potential health concerns. For example, significant changes in heart rate patterns, unusual movement suggesting a fall, or vital signs outside safe ranges may trigger alerts. The specific thresholds are personalized based on your health profile."
-            },
-            {
-                q: "What happens when an emergency is detected?",
-                a: "Within seconds: (1) Your emergency contacts receive SMS/call alerts, (2) Your GPS location is shared, (3) The nearest hospital is notified (if enrolled), (4) Ambulance dispatch is coordinated via 112, (5) Your health data is transmitted to responders."
-            },
-            {
-                q: "Can I manually trigger an emergency alert?",
-                a: "Yes! Press and hold the SOS button on the device for 3 seconds, or use the Emergency SOS button in the mobile app/web dashboard. This is useful if you feel unwell but sensors haven't detected an anomaly yet."
-            },
-            {
-                q: "Is my health data secure and private?",
-                a: "Your privacy is our top priority. All health data is encrypted end-to-end (AES-256), stored on HIPAA-compliant servers, and never shared with third parties without your explicit consent. You can delete your data anytime from the app."
-            },
-            {
-                q: "Does Arohan replace my doctor?",
-                a: "No. Arohan is a monitoring and alert system, not a medical diagnostic tool. It helps detect emergencies and track health trends, but you should always consult your healthcare provider for medical advice, diagnosis, or treatment."
-            },
-            {
-                q: "What if I have a pacemaker or other medical devices?",
-                a: "Arohan is safe to use with most medical devices, including pacemakers. However, we recommend consulting your doctor before use if you have any implanted medical devices to ensure compatibility."
-            }
-        ]
-    },
-    {
-        category: "Pricing & Subscription",
-        icon: "💳",
-        questions: [
-            {
-                q: "How much does Arohan cost?",
-                a: "Device: One-time purchase. Mobile App: Free (basic features) or Subscription (Premium). Premium includes: AI health insights, family member access, priority customer support, advanced analytics, and API access."
-            },
-            {
-                q: "Is there a free trial?",
-                a: "Yes! New users get a 30-day free trial of Premium features. No credit card required for the device purchase, and you can cancel Premium anytime."
-            },
-            {
-                q: "What's included in the device purchase?",
-                a: "Your purchase includes: Arohan wearable device, Magnetic charging cable, User manual, 1-year manufacturer warranty, Free basic app access (forever), Setup and onboarding support."
-            },
-            {
-                q: "Can I cancel my subscription?",
-                a: "Yes, you can cancel Premium anytime from your account settings. You'll continue to have access until the end of your billing cycle, and your data is retained. The basic app remains free forever."
-            },
-            {
-                q: "Do you offer bulk discounts for families or organizations?",
-                a: "Yes! Family packs: 3+ devices get 10% off. Corporate/Hospital bulk orders: 10+ devices get 15% off, 50+ get 20% off. Contact sales@arohanhealth.com for custom quotes."
-            },
-            {
-                q: "What payment methods do you accept?",
-                a: "We accept: Credit/Debit cards (Visa, Mastercard, Amex, RuPay), UPI (Google Pay, PhonePe, Paytm), Net Banking, Wallets (Paytm, Mobikwik). All transactions are secured by Razorpay."
-            }
-        ]
-    },
-    {
-        category: "Technical Support",
-        icon: "🛠️",
-        questions: [
-            {
-                q: "My device isn't connecting to the app. What should I do?",
-                a: "Try these steps: (1) Ensure Bluetooth is enabled on your phone, (2) Restart the Arohan device (hold power button for 10 seconds), (3) Force close and reopen the app, (4) Ensure device is charged (>20%), (5) If issue persists, unpair and re-pair via app settings."
-            },
-            {
-                q: "How do I update my device firmware?",
-                a: "Firmware updates are automatic when connected to the app and WiFi. You'll receive a notification when an update is available. The device must have >50% battery. Updates typically take 5-10 minutes and happen in the background."
-            },
-            {
-                q: "What if my device gets lost or stolen?",
-                a: "Log into your web dashboard → Settings → Device Management → Mark as Lost. This will: (1) Disable the device remotely, (2) Show last known GPS location, (3) Enable tracking alerts if it comes online. We can also help replace lost devices at a discounted rate."
-            },
-            {
-                q: "How do I add or change emergency contacts?",
-                a: "In the mobile app: Profile → Emergency Contacts → Add/Edit. You can add up to 5 contacts. We recommend: Primary: Family member, Secondary: Neighbor/friend, Tertiary: Doctor. Test alerts by using the 'Send Test Alert' button."
-            },
-            {
-                q: "Can I use Arohan internationally?",
-                a: "Currently, Arohan works best in India with our local emergency integration (112). International use is possible for health tracking, but emergency dispatch may not be automated. We're expanding to USA, UAE, and Singapore in 2026."
-            },
-            {
-                q: "What's your return/warranty policy?",
-                a: "30-day money-back guarantee if unsatisfied (device must be in original condition). 1-year manufacturer warranty covers defects. Extended warranty available. Accidental damage not covered (but we offer repair at cost)."
-            }
-        ]
-    },
-    {
-        category: "Privacy & Compliance",
-        icon: "🔒",
-        questions: [
-            {
-                q: "Is Arohan HIPAA compliant?",
-                a: "Yes, our platform is HIPAA-compliant for healthcare partners. We have executed Business Associate Agreements (BAAs) with hospitals and clinics. All PHI (Protected Health Information) is encrypted, access-controlled, and audit-logged."
-            },
-            {
-                q: "Who can access my health data?",
-                a: "Only you and people you explicitly authorize (emergency contacts, caregivers, doctors). Arohan staff cannot access your data without your written consent, except for aggregated, anonymized analytics to improve our AI models."
-            },
-            {
-                q: "Do you sell my data to third parties?",
-                a: "Absolutely not. We will never sell, rent, or share your personal health data with advertisers, insurance companies, or any third party without your explicit, informed consent. Our revenue comes from device sales and subscriptions, not data."
-            },
-            {
-                q: "How can I delete my account and data?",
-                a: "Settings → Privacy → Delete Account. This will: (1) Permanently erase all your health data within 30 days, (2) Disable device remotely, (3) Notify emergency contacts of discontinuation, (4) Send data export (if requested) before deletion."
-            }
-        ]
-    }
-];
 
 export function FAQ() {
+    const { t } = useTranslation();
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('All');
+    
+    // Fallback in case of loading state or missing translations
+    const faqCategories = t('faq.categories', { returnObjects: true }) || [];
 
     useEffect(() => {
         if (searchTerm) {
@@ -241,20 +55,26 @@ export function FAQ() {
 
     return (
         <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 10, px: 2 }}>
+            <SEO
+                title={t('faq.title')}
+                description={t('faq.subtitle')}
+                keywords="Arohan FAQ, health wearable questions, emergency monitoring help, AI device support India"
+                canonical="https://arohanhealth.com/faq"
+            />
             <Container>
                 {/* Header */}
                 <Box sx={{ textAlign: 'center', mb: 8 }}>
                     <Box sx={{ width: 64, height: 64, bgcolor: 'error.50', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2 }}>
                         <HelpCircleIcon sx={{ fontSize: 32, color: 'error.main' }} />
                     </Box>
-                    <Typography variant="h3" fontWeight="bold" gutterBottom>Frequently Asked Questions</Typography>
-                    <Typography variant="h6" color="text.secondary">Everything you need to know about Arohan</Typography>
+                    <Typography variant="h3" fontWeight="bold" gutterBottom>{t('faq.title')}</Typography>
+                    <Typography variant="h6" color="text.secondary">{t('faq.subtitle')}</Typography>
                 </Box>
 
                 {/* Search Bar */}
                 <TextField
                     fullWidth
-                    placeholder="Search for questions..."
+                    placeholder={t('faq.searchPlaceholder')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     variant="outlined"
@@ -287,8 +107,8 @@ export function FAQ() {
                 {/* FAQ Content */}
                 {filteredCategories.length === 0 ? (
                     <Paper sx={{ p: 6, textAlign: 'center', borderRadius: 2 }}>
-                        <Typography variant="body1" color="text.secondary" gutterBottom>No questions found matching "{searchTerm}"</Typography>
-                        <Button onClick={() => setSearchTerm('')} color="error">Clear search</Button>
+                        <Typography variant="body1" color="text.secondary" gutterBottom>{t('faq.noResults')} "{searchTerm}"</Typography>
+                        <Button onClick={() => setSearchTerm('')} color="error">{t('faq.clearSearch')}</Button>
                     </Paper>
                 ) : (
                     <Stack spacing={4}>
@@ -327,14 +147,14 @@ export function FAQ() {
                         borderRadius: 3
                     }}
                 >
-                    <Typography variant="h5" fontWeight="bold" gutterBottom>Still have questions?</Typography>
-                    <Typography variant="body1" sx={{ mb: 4, opacity: 0.9 }}>Can't find the answer you're looking for? Our support team is here to help.</Typography>
+                    <Typography variant="h5" fontWeight="bold" gutterBottom>{t('faq.stillQuestions.title')}</Typography>
+                    <Typography variant="body1" sx={{ mb: 4, opacity: 0.9 }}>{t('faq.stillQuestions.desc')}</Typography>
                     <Stack direction="row" spacing={2} justifyContent="center">
                         <Button variant="contained" sx={{ bgcolor: 'common.white', color: 'error.main', '&:hover': { bgcolor: 'grey.100' } }} href="/contact">
-                            Contact Support
+                            {t('faq.stillQuestions.contact')}
                         </Button>
                         <Button variant="outlined" sx={{ color: 'common.white', borderColor: 'common.white', '&:hover': { borderColor: 'grey.200', bgcolor: 'rgba(255,255,255,0.1)' } }} href="mailto:support@arohanhealth.com">
-                            Email Us
+                            {t('faq.stillQuestions.email')}
                         </Button>
                     </Stack>
                 </Paper>

@@ -16,7 +16,7 @@ resource "aws_route53_record" "root_a" {
   }
 }
 
-# Also route www.haspranahealth.com to the ALB
+# Also route www.arohanhealth.com to the ALB
 resource "aws_route53_record" "www_a" {
   zone_id = aws_route53_zone.main.zone_id
   name    = "www.${var.domain_name}"

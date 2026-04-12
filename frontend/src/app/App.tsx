@@ -75,6 +75,7 @@ const Integrations = lazy(() => import("./pages/Integrations").then(module => ({
 const Consulting = lazy(() => import("./pages/Consulting").then(module => ({ default: module.Consulting })));
 const Compliance = lazy(() => import("./pages/Compliance").then(module => ({ default: module.Compliance })));
 const MonitoringDashboard = lazy(() => import("./pages/admin/MonitoringDashboard").then(module => ({ default: module.MonitoringDashboard })));
+const Security = lazy(() => import("./pages/Security").then(module => ({ default: module.Security })));
 
 import { ThemeProvider, CssBaseline, Box, CircularProgress } from "@mui/material";
 import theme from "./styles/theme";
@@ -164,6 +165,7 @@ export default function App() {
                   <Route path="/how-it-works" element={<HowItWorks />} />
                   <Route path="/cart" element={<ShoppingCart />} />
                   <Route path="/faq" element={<FAQ />} />
+                  <Route path="/security" element={<Security />} />
                   <Route path="/shop" element={<ShoppingCart />} />
                   <Route path="/checkout" element={<CheckoutRazorpay />} />
                   <Route path="/checkout-phonepe" element={<Checkout />} />

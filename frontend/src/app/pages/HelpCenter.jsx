@@ -9,6 +9,7 @@ import {
     ExpandMore as ExpandMoreIcon,
     EmojiPeople as SupportIcon
 } from '@mui/icons-material';
+import SEO from '../components/SEO';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
@@ -86,16 +87,16 @@ export function HelpCenter() {
         {
             icon: PhoneIcon,
             title: 'Phone Support',
-            content: 'Coming Soon',
-            subtext: 'This feature will be enabled soon',
-            action: '#'
+            content: '+91 70190 24300',
+            subtext: 'Mon-Fri, 9am - 6pm IST',
+            action: 'tel:+917019024300'
         },
         {
             icon: MailIcon,
             title: 'Email Support',
-            content: 'info@haspranahealth.com',
+            content: 'info@arohanhealth.com',
             subtext: 'Response within 24 hours',
-            action: 'mailto:info@haspranahealth.com'
+            action: 'mailto:info@arohanhealth.com'
         },
         {
             icon: ChatIcon,
@@ -112,6 +113,12 @@ export function HelpCenter() {
 
     return (
         <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50' }}>
+            <SEO
+                title="Help Center"
+                description="Find guides, FAQs, and support resources for your Arohan Health device. Call +91 70190 24300 or email info@arohanhealth.com for direct support."
+                keywords="Arohan Health support, help center, device setup guide, emergency monitoring FAQ"
+                canonical="https://arohanhealth.com/help-center"
+            />
             {/* Hero */}
             <Box sx={{ background: 'linear-gradient(to right, #7b1fa2, #9c27b0)', color: 'common.white', py: 10, px: 2, textAlign: 'center' }}>
                 <Container>

@@ -4,10 +4,10 @@
 export const generateOrganizationSchema = (): Record<string, any> => ({
     "@context": "https://schema.org",
     "@type": "Organization",
-    "name": "Hasprana Health Care Solutions Private Limited",
+    "name": "Arohan Health",
     "alternateName": "Arohan",
-    "url": "https://arohan-health.com",
-    "logo": "https://arohan-health.com/logo.png",
+    "url": "https://arohanhealth.com",
+    "logo": "https://arohanhealth.com/logo.png",
     "description": "AI-powered wearable emergency detection and first-aid platform for elderly care",
     "address": {
         "@type": "PostalAddress",
@@ -17,13 +17,13 @@ export const generateOrganizationSchema = (): Record<string, any> => ({
     },
     "contactPoint": {
         "@type": "ContactPoint",
-        "telephone": "+91-XXXXX-XXXXX",
+        "telephone": "+91 70190 24300",
         "contactType": "Customer Service",
-        "email": "info@haspranahealth.com",
-        "availableLanguage": ["English", "Hindi"]
+        "email": "info@arohanhealth.com",
+        "availableLanguage": ["English", "Hindi", "Kannada"]
     },
     "sameAs": [
-        "https://www.linkedin.com/company/haspranahealth",
+        "https://www.linkedin.com/company/arohanhealth",
         "https://twitter.com/arohanhealth"
     ],
     "founder": [
@@ -51,14 +51,14 @@ export const generateProductSchema = (): Record<string, any> => ({
     },
     "offers": {
         "@type": "Offer",
-        "url": "https://arohan-health.com/products",
+        "url": "https://arohanhealth.com/products",
         "priceCurrency": "INR",
         "price": "0",
         "priceValidUntil": "2026-12-31",
         "availability": "https://schema.org/InStock",
         "seller": {
             "@type": "Organization",
-            "name": "Hasprana Health Care Solutions"
+            "name": "Arohan Health"
         }
     },
     "aggregateRating": {
@@ -66,7 +66,7 @@ export const generateProductSchema = (): Record<string, any> => ({
         "ratingValue": "4.8",
         "reviewCount": "127"
     },
-    "image": "https://arohan-health.com/arohan-device.jpg"
+    "image": "https://arohanhealth.com/arohan-device.jpg"
 });
 
 interface FAQ {
@@ -125,7 +125,7 @@ export const generateArticleSchema = (article: Article): Record<string, any> => 
         "name": "Arohan Health",
         "logo": {
             "@type": "ImageObject",
-            "url": "https://arohan-health.com/logo.png"
+            "url": "https://arohanhealth.com/logo.png"
         }
     }
 });
@@ -133,8 +133,8 @@ export const generateArticleSchema = (article: Article): Record<string, any> => 
 export const generateLocalBusinessSchema = (): Record<string, any> => ({
     "@context": "https://schema.org",
     "@type": "MedicalBusiness",
-    "name": "Arohan - Hasprana Health Care Solutions",
-    "image": "https://arohan-health.com/office.jpg",
+    "name": "Arohan Health",
+    "image": "https://arohanhealth.com/office.jpg",
     "address": {
         "@type": "PostalAddress",
         "streetAddress": "Technology Park",
@@ -148,6 +148,6 @@ export const generateLocalBusinessSchema = (): Record<string, any> => ({
         "latitude": 12.9716,
         "longitude": 77.5946
     },
-    "telephone": "+91-XXXXX-XXXXX",
+    "telephone": "+91 70190 24300",
     "priceRange": "₹₹"
 });

@@ -1,4 +1,5 @@
 import { Box, Button, Container, Typography, TextField, Grid, Paper, Alert, CircularProgress } from '@mui/material';
+import SEO from '../components/SEO';
 import { useState } from 'react';
 import { CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import api from '../../services/api';
@@ -64,6 +65,12 @@ export default function EarlyAccess() {
 
     return (
         <Box sx={{ py: 12, bgcolor: 'grey.50', minHeight: '100dvh' }}>
+            <SEO
+                title="Join Early Access"
+                description="Be among the first to experience Arohan Health's AI-powered emergency detection wearable. Join our pilot program for families, hospitals, and senior care institutions."
+                keywords="Arohan Health early access, health wearable pilot, emergency detection beta, AI health monitoring trial India"
+                canonical="https://arohanhealth.com/early-access"
+            />
             <Container>
                 <Box sx={{ textAlign: 'center', mb: 6 }}>
                     <Typography variant="h2" fontWeight="bold" gutterBottom>

@@ -8,7 +8,19 @@
         "consulting": "Consulting",
         "integrations": "Integrations",
         "blog": "Blog",
-        "contact": "Contact"
+        "contact": "Contact",
+        "nearbyHospitals": "Nearby Hospitals",
+        "projectsOverview": "Projects Overview",
+        "partnerHospitals": "Partner Hospitals",
+        "careers": "Careers"
+    },
+    "header": {
+        "adminPanel": "Admin Panel",
+        "physicianPanel": "Physician Panel",
+        "dashboard": "Dashboard",
+        "systemAdmin": "System Admin",
+        "emergency": "Emergency",
+        "menu": "Menu"
     },
     "hero": {
         "title": "AI-Powered Health Monitoring for Peace of Mind",
@@ -17,6 +29,329 @@
             "getStarted": "Get Started",
             "learnMore": "Learn More"
         }
+    },
+    "about": {
+        "prototype": "PROTOTYPE UNDERGOING CLINICAL VALIDATION",
+        "title": "About Arohan",
+        "subtitle": "Pioneering AI-powered proactive health monitoring to protect individuals and families across India",
+        "evidenceTitle": "Evidence-Based Care",
+        "evidenceDesc": "Our AI models are built on foundations of established medical research and peer-reviewed literature.",
+        "visionTitle": "Our Vision",
+        "visionDesc": "Transforming emergency care by delivering timely life-saving notifications and enabling prompt first aid through AI-powered biosensors and personalized healthcare insights.",
+        "missionTitle": "Our Mission",
+        "missionDesc": "Enable individuals and families to stay worry-free by instantly notifying loved ones during health emergencies and equipping first responders with evidence-based guidance.",
+        "originTitle": "Why We Built Arohan",
+        "originDesc": "Arohan Health is a Bengaluru-based health-tech startup building deep-tech solutions for emergency and proactive care. Our flagship product is born from personal experiences of delayed emergency response and informed by discussions with clinicians, caregivers and technologists.",
+        "originQuote": "Reducing delays in emergency notification saves lives",
+        "teamTitle": "Meet Our Team",
+        "teamSubtitle": "Passionate innovators committed to saving lives",
+        "teamNote": "Driven by a common mission, every team member is personally invested in this initiative's success"
+    },
+    "contact": {
+        "heroTitle": "Get in Touch",
+        "heroSubtitle": "We're here to help. Choose your preferred way to connect.",
+        "formTitle": "Send Us a Message",
+        "successTitle": "Thank you for reaching out!",
+        "successDesc": "We'll respond to your email within 24 hours.",
+        "name": "Full Name",
+        "email": "Email",
+        "phone": "Phone (Optional)",
+        "subject": "Subject",
+        "message": "Message",
+        "submit": "Send Message",
+        "methodsTitle": "Other Ways to Reach Us",
+        "emailTitle": "Email Us",
+        "emailSub": "Response within 24 hours",
+        "callTitle": "Call Us",
+        "callSub": "Mon–Fri, 9am–6pm IST",
+        "chatTitle": "Live Chat",
+        "chatPrimary": "Coming Soon",
+        "chatSub": "This feature will be enabled soon",
+        "visitTitle": "Visit Us",
+        "visitSub": "By appointment only",
+        "inquiriesTitle": "For Specific Inquiries",
+        "sales": "Sales & Partnerships",
+        "press": "Media & Press",
+        "careers": "Careers",
+        "techSupport": "Technical Support"
+    },
+    "faq": {
+        "title": "Frequently Asked Questions",
+        "subtitle": "Everything you need to know about Arohan Health's device, privacy, validation, and support.",
+        "searchPlaceholder": "Search questions or keywords...",
+        "noResults": "No questions found matching your search.",
+        "categories": [
+            {
+                "category": "Getting Started",
+                "icon": "🚀",
+                "questions": [
+                    { "q": "What is Arohan?", "a": "Arohan is an AI-powered wearable health monitoring system designed for proactive health management. It provides 24/7 monitoring of vital signs, early detection of potential health emergencies (falls, cardiac events, etc.), and automatic alerts to family members and emergency services. Note: Arohan is currently a prototype undergoing clinical validation." },
+                    { "q": "How does Arohan work?", "a": "Arohan consists of a comfortable wearable device that continuously monitors your health vitals (heart rate, blood pressure, activity, sleep). Our AI analyzes this data in real-time to identify potential health concerns early. If an anomaly is detected, the system automatically alerts your emergency contacts and can coordinate with nearby hospitals." },
+                    { "q": "Who should use Arohan?", "a": "Arohan is ideal for: (1) Individuals living alone or with limited supervision, (2) People with chronic health conditions like hypertension or arrhythmia, (3) Families who want peace of mind about their relatives' health, (4) Healthcare facilities managing multiple patients, (5) Anyone seeking proactive health monitoring." },
+                    { "q": "Do I need a smartphone to use Arohan?", "a": "No! The Arohan device works independently with cellular connectivity. However, having the mobile app enhances your experience with detailed health insights, but it's not required for emergency alerts to function." }
+                ]
+            },
+            {
+                "category": "Device & Technology",
+                "icon": "⌚",
+                "questions": [
+                    { "q": "What health metrics does Arohan monitor?", "a": "Arohan tracks: Heart rate (continuous), Blood pressure, Oxygen saturation (SpO2), Body temperature, Respiratory rate, Activity (steps, calories, distance), Sleep quality and duration, Fall detection via accelerometer." },
+                    { "q": "How accurate is fall detection?", "a": "Our fall detection system uses advanced motion sensors and AI to distinguish between actual falls and normal activities. We are currently validating the system's accuracy through clinical trials. Like other fall-detection providers (used in senior living facilities and medical alert systems), we balance sensitivity to catch real falls while minimizing false alarms from activities like sitting down quickly or exercising. Accuracy depends on factors like device placement, individual movement patterns, and fall type." },
+                    { "q": "What is the battery life?", "a": "The battery is designed for multi-day continuous monitoring. Detailed battery specifications and charging times will be finalized while the prototype is undergoing clinical validation." },
+                    { "q": "Is the device waterproof?", "a": "Arohan features splash resistance for daily durability. Specific IP ratings will be finalized as the prototype undergoes clinical validation." },
+                    { "q": "How do I set up my Arohan device?", "a": "Setup is simple: (1) Charge the device fully, (2) Download the Arohan app (iOS/Android), (3) Create your account, (4) Pair the device via Bluetooth, (5) Complete the health profile, (6) Add emergency contacts. The entire process takes about 10 minutes." },
+                    { "q": "Can I wear Arohan during sleep?", "a": "Absolutely! In fact, we encourage nighttime wear as Arohan monitors sleep quality and can detect emergencies that occur during sleep, which are often the most critical." }
+                ]
+            },
+            {
+                "category": "Clinical Validation & Accuracy",
+                "icon": "🔬",
+                "questions": [
+                    { "q": "Is Arohan a certified medical device?", "a": "Arohan is currently a prototype undergoing clinical validation. While our technology is based on medical-grade sensors and research-backed algorithms, it has not yet received final regulatory certification (e.g., CDSCO, FDA) for use as a diagnostic tool. It is designed to be a supportive monitoring and alert system, NOT a replacement for professional medical equipment or clinical diagnosis." },
+                    { "q": "What about false positives (unnecessary alerts)?", "a": "In emergency monitoring, there is a technical trade-off between sensitivity (catching all events) and specificity (avoiding false alarms). We prioritize sensitivity to ensure no critical emergency is missed. This means that, occasionally, activities like intense exercise or a sudden movement may trigger a 'confirmation prompt' on your device. Users can cancel these prompts within 30 seconds to prevent alert escalation. Our clinical studies focus on optimizing these thresholds to minimize disruption while maintaining life-saving reliability." },
+                    { "q": "What about false negatives (missed events)?", "a": "A false negative occurs when an actual emergency happens but is not detected. While our multi-sensor fusion (Heart Rate + SpO2 + Accelerometer) significantly reduces this risk, no system is 100% infallible. This is why Arohan includes a high-visibility manual SOS button for cases where the user feels unwell but the sensors haven't yet reached an alert threshold. We also recommend maintaining traditional emergency contact protocols as a redundancy." },
+                    { "q": "Why is the system in 'Validation Phase'?", "a": "Clinical validation is the process where we prove our algorithms work accurately in real-world scenarios. We are currently partnering with specialized medical centers to benchmark our detection rates against gold-standard clinical monitors. This phase ensures that when Arohan is fully launched, it meets the highest standards of safety and reliability for emergency response." },
+                    { "q": "What medical research supports your detection technology?", "a": "Our proprietary AI models are informed by extensive peer-reviewed literature on geriatric fall patterns and cardiac arrhythmia detection. We follow clinical guidelines established by organizations like the American Heart Association (AHA) and the Indian Council of Medical Research (ICMR) for vital sign thresholds. During validation, we frequently publish white papers on our detection accuracy for transparency with our healthcare partners." }
+                ]
+            },
+            {
+                "category": "Health & Safety",
+                "icon": "🏥",
+                "questions": [
+                    { "q": "How does emergency detection work?", "a": "Arohan uses AI algorithms to analyze your vitals against personalized baselines and medical guidelines. The system looks for patterns that may indicate potential health concerns. For example, significant changes in heart rate patterns, unusual movement suggesting a fall, or vital signs outside safe ranges may trigger alerts. The specific thresholds are personalized based on your health profile." },
+                    { "q": "What happens when an emergency is detected?", "a": "Within seconds: (1) Your emergency contacts receive SMS/call alerts, (2) Your GPS location is shared, (3) The nearest hospital is notified (if enrolled), (4) Ambulance dispatch is coordinated via 112, (5) Your health data is transmitted to responders." },
+                    { "q": "Can I manually trigger an emergency alert?", "a": "Yes! Press and hold the SOS button on the device for 3 seconds, or use the Emergency SOS button in the mobile app/web dashboard. This is useful if you feel unwell but sensors haven't detected an anomaly yet." },
+                    { "q": "Is my health data secure and private?", "a": "Your privacy is our top priority. All health data is encrypted end-to-end (AES-256), stored on HIPAA-compliant servers, and never shared with third parties without your explicit consent. You can delete your data anytime from the app." },
+                    { "q": "Does Arohan replace my doctor?", "a": "No. Arohan is a monitoring and alert system, not a medical diagnostic tool. It helps detect emergencies and track health trends, but you should always consult your healthcare provider for medical advice, diagnosis, or treatment." },
+                    { "q": "What if I have a pacemaker or other medical devices?", "a": "Arohan is safe to use with most medical devices, including pacemakers. However, we recommend consulting your doctor before use if you have any implanted medical devices to ensure compatibility." }
+                ]
+            },
+            {
+                "category": "Pricing & Subscription",
+                "icon": "💳",
+                "questions": [
+                    { "q": "How much does Arohan cost?", "a": "Device: One-time purchase. Mobile App: Free (basic features) or Subscription (Premium). Premium includes: AI health insights, family member access, priority customer support, advanced analytics, and API access." },
+                    { "q": "Is there a free trial?", "a": "Yes! New users get a 30-day free trial of Premium features. No credit card required for the device purchase, and you can cancel Premium anytime." },
+                    { "q": "What's included in the device purchase?", "a": "Your purchase includes: Arohan wearable device, Magnetic charging cable, User manual, 1-year manufacturer warranty, Free basic app access (forever), Setup and onboarding support." },
+                    { "q": "Can I cancel my subscription?", "a": "Yes, you can cancel Premium anytime from your account settings. You'll continue to have access until the end of your billing cycle, and your data is retained. The basic app remains free forever." },
+                    { "q": "Do you offer bulk discounts for families or organizations?", "a": "Yes! Family packs: 3+ devices get 10% off. Corporate/Hospital bulk orders: 10+ devices get 15% off, 50+ get 20% off. Contact sales@arohanhealth.com for custom quotes." },
+                    { "q": "What payment methods do you accept?", "a": "We accept: Credit/Debit cards (Visa, Mastercard, Amex, RuPay), UPI (Google Pay, PhonePe, Paytm), Net Banking, Wallets (Paytm, Mobikwik). All transactions are secured by Razorpay." }
+                ]
+            },
+            {
+                "category": "Technical Support",
+                "icon": "🛠️",
+                "questions": [
+                    { "q": "My device isn't connecting to the app. What should I do?", "a": "Try these steps: (1) Ensure Bluetooth is enabled on your phone, (2) Restart the Arohan device (hold power button for 10 seconds), (3) Force close and reopen the app, (4) Ensure device is charged (>20%), (5) If issue persists, unpair and re-pair via app settings." },
+                    { "q": "How do I update my device firmware?", "a": "Firmware updates are automatic when connected to the app and WiFi. You'll receive a notification when an update is available. The device must have >50% battery. Updates typically take 5-10 minutes and happen in the background." },
+                    { "q": "What if my device gets lost or stolen?", "a": "Log into your web dashboard → Settings → Device Management → Mark as Lost. This will: (1) Disable the device remotely, (2) Show last known GPS location, (3) Enable tracking alerts if it comes online. We can also help replace lost devices at a discounted rate." },
+                    { "q": "How do I add or change emergency contacts?", "a": "In the mobile app: Profile → Emergency Contacts → Add/Edit. You can add up to 5 contacts. We recommend: Primary: Family member, Secondary: Neighbor/friend, Tertiary: Doctor. Test alerts by using the 'Send Test Alert' button." },
+                    { "q": "Can I use Arohan internationally?", "a": "Currently, Arohan works best in India with our local emergency integration (112). International use is possible for health tracking, but emergency dispatch may not be automated. We're expanding to USA, UAE, and Singapore in 2026." },
+                    { "q": "What's your return/warranty policy?", "a": "30-day money-back guarantee if unsatisfied (device must be in original condition). 1-year manufacturer warranty covers defects. Extended warranty available. Accidental damage not covered (but we offer repair at cost)." }
+                ]
+            },
+            {
+                "category": "Privacy & Compliance",
+                "icon": "🔒",
+                "questions": [
+                    { "q": "Is Arohan HIPAA compliant?", "a": "Yes, our platform is HIPAA-compliant for healthcare partners. We have executed Business Associate Agreements (BAAs) with hospitals and clinics. All PHI (Protected Health Information) is encrypted, access-controlled, and audit-logged." },
+                    { "q": "Who can access my health data?", "a": "Only you and people you explicitly authorize (emergency contacts, caregivers, doctors). Arohan staff cannot access your data without your written consent, except for aggregated, anonymized analytics to improve our AI models." },
+                    { "q": "Do you sell my data to third parties?", "a": "Absolutely not. We will never sell, rent, or share your personal health data with advertisers, insurance companies, or any third party without your explicit, informed consent. Our revenue comes from device sales and subscriptions, not data." },
+                    { "q": "How can I delete my account and data?", "a": "Settings → Privacy → Delete Account. This will: (1) Permanently erase all your health data within 30 days, (2) Disable device remotely, (3) Notify emergency contacts of discontinuation, (4) Send data export (if requested) before deletion." }
+                ]
+            }
+        ],
+        "clearSearch": "Clear search",
+        "stillQuestions": {
+            "title": "Still have questions?",
+            "desc": "Can't find the answer you're looking for? Our support team is here to help.",
+            "contact": "Contact Support",
+            "email": "Email Us"
+        }
+    },
+    "pricing": {
+        "title": "Simple, Transparent Pricing",
+        "subtitle": "Join our early adopter program. Final pricing will be announced as the prototype completes clinical validation.",
+        "guarantee": "No hidden fees. Cancel anytime. 30-day money-back guarantee.",
+        "consumerHeading": "For Individuals & Families",
+        "consumerSub": "Choose the plan that fits your needs",
+        "mostPopular": "MOST POPULAR",
+        "annualTitle": "Annual Bundle: Save 25%",
+        "annualDesc": "Buy device + 12 months Premium for a",
+        "annualDealStr": "Annual Deal",
+        "getAnnualDeal": "Get Annual Deal",
+        "b2bHeading": "For Businesses & Organizations",
+        "b2bSub": "Volume discounts, custom integrations, dedicated support",
+        "requestQuote": "Request Quote",
+        "faqHeading": "Pricing FAQ",
+        "ctaTitle": "Still Have Questions?",
+        "ctaSub": "Talk to our sales team for personalized pricing",
+        "scheduleCall": "Schedule Call",
+        "emailSales": "Email Sales",
+        "comingSoon": "Mobile App coming soon to Play Store & App Store!",
+        "loginErr": "Please login to add this deal to your cart",
+        "annualDealName": "Arohan Annual Bundle",
+        "annualDealDesc": "Arohan Smart Wearable + 12 Months Premium Subscription",
+        "addedSuccess": "Annual Bundle added to cart!",
+        "addFailed": "Failed to add to cart.",
+        "consumerPlans": [
+            {
+                "name": "Basic",
+                "price": "Free",
+                "period": "Forever",
+                "description": "Essential features for individual elderly users",
+                "features": [
+                    "Fall detection alerts",
+                    "Basic heart rate monitoring",
+                    "Emergency SOS button",
+                    "1 emergency contact",
+                    "Mobile app access",
+                    "Email support"
+                ],
+                "cta": "Download Free App"
+            },
+            {
+                "name": "Premium",
+                "price": "Subscription",
+                "description": "Advanced AI features for complete peace of mind",
+                "features": [
+                    "Everything in Basic",
+                    "Cardiac anomaly detection (AI)",
+                    "Personalized health insights",
+                    "5 emergency contacts",
+                    "Family member dashboard access",
+                    "7-day health history",
+                    "Priority 24/7 support",
+                    "API access for EHR integration"
+                ],
+                "cta": "Start Free Trial"
+            }
+        ],
+        "b2bPlans": [
+            {
+                "name": "Hospital/Clinic",
+                "price": "Custom",
+                "description": "For healthcare providers monitoring patients",
+                "features": [
+                    "10-500 device licenses",
+                    "Multi-patient dashboard",
+                    "EHR integration (HL7/FHIR)",
+                    "Bulk device management",
+                    "Dedicated support team",
+                    "Volume discount: 10% (10+), 20% (50+)"
+                ]
+            },
+            {
+                "name": "Corporate Wellness",
+                "price": "Custom",
+                "description": "Employee health programs for companies",
+                "features": [
+                    "Scalable for large teams",
+                    "HR wellness dashboard",
+                    "Aggregate analytics (anonymized)",
+                    "ROI tracking & reporting",
+                    "Annual health screening integration",
+                    "Volume discount: Up to 30%"
+                ]
+            },
+            {
+                "name": "Insurance Partnership",
+                "price": "Revenue Share",
+                "description": "Risk pooling for health insurers",
+                "features": [
+                    "Unlimited member access",
+                    "Predictive risk scoring",
+                    "Claims reduction analytics",
+                    "White-label app option",
+                    "API for premium adjustments",
+                    "Custom contract terms"
+                ]
+            }
+        ],
+        "faqs": [
+            {
+                "question": "What is the device pricing?",
+                "answer": "We are currently in a prototype phase. Final pricing for the Arohan wearable device will be announced soon along with our official launch."
+            },
+            {
+                "question": "Can I return the device if it doesn't work for me?",
+                "answer": "Yes! We offer a 30-day money-back guarantee. If you're not satisfied, return the device in original condition for a full refund (shipping excluded)."
+            },
+            {
+                "question": "Do I need a smartphone to use Arohan?",
+                "answer": "Yes, a smartphone (iOS 15+ or Android 10+) is required for initial setup and to receive alerts. However, emergency contacts can be notified via SMS even if your phone is off."
+            },
+            {
+                "question": "Are there any hidden charges?",
+                "answer": "No hidden fees! Device (one-time), Basic app (free), Premium (optional subscription). No activation fees, no cancellation fees."
+            },
+            {
+                "question": "What benefits do different plans offer?",
+                "answer": "Our plans are designed to scale with your needs, from basic monitoring to advanced AI-driven health insights and priority family support. Detailed feature comparison will be available at launch."
+            },
+            {
+                "question": "Do you offer discounts for bulk orders?",
+                "answer": "Yes! 10-49 units: 10% off, 50-99 units: 20% off, 100+ units: 30% off. Contact sales@arohanhealth.com for B2B quotes."
+            }
+        ]
+    },
+    "home": {
+        "heroStatus": "Status",
+        "heroProtected": "Protected",
+        "heroVitals": "Vitals Normal",
+        "prototypeNote": "⚠️ Prototype undergoing clinical validation",
+        "joinEarlyAccess": "Join Early Access",
+        "partnerWithUs": "Partner with Us",
+        "problemTitle": "Closing the emergency response gap",
+        "problemDesc": "In health emergencies, every minute is vital. Many individuals live with limited immediate supervision, and family members may be distant. Early notification and clear guidance during those first few minutes can make a significant difference. Arohan aims to provide that critical connection between an event and the right assistance.",
+        "solutionTitle": "One platform, three powerful components",
+        "solution1Title": "Discreet Wearable Plugin Chip",
+        "solution1Desc": "Clips onto existing watches, rings and everyday wearables. Continuously tracks key vitals and motion linked to falls and acute events. Designed for all‑day and night comfort with low‑power operation.",
+        "solution2Title": "AI Prevention Engine",
+        "solution2Desc": "Learns each person's baseline to identify unusual patterns early, enabling prevention through timely intervention. Analyzes vitals and movement to detect potential health emergencies before they escalate. Triggers instant alerts to caregivers, family members or integrated emergency services.",
+        "solution3Title": "First‑Aid AI Assistant",
+        "solution3Desc": "Voice‑ and chat‑based assistant designed for lay first responders. Provides clear, step‑by‑step instructions for common emergencies like chest pain, suspected stroke, severe bleeding or a fall with head injury. Built on curated, guideline‑aligned medical content vetted by doctors.",
+        "seeHowArohanWorks": "See How Arohan Works",
+        "benefitsTitle": "Designed for real‑world health monitoring",
+        "benefit1": "Personalized safety, not one‑size‑fits‑all thresholds",
+        "benefit2": "Unobtrusive design that can be worn 24/7, even during sleep",
+        "benefit3": "Instant alerts by phone call and SMS, wherever family members live",
+        "benefit4": "Guided first aid so nearby helpers know exactly what to do until professionals take over",
+        "benefit5": "Affordable enough to scale across families, senior‑living communities and hospitals",
+        "howItWorksTitle": "How It Works",
+        "howItWorksDesc": "Getting emergency help has never been simpler. Follow these 4 easy steps.",
+        "hw1Title": "Press SOS",
+        "hw1Desc": "Tap the emergency button anywhere.",
+        "hw2Title": "Location Shared",
+        "hw2Desc": "Location shared automatically.",
+        "hw3Title": "Help Dispatched",
+        "hw3Desc": "Ambulance notified instantly.",
+        "hw4Title": "Real-time Tracking",
+        "hw4Desc": "Track arrival live.",
+        "techChip": "Powered by Advanced AI Technology",
+        "techTitle": "Technology That Saves Lives",
+        "techDesc": "Every second matters. We use technology to reach people faster, guide them better, and save lives more efficiently.",
+        "tech1Title": "AI Voice Assistant",
+        "tech1Desc": "Speak for immediate guidance.",
+        "tech2Title": "Multi-Language",
+        "tech2Desc": "Help in your own language.",
+        "tech3Title": "Video Guided Aid",
+        "tech3Desc": "Visual first aid instructions.",
+        "tech4Title": "Smart Assistance",
+        "tech4Desc": "AI-powered action guidance.",
+        "tech5Title": "One-Tap Access",
+        "tech5Desc": "No complex forms effectively.",
+        "tech6Title": "Location Intel",
+        "tech6Desc": "Auto-finds nearest hospitals.",
+        "whoTitle": "Who we are for?",
+        "whoDesc": "Tailored solutions for everyone in the ecosystem.",
+        "who1Title": "For Individuals & Families",
+        "who1Desc": "Independent living with 24/7 safety monitoring and peace of mind.",
+        "who2Title": "For Doctors",
+        "who2Desc": "Real-time patient vitals and seamless API integration.",
+        "who3Title": "For Corporate",
+        "who3Desc": "Employee wellness programs and health partnerships.",
+        "learnMore": "Learn More"
     },
     "features": {
         "title": "Why Choose Arohan?",
@@ -37,58 +372,36 @@
             "description": "Simple, intuitive interface designed for all ages"
         }
     },
-    "pricing": {
-        "title": "Choose Your Plan",
-        "subtitle": "Flexible pricing for individuals and families",
-        "monthly": "Monthly",
-        "yearly": "Yearly",
-        "perMonth": "/month",
-        "perYear": "/year",
-        "selectPlan": "Select Plan",
-        "free": {
-            "name": "Free",
-            "description": "Perfect for trying out Arohan",
-            "features": [
-                "Basic health monitoring",
-                "7-day data history",
-                "Email alerts",
-                "1 emergency contact"
-            ]
-        },
-        "premium": {
-            "name": "Premium",
-            "description": "Complete health monitoring solution",
-            "features": [
-                "Advanced health monitoring",
-                "365-day data history",
-                "SMS & WhatsApp alerts",
-                "5 emergency contacts",
-                "AI health insights",
-                "Priority support"
-            ]
-        },
-        "family": {
-            "name": "Family",
-            "description": "Monitor your entire family",
-            "features": [
-                "Everything in Premium",
-                "Up to 5 family members",
-                "Shared dashboard",
-                "Family health reports",
-                "Dedicated support"
-            ]
-        }
-    },
+
     "footer": {
-        "tagline": "Transforming health monitoring with AI-powered wearable technology. Peace of mind for families, independence for everyone.",
+        "tagline": "Revolutionizing proactive healthcare through AI-powered monitoring and emergency prevention. Arohan is currently a prototype undergoing clinical validation.",
         "solutions": "Solutions",
         "company": "Company",
         "contact": "Contact",
-        "copyright": "© 2025 Hasprana Health Care Solutions. All rights reserved.",
+        "copyright": "© 2026 Arohan Health. All rights reserved.",
         "privacyPolicy": "Privacy Policy",
         "termsOfService": "Terms of Service",
         "compliance": "Compliance",
-        "cookies": "Cookies"
+        "cookies": "Cookie Policy",
+        "quickLinks": "Quick Links",
+        "supportAndEmergency": "Support & Emergency",
+        "contactAndLocation": "Contact & Location",
+        "helpCenter": "Help Center & FAQ",
+        "security": "Security & Data Privacy",
+        "contactSupport": "Contact Support",
+        "phoneSupport": "Phone Support",
+        "emailUs": "Email Us",
+        "contactUsTitle": "Contact Us",
+        "emergencyHotline": "Emergency Hotline",
+        "emergencyResponse": "24/7 Emergency Response",
+        "contactAssistance": "Contact us for assistance",
+        "email": "Email",
+        "website": "Website",
+        "officeLocation": "Office Location",
+        "officeAddress1": "MG Road, Bengaluru",
+        "officeAddress2": "Karnataka, India 560001",
+        "supportMessage": "Our team is here to help you 24/7 for any emergency or support needs.",
+        "headquarters": "Headquarters"
     },
     "common": {
         "loading": "Loading...",

@@ -9,7 +9,7 @@ import {
     Divider
 } from '@mui/material';
 import { TrendingUp as GrowthIcon } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 export function CaseStudies() {
     const studies = [
@@ -69,10 +69,12 @@ export function CaseStudies() {
 
     return (
         <Box>
-            <Helmet>
-                <title>Case Studies - Arohan Health | Real-World Results & Success Stories</title>
-                <meta name="description" content="See how hospitals, elderly care facilities, and corporations reduced falls by 80%, readmissions by 59%, and healthcare costs by 18% using Arohan wearables." />
-            </Helmet>
+            <SEO
+                title="Case Studies — Real Results from Arohan Health"
+                description="See how Arohan Health helped reduce falls by 80%, hospital readmissions by 59%, and healthcare costs by 18% in real pilot programs at hospitals and care facilities."
+                keywords="Arohan Health case studies, AI wearable results, fall detection outcomes, hospital pilot program, health tech ROI"
+                canonical="https://arohanhealth.com/case-studies"
+            />
 
             {/* Hero */}
             <Box sx={{ bgcolor: 'success.main', color: 'white', py: { xs: 8, md: 12 }, textAlign: 'center' }}>

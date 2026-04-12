@@ -15,8 +15,10 @@ import { StructuredData } from '../components/StructuredData';
 import { generateOrganizationSchema, generateBreadcrumbSchema } from '../../utils/structuredData';
 import SEO from '../components/SEO';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export function About() {
+    const { t } = useTranslation();
     // Core Leadership
     const leadership = [
         {
@@ -92,8 +94,8 @@ export function About() {
     ];
 
     const breadcrumbs = [
-        { name: 'Home', url: 'https://arohan-health.com/' },
-        { name: 'About Us', url: 'https://arohan-health.com/about' }
+        { name: 'Home', url: 'https://arohanhealth.com/' },
+        { name: 'About Us', url: 'https://arohanhealth.com/about' }
     ];
 
     return (
@@ -114,13 +116,13 @@ export function About() {
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 6, md: 8 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="overline" sx={{ letterSpacing: 3, fontWeight: 'bold', mb: 2, display: 'block' }}>
-                        PROTOTYPE UNDERGOING CLINICAL VALIDATION
+                        {t('about.prototype')}
                     </Typography>
                     <Typography variant="h2" fontWeight="800" gutterBottom sx={{ letterSpacing: -1 }}>
-                        About Arohan
+                        {t('about.title')}
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9, maxWidth: 800, mx: 'auto', fontWeight: 500 }}>
-                        Pioneering AI-powered proactive health monitoring to protect individuals and families across India
+                        {t('about.subtitle')}
                     </Typography>
                 </Container>
             </Box>
@@ -130,10 +132,10 @@ export function About() {
             <Box sx={{ bgcolor: 'white', py: { xs: 6, md: 8 } }}>
                 <Container maxWidth="lg">
                     <Typography variant="h3" fontWeight="bold" align="center" gutterBottom>
-                        Evidence-Based Care
+                        {t('about.evidenceTitle')}
                     </Typography>
                     <Typography variant="body1" align="center" color="text.secondary" sx={{ mb: 6 }}>
-                        Our AI models are built on foundations of established medical research and peer-reviewed literature.
+                        {t('about.evidenceDesc')}
                     </Typography>
                     <Grid container spacing={3}>
                         {[
@@ -159,20 +161,20 @@ export function About() {
                     <Grid item xs={12} md={5} sx={{ textAlign: 'center' }}>
                         <Paper elevation={0} sx={{ p: 4, bgcolor: 'primary.50', borderRadius: 4, height: '100%' }}>
                             <Typography variant="h4" fontWeight="bold" gutterBottom color="primary.main">
-                                Our Vision
+                                {t('about.visionTitle')}
                             </Typography>
                             <Typography variant="body1" fontSize={18}>
-                                Transforming emergency care by delivering timely life-saving notifications and enabling prompt first aid through AI-powered biosensors and personalized healthcare insights.
+                                {t('about.visionDesc')}
                             </Typography>
                         </Paper>
                     </Grid>
                     <Grid item xs={12} md={5} sx={{ textAlign: 'center' }}>
                         <Paper elevation={0} sx={{ p: 4, bgcolor: 'secondary.50', borderRadius: 4, height: '100%' }}>
                             <Typography variant="h4" fontWeight="bold" gutterBottom color="secondary.main">
-                                Our Mission
+                                {t('about.missionTitle')}
                             </Typography>
                             <Typography variant="body1" fontSize={18}>
-                                Enable individuals and families to stay worry-free by instantly notifying loved ones during health emergencies and equipping first responders with evidence-based guidance.
+                                {t('about.missionDesc')}
                             </Typography>
                         </Paper>
                     </Grid>
@@ -183,14 +185,14 @@ export function About() {
             <Box sx={{ bgcolor: 'grey.50', py: { xs: 6, md: 8 } }}>
                 <Container maxWidth="md">
                     <Typography variant="h3" fontWeight="bold" align="center" gutterBottom>
-                        Why We Built Arohan
+                        {t('about.originTitle')}
                     </Typography>
                     <Typography variant="body1" fontSize={18} sx={{ textAlign: 'center', mb: 4, lineHeight: 1.8 }}>
-                        Hasprana Health Care Solutions Private Limited is a Bengaluru-based health-tech startup building deep-tech solutions for emergency and proactive care. Arohan is our flagship product, born from personal experiences of delayed emergency response and informed by discussions with clinicians, caregivers and technologists.
+                        {t('about.originDesc')}
                     </Typography>
                     <Paper elevation={0} sx={{ p: 4, borderLeft: '6px solid', borderColor: 'error.main', bgcolor: 'white', textAlign: 'center', borderRadius: 2 }}>
                         <Typography variant="h5" fontWeight="bold" color="error.main" gutterBottom>
-                            Reducing delays in emergency notification saves lives
+                            {t('about.originQuote')}
                         </Typography>
                     </Paper>
                 </Container>
@@ -199,13 +201,13 @@ export function About() {
             {/* Team */}
             <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 } }}>
                 <Typography variant="h3" fontWeight="bold" align="center" gutterBottom>
-                    Meet Our Team
+                    {t('about.teamTitle')}
                 </Typography>
                 <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 2 }}>
-                    Passionate innovators committed to saving lives
+                    {t('about.teamSubtitle')}
                 </Typography>
                 <Typography variant="body1" color="text.secondary" align="center" sx={{ mb: 6, fontStyle: 'italic' }}>
-                    Driven by a common mission, every team member is personally invested in this initiative's success
+                    {t('about.teamNote')}
                 </Typography>
 
                 {/* Core Leadership */}

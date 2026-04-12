@@ -141,8 +141,8 @@ export function FAQ() {
     });
 
     const breadcrumbs = [
-        { name: 'Home', url: 'https://arohan-health.com/' },
-        { name: 'FAQ', url: 'https://arohan-health.com/faq' }
+        { name: 'Home', url: 'https://arohanhealth.com/' },
+        { name: 'FAQ', url: 'https://arohanhealth.com/faq' }
     ];
 
     return (

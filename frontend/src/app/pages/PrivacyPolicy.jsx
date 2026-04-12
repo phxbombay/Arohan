@@ -1,8 +1,15 @@
 import { Box, Container, Typography, Paper, Divider } from '@mui/material';
+import SEO from '../components/SEO';
 
 export function PrivacyPolicy() {
     return (
         <Box sx={{ py: 12, bgcolor: 'grey.50', minHeight: '100dvh' }}>
+            <SEO
+                title="Privacy Policy"
+                description="Read how Arohan Health collects, uses, and protects your personal and health data. We are committed to transparent, HIPAA-aware data practices."
+                keywords="Arohan Health privacy policy, health data protection, HIPAA compliance, wearable data security"
+                canonical="https://arohanhealth.com/privacy"
+            />
             <Container maxWidth="md">
                 <Paper elevation={0} sx={{ p: { xs: 4, md: 8 }, borderRadius: 3 }}>
                     <Typography variant="h3" fontWeight="bold" gutterBottom>
@@ -16,7 +23,7 @@ export function PrivacyPolicy() {
 
                     <Typography variant="h6" fontWeight="bold" gutterBottom>1. Introduction</Typography>
                     <Typography paragraph>
-                        Hasprana Health Care Solutions Pvt Ltd ("Arohan", "we", "us", or "our") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our Arohan devices and mobile application.
+                        Arohan Health ("Arohan", "we", "us", or "our") respects your privacy and is committed to protecting your personal data. This Privacy Policy explains how we collect, use, and safeguard your information when you use our Arohan devices and mobile application.
                     </Typography>
 
                     <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ mt: 4 }}>2. Information We Collect</Typography>
@@ -46,7 +53,7 @@ export function PrivacyPolicy() {
 
                     <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ mt: 4 }}>6. Contact Us</Typography>
                     <Typography paragraph>
-                        or any privacy-related questions, please contact us at <a href="mailto:privacy@haspranahealth.com" style={{ color: '#dc2626' }}>privacy@haspranahealth.com</a>.
+                        For any privacy-related questions, please contact us at <a href="mailto:privacy@arohanhealth.com" style={{ color: '#dc2626' }}>privacy@arohanhealth.com</a>.
                     </Typography>
                 </Paper>
             </Container>

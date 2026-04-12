@@ -15,7 +15,7 @@ import {
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { CheckCircle as CheckIcon, LocalHospital as HospitalIcon, Api as ApiIcon, Assessment as ChartIcon } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../../components/SEO';
 
 export function DoctorsEnhanced() {
     const navigate = useNavigate();
@@ -53,10 +53,12 @@ export function DoctorsEnhanced() {
 
     return (
         <Box>
-            <Helmet>
-                <title>Arohan for Healthcare Professionals - Patient Remote Monitoring</title>
-                <meta name="description" content="EHR-integrated patient monitoring for doctors and hospitals. Track vitals, receive alerts, reduce readmissions. HIPAA compliant. HL7/FHIR API ready." />
-            </Helmet>
+            <SEO
+                title="Arohan for Healthcare Professionals"
+                description="EHR-integrated remote patient monitoring for doctors and hospitals. Track vitals, receive emergency alerts, reduce readmissions by 30%. HIPAA compliant. HL7/FHIR API ready."
+                keywords="doctor remote monitoring, hospital patient dashboard, EHR integration wearable India, HIPAA health device"
+                canonical="https://arohanhealth.com/healthcare-professionals"
+            />
 
             {/* Hero */}
             <Box sx={{ bgcolor: 'info.main', color: 'white', py: { xs: 8, md: 12 }, textAlign: 'center' }}>

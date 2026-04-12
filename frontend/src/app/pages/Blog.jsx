@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import SEO from '../components/SEO';
 import { Search as SearchIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';
 import {
@@ -36,6 +37,12 @@ export function Blog() {
 
     return (
         <Box sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
+                <SEO
+                title="Resources & Insights"
+                description="Expert articles on AI health monitoring, elderly care, emergency detection, and preventive healthcare technology from the Arohan Health team."
+                keywords="health monitoring blog, elder care tips, AI wearable insights, emergency detection, Arohan Health resources"
+                canonical="https://arohanhealth.com/blog"
+            />
             <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', py: { xs: 6, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h2" fontWeight="800" gutterBottom sx={{ letterSpacing: -1 }}>

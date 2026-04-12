@@ -42,7 +42,7 @@ export function Brochure() {
                         letterSpacing: 1,
                         textTransform: 'uppercase'
                     }}>
-                        Arohan by Hasprana Health Care Solutions
+                        Arohan Health
                     </Box>
                     <Typography variant="h1" fontWeight="bold" sx={{ mb: 3, fontSize: { xs: '3rem', md: '5rem' }, lineHeight: 1.1 }}>
                         Peace of Mind. <br />
@@ -267,7 +267,7 @@ export function Brochure() {
 
                     <Grid container spacing={4}>
                         {[
-                            { val: "98%", label: "Accuracy in Fall Detection" },
+                            { val: "High", label: "Precision AI Detection" },
                             { val: "HIPAA", label: "Compliant Data Security" },
                             { val: "24/7", label: "Monitoring Logic" }
                         ].map((item, idx) => (
@@ -318,9 +318,9 @@ export function Brochure() {
 
                             <Stack spacing={1} sx={{ textAlign: 'left', fontSize: '0.875rem', color: 'text.secondary', mb: 4, maxWidth: 280, mx: 'auto' }}>
                                 <Typography variant="body2">🌐 Visit: <strong>www.arohanhealth.com</strong></Typography>
-                                <Typography variant="body2">📧 Email: <strong>info@haspranahealth.com</strong></Typography>
+                                <Typography variant="body2">📧 Email: <strong>info@arohanhealth.com</strong></Typography>
                                 <Typography variant="body2">📞 Call: <strong>+91 70190 24300</strong></Typography>
-                                <Typography variant="body2">📍 Office: <strong>Hasprana Health Care Solutions, Bengaluru</strong></Typography>
+                                <Typography variant="body2">📍 Office: <strong>Arohan Health, Bengaluru</strong></Typography>
                             </Stack>
 
                             <Button component={Link} to="/contact" variant="contained" size="large" fullWidth sx={{ mb: 2 }}>

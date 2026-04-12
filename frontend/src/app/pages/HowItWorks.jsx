@@ -27,9 +27,9 @@ import {
     Assessment as AnalyticsIcon,
     CloudDone as CloudIcon
 } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
 import { StructuredData } from '../components/StructuredData';
 import { generateBreadcrumbSchema } from '../../utils/structuredData';
+import SEO from '../components/SEO';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../features/auth/hooks/useAuth';
@@ -118,18 +118,18 @@ export function HowItWorks() {
     ];
 
     const breadcrumbs = [
-        { name: 'Home', url: 'https://arohan-health.com/' },
-        { name: 'How It Works', url: 'https://arohan-health.com/how-it-works' }
+        { name: 'Home', url: 'https://arohanhealth.com/' },
+        { name: 'How It Works', url: 'https://arohanhealth.com/how-it-works' }
     ];
 
     return (
         <Box>
-            <Helmet>
-                <title>How Arohan Works - AI-Powered Emergency Detection System</title>
-                <meta name="description" content="Learn how Arohan's AI-powered wearable detects falls and cardiac emergencies in real-time, sending instant alerts to family and emergency services. Setup is quick and easy." />
-                <meta property="og:title" content="How Arohan Works - Emergency Detection Explained" />
-                <meta property="og:description" content="6-step setup process. 98% fall detection accuracy. Instant alerts to family." />
-            </Helmet>
+            <SEO
+                title="How Arohan Works"
+                description="Learn how Arohan's AI-powered wearable detects falls and cardiac emergencies in real-time, sending instant alerts to family and emergency services in under 45 seconds."
+                keywords="how Arohan works, AI fall detection, emergency wearable setup, cardiac monitoring India"
+                canonical="https://arohanhealth.com/how-it-works"
+            />
             <StructuredData schema={generateBreadcrumbSchema(breadcrumbs)} />
 
             {/* Hero */}

@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Business as BusinessIcon, TrendingDown as ROIIcon, CheckCircle as CheckIcon } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../../components/SEO';
 
 export function CorporateEnhanced() {
     const roiMetrics = [
@@ -35,10 +35,12 @@ export function CorporateEnhanced() {
 
     return (
         <Box>
-            <Helmet>
-                <title>Arohan for Corporate & Insurance - Employee Wellness & Risk Reduction</title>
-                <meta name="description" content="Corporate wellness programs with ROI tracking. Reduce healthcare costs by 25%. Employee health monitoring for insurance risk pooling. Volume discounts available." />
-            </Helmet>
+            <SEO
+                title="Arohan for Corporate & Insurance"
+                description="AI-powered employee wellness programs with measurable ROI. Reduce healthcare claims, track aggregate vitals, and offer smarter insurance risk pooling. Volume discounts available."
+                keywords="corporate wellness India, employee health monitoring, insurance risk reduction, HR wellness dashboard"
+                canonical="https://arohanhealth.com/corporate"
+            />
 
             {/* Hero */}
             <Box sx={{ bgcolor: 'warning.main', color: 'white', py: { xs: 8, md: 12 }, textAlign: 'center' }}>

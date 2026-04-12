@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { CheckCircle as CheckIcon, Favorite as HeartIcon, EmojiPeople as PeopleIcon } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../../components/SEO';
 
 export function Elderly() {
     const benefits = [
@@ -45,11 +45,12 @@ export function Elderly() {
 
     return (
         <Box>
-            <Helmet>
-                <title>Arohan for Elderly & Families - Independent Living with Safety</title>
-                <meta name="description" content="Stay independent while family stays connected. Arohan wearable provides fall detection, heart monitoring, and instant alerts for seniors living alone. Peace of mind for everyone." />
-                <meta property="og:title" content="Arohan for Elderly - Live Independently, Stay Safe" />
-            </Helmet>
+            <SEO
+                title="Arohan for Elderly & Families"
+                description="Stay independent while family stays connected. Arohan's AI wearable detects falls and heart emergencies instantly, alerting caregivers and emergency services. Prototype undergoing clinical validation."
+                keywords="elderly health monitoring, fall detection wearable India, senior care AI, family safety device"
+                canonical="https://arohanhealth.com/individuals-families"
+            />
 
             {/* Hero */}
             <Box sx={{ bgcolor: 'success.main', color: 'white', py: { xs: 8, md: 12 }, textAlign: 'center' }}>

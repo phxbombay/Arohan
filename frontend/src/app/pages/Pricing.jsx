@@ -21,6 +21,7 @@ import { CheckCircle as CheckIcon, ExpandMore as ExpandMoreIcon, Star as StarIco
 import { trackButtonClick } from '../../utils/eventTracking';
 import SEO from '../components/SEO';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useCartStore } from '../../context/cartStore'; // Uncommented
 import { toast } from 'sonner';
 import { useAuth } from '../../features/auth/hooks/useAuth';
@@ -30,11 +31,12 @@ export function Pricing() {
     const location = useLocation();
     const { user, isAuthenticated } = useAuth();
     const addToCart = useCartStore((state) => state.addToCart);
+    const { t } = useTranslation();
 
     const handlePlanClick = (planName) => {
-        if (planName === 'Basic') {
-            toast.info("Mobile App coming soon to Play Store & App Store!");
-        } else if (planName === 'Premium') {
+        if (planName === 'Basic' || planName === 'बेसिक (Basic)' || planName === 'ಮೂಲ (Basic)') {
+            toast.info(t('pricing.comingSoon'));
+        } else if (planName === 'Premium' || planName === 'प्रीमियम (Premium)' || planName === 'ಪ್ರೀಮಿಯಂ (Premium)') {
             navigate('/signin', { state: { from: location.pathname } });
         } else if (planName === 'VIP') {
             navigate('/contact');
@@ -43,7 +45,7 @@ export function Pricing() {
 
     const handleAddAnnualDeal = async () => {
         if (!isAuthenticated || !user?.user_id) {
-            toast.error('Please login to add this deal to your cart');
+            toast.error(t('pricing.loginErr'));
             navigate('/signin', { state: { from: location.pathname } });
             return;
         }
@@ -66,110 +68,14 @@ export function Pricing() {
         }
     };
 
-    const consumerPlans = [
-        {
-            name: 'Basic',
-            price: 'Free',
-            period: 'Forever',
-            description: 'Essential features for individual elderly users',
-            features: [
-                'Fall detection alerts',
-                'Basic heart rate monitoring',
-                'Emergency SOS button',
-                '1 emergency contact',
-                'Mobile app access',
-                'Email support'
-            ],
-            cta: 'Download Free App',
-            popular: false
-        },
-        {
-            name: 'Premium',
-            price: 'Subscription',
-            description: 'Advanced AI features for complete peace of mind',
-            features: [
-                'Everything in Basic',
-                'Cardiac anomaly detection (AI)',
-                'Personalized health insights',
-                '5 emergency contacts',
-                'Family member dashboard access',
-                '7-day health history',
-                'Priority 24/7 support',
-                'API access for EHR integration'
-            ],
-            cta: 'Start Free Trial',
-            popular: false
-        }
-    ];
+    const consumerPlansInput = t('pricing.consumerPlans', { returnObjects: true }) || [];
+    const consumerPlans = Array.isArray(consumerPlansInput) ? consumerPlansInput.map((p, i) => ({ ...p, popular: i === 1 })) : [];
 
-    const b2bPlans = [
-        {
-            name: 'Hospital/Clinic',
-            price: 'Custom',
-            description: 'For healthcare providers monitoring patients',
-            features: [
-                '10-500 device licenses',
-                'Multi-patient dashboard',
-                'EHR integration (HL7/FHIR)',
-                'Bulk device management',
-                'Dedicated support team',
-                'Volume discount: 10% (10+), 20% (50+)'
-            ]
-        },
-        {
-            name: 'Corporate Wellness',
-            price: 'Custom',
-            description: 'Employee health programs for companies',
-            features: [
-                'Scalable for large teams',
-                'HR wellness dashboard',
-                'Aggregate analytics (anonymized)',
-                'ROI tracking & reporting',
-                'Annual health screening integration',
-                'Volume discount: Up to 30%'
-            ]
-        },
-        {
-            name: 'Insurance Partnership',
-            price: 'Revenue Share',
-            description: 'Risk pooling for health insurers',
-            features: [
-                'Unlimited member access',
-                'Predictive risk scoring',
-                'Claims reduction analytics',
-                'White-label app option',
-                'API for premium adjustments',
-                'Custom contract terms'
-            ]
-        }
-    ];
-
-    const faqs = [
-        {
-            question: 'What is the device pricing?',
-            answer: 'We are currently in a prototype phase. Final pricing for the Arohan wearable device will be announced soon along with our official launch.'
-        },
-        {
-            question: 'Can I return the device if it doesn\'t work for me?',
-            answer: 'Yes! We offer a 30-day money-back guarantee. If you\'re not satisfied, return the device in original condition for a full refund (shipping excluded).'
-        },
-        {
-            question: 'Do I need a smartphone to use Arohan?',
-            answer: 'Yes, a smartphone (iOS 15+ or Android 10+) is required for initial setup and to receive alerts. However, emergency contacts can be notified via SMS even if your phone is off.'
-        },
-        {
-            question: 'Are there any hidden charges?',
-            answer: 'No hidden fees! Device (one-time), Basic app (free), Premium (optional subscription). No activation fees, no cancellation fees.'
-        },
-        {
-            question: 'What benefits do different plans offer?',
-            answer: 'Our plans are designed to scale with your needs, from basic monitoring to advanced AI-driven health insights and priority family support. Detailed feature comparison will be available at launch.'
-        },
-        {
-            question: 'Do you offer discounts for bulk orders?',
-            answer: 'Yes! 10-49 units: 10% off, 50-99 units: 20% off, 100+ units: 30% off. Contact sales@arohanhealth.com for B2B quotes.'
-        }
-    ];
+    const b2bPlansInput = t('pricing.b2bPlans', { returnObjects: true });
+    const b2bPlans = Array.isArray(b2bPlansInput) ? b2bPlansInput : [];
+    
+    const faqsInput = t('pricing.faqs', { returnObjects: true });
+    const faqs = Array.isArray(faqsInput) ? faqsInput : [];
 
     return (
         <Box>
@@ -185,13 +91,13 @@ export function Pricing() {
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 6, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h2" fontWeight="800" gutterBottom sx={{ letterSpacing: -1 }}>
-                        Simple, Transparent Pricing
+                        {t('pricing.title')}
                     </Typography>
                     <Typography variant="body1" sx={{ mb: 4, opacity: 0.9, maxWidth: 600, mx: 'auto' }}>
-                        Join our early adopter program. Final pricing will be announced as the prototype completes clinical validation.
+                        {t('pricing.subtitle')}
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9, fontWeight: 500 }}>
-                        No hidden fees. Cancel anytime. 30-day money-back guarantee.
+                        {t('pricing.guarantee')}
                     </Typography>
                 </Container>
             </Box>
@@ -199,10 +105,10 @@ export function Pricing() {
             {/* Consumer Plans */}
             <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
                 <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
-                    For Individuals & Families
+                    {t('pricing.consumerHeading')}
                 </Typography>
                 <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 8 }}>
-                    Choose the plan that fits your needs
+                    {t('pricing.consumerSub')}
                 </Typography>
                 <Grid container spacing={4} justifyContent="center" alignItems="stretch">
                     {consumerPlans.map((plan, index) => (
@@ -225,7 +131,7 @@ export function Pricing() {
                             >
                                 {plan.popular && (
                                     <Chip
-                                        label="MOST POPULAR"
+                                        label={t('pricing.mostPopular')}
                                         color="primary"
                                         icon={<StarIcon />}
                                         sx={{ position: 'absolute', top: -16, left: '50%', transform: 'translateX(-50%)', fontWeight: 'bold', fontSize: '1rem', height: 32 }}
@@ -280,10 +186,10 @@ export function Pricing() {
                     <Grid container spacing={4} alignItems="center" justifyContent="center">
                         <Grid item xs={12} md={8} sx={{ textAlign: { xs: 'center', md: 'left' } }}>
                             <Typography variant="h4" fontWeight="800" gutterBottom color="success.main">
-                                Annual Bundle: Save 25%
+                                {t('pricing.annualTitle')}
                             </Typography>
                             <Typography variant="h6" fontWeight="normal">
-                                Buy device + 12 months Premium for a <strong>Annual Deal</strong>.
+                                {t('pricing.annualDesc')} <strong>{t('pricing.annualDealStr')}</strong>.
                             </Typography>
                         </Grid>
                         <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
@@ -296,7 +202,7 @@ export function Pricing() {
                                 fullWidth
                                 sx={{ py: 2, fontSize: '1.2rem', fontWeight: 'bold', borderRadius: 2, boxShadow: '0 4px 12px rgba(46, 125, 50, 0.4)' }}
                             >
-                                Get Annual Deal
+                                {t('pricing.getAnnualDeal')}
                             </Button>
                         </Grid>
                     </Grid>
@@ -307,10 +213,10 @@ export function Pricing() {
             <Box sx={{ bgcolor: 'grey.900', color: 'white', py: { xs: 6, md: 10 } }}>
                 <Container maxWidth="lg">
                     <Typography variant="h3" fontWeight="800" align="center" gutterBottom color="white">
-                        For Businesses & Organizations
+                        {t('pricing.b2bHeading')}
                     </Typography>
                     <Typography variant="h6" color="grey.400" align="center" sx={{ mb: 8 }}>
-                        Volume discounts, custom integrations, dedicated support
+                        {t('pricing.b2bSub')}
                     </Typography>
                     <Grid container spacing={4} justifyContent="center" alignItems="stretch">
                         {b2bPlans.map((plan, index) => (
@@ -344,7 +250,7 @@ export function Pricing() {
                                         fullWidth
                                         sx={{ mt: 4, borderColor: 'white', color: 'white', '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)' } }}
                                     >
-                                        Request Quote
+                                        {t('pricing.requestQuote')}
                                     </Button>
                                 </Card>
                             </Grid>
@@ -356,7 +262,7 @@ export function Pricing() {
             {/* FAQ */}
             <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
                 <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
-                    Pricing FAQ
+                    {t('pricing.faqHeading')}
                 </Typography>
                 <Box sx={{ maxWidth: 800, mx: 'auto', mt: 6 }}>
                     {faqs.map((faq, index) => (
@@ -376,10 +282,10 @@ export function Pricing() {
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 8, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h3" fontWeight="800" gutterBottom>
-                        Still Have Questions?
+                        {t('pricing.ctaTitle')}
                     </Typography>
                     <Typography variant="h6" sx={{ opacity: 0.9, mb: 5 }}>
-                        Talk to our sales team for personalized pricing
+                        {t('pricing.ctaSub')}
                     </Typography>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                         <Button
@@ -389,7 +295,7 @@ export function Pricing() {
                             size="large"
                             sx={{ bgcolor: 'white', color: 'primary.main', '&:hover': { bgcolor: 'grey.100' }, fontWeight: 'bold', px: 5, py: 1.5, fontSize: '1.1rem', borderRadius: 8 }}
                         >
-                            Schedule Call
+                            {t('pricing.scheduleCall')}
                         </Button>
                         <Button
                             href="mailto:sales@arohanhealth.com"
@@ -397,7 +303,7 @@ export function Pricing() {
                             size="large"
                             sx={{ borderColor: 'white', color: 'white', '&:hover': { bgcolor: 'rgba(255,255,255,0.1)', borderColor: 'white' }, fontWeight: 'bold', px: 5, py: 1.5, fontSize: '1.1rem', borderRadius: 8 }}
                         >
-                            Email Sales
+                            {t('pricing.emailSales')}
                         </Button>
                     </Stack>
                 </Container>

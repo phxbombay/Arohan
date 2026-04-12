@@ -7,123 +7,203 @@
     <!-- Homepage -->
     <url>
         <loc>https://arohanhealth.com/</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
 
-    <!-- Main Pages -->
+    <!-- Core Pages -->
     <url>
         <loc>https://arohanhealth.com/about</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/how-it-works</loc>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
 
     <url>
         <loc>https://arohanhealth.com/products</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
 
     <url>
         <loc>https://arohanhealth.com/pricing</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
 
     <url>
-        <loc>https://arohanhealth.com/how-it-works</loc>
-        <lastmod>2026-02-06</lastmod>
+        <loc>https://arohanhealth.com/early-access</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.9</priority>
+    </url>
+
+    <!-- Audience Segments -->
+    <url>
+        <loc>https://arohanhealth.com/individuals-families</loc>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
+        <priority>0.8</priority>
     </url>
 
     <url>
+        <loc>https://arohanhealth.com/healthcare-professionals</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/corporate-insurance</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>
+
+    <!-- Company -->
+    <url>
         <loc>https://arohanhealth.com/team</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
     </url>
 
     <url>
-        <loc>https://arohanhealth.com/faq</loc>
-        <lastmod>2026-02-06</lastmod>
+        <loc>https://arohanhealth.com/investors</loc>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
-        <loc>https://arohanhealth.com/contact</loc>
-        <lastmod>2026-02-06</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-
-    <!-- Segment Pages -->
-    <url>
-        <loc>https://arohanhealth.com/elderly-families</loc>
-        <lastmod>2026-02-06</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <url>
-        <loc>https://arohanhealth.com/doctors</loc>
-        <lastmod>2026-02-06</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <url>
-        <loc>https://arohanhealth.com/corporate</loc>
-        <lastmod>2026-02-06</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.8</priority>
-    </url>
-
-    <!-- Additional Pages -->
-    <url>
-        <loc>https://arohanhealth.com/case-studies</loc>
-        <lastmod>2026-02-06</lastmod>
+        <loc>https://arohanhealth.com/impact</loc>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>
 
     <url>
         <loc>https://arohanhealth.com/press</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/careers</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Resources & Community -->
+    <url>
+        <loc>https://arohanhealth.com/blog</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/case-studies</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/faq</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/help-center</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/projects-overview</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+
+    <!-- Platform -->
+    <url>
+        <loc>https://arohanhealth.com/integrations</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/consulting</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/compliance</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/security</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.5</priority>
+    </url>
+
+    <!-- Contact & Partners -->
+    <url>
+        <loc>https://arohanhealth.com/contact</loc>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
     </url>
 
     <url>
         <loc>https://arohanhealth.com/partners</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
-    </url>
-
-    <url>
-        <loc>https://arohanhealth.com/early-access</loc>
-        <lastmod>2026-02-06</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
     </url>
 
     <!-- Legal Pages -->
     <url>
         <loc>https://arohanhealth.com/privacy</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>
 
     <url>
         <loc>https://arohanhealth.com/terms</loc>
-        <lastmod>2026-02-06</lastmod>
+        <lastmod>2026-04-12</lastmod>
+        <changefreq>yearly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+    <url>
+        <loc>https://arohanhealth.com/cookies</loc>
+        <lastmod>2026-04-12</lastmod>
         <changefreq>yearly</changefreq>
         <priority>0.3</priority>
     </url>

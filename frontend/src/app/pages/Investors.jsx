@@ -1,9 +1,16 @@
 import { TrendingUp, Users, Target, Calendar, DollarSign, Award } from 'lucide-react';
 import { Box, Button, Card, CardContent, Container, Grid, Typography, Stack, Chip, Divider, Paper, List, ListItem, ListItemIcon, ListItemText, LinearProgress } from '@mui/material';
+import SEO from '../components/SEO';
 
 export function Investors() {
     return (
         <Box sx={{ minHeight: '100dvh', bgcolor: 'common.white' }}>
+            <SEO
+                title="Investor Relations"
+                description="Arohan Health is transforming elder-care in India with AI-powered emergency detection wearables. Learn about our traction, market opportunity, and how to invest."
+                keywords="Arohan Health investment, health tech startup India, seed funding, elder care AI, wearable health investment"
+                canonical="https://arohanhealth.com/investors"
+            />
             {/* Hero */}
             <Box component="section" sx={{
                 background: 'linear-gradient(to right, #dc2626, #b91c1c)', // from-red-600 to-red-700
@@ -373,7 +380,7 @@ export function Investors() {
                     </Typography>
                     <Button
                         component="a"
-                        href="mailto:info@haspranahealth.com"
+                        href="mailto:info@arohanhealth.com"
                         variant="contained"
                         size="large"
                         sx={{

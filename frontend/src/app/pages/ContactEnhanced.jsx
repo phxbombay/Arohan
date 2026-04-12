@@ -21,12 +21,14 @@ import {
     LocationOn as LocationIcon,
     CheckCircle as CheckIcon
 } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 import { trackEvent } from '../../utils/analytics';
 import axios from 'axios';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 export function ContactEnhanced() {
+    const { t } = useTranslation();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -61,49 +63,51 @@ export function ContactEnhanced() {
     const contacts = [
         {
             icon: <EmailIcon />,
-            title: 'Email Us',
+            title: t('contact.emailTitle'),
             primary: 'support@arohanhealth.com',
-            secondary: 'Response within 24 hours',
+            secondary: t('contact.emailSub'),
             action: 'mailto:support@arohanhealth.com'
         },
         {
             icon: <PhoneIcon />,
-            title: 'Call Us',
-            primary: 'Coming Soon',
-            secondary: 'This feature will be enabled soon',
-            action: '#'
+            title: t('contact.callTitle'),
+            primary: '+91 70190 24300',
+            secondary: t('contact.callSub'),
+            action: 'tel:+917019024300'
         },
         {
             icon: <ChatIcon />,
-            title: 'Live Chat',
-            primary: 'Coming Soon',
-            secondary: 'This feature will be enabled soon',
+            title: t('contact.chatTitle'),
+            primary: t('contact.chatPrimary'),
+            secondary: t('contact.chatSub'),
             action: '#'
         },
         {
             icon: <LocationIcon />,
-            title: 'Visit Us',
+            title: t('contact.visitTitle'),
             primary: 'HSR Layout, Bengaluru',
-            secondary: 'By appointment only',
+            secondary: t('contact.visitSub'),
             action: 'https://maps.google.com'
         }
     ];
 
     return (
         <Box>
-            <Helmet>
-                <title>Contact Arohan Health - Support, Sales, Partnerships</title>
-                <meta name="description" content="Get in touch with Arohan: Email support@arohanhealth.com or visit our Bengaluru office. Phone support and live chat coming soon." />
-            </Helmet>
+            <SEO
+                title="Contact Arohan Health"
+                description="Reach the Arohan Health team at +91 70190 24300 or support@arohanhealth.com. Based in HSR Layout, Bengaluru. Sales, press, and career inquiries welcome."
+                keywords="contact Arohan Health, health tech support Bengaluru, emergency wearable support India"
+                canonical="https://arohanhealth.com/contact"
+            />
 
             {/* Hero */}
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 8, md: 12 }, textAlign: 'center' }}>
                 <Container>
                     <Typography variant="h2" fontWeight="bold" gutterBottom>
-                        Get in Touch
+                        {t('contact.heroTitle')}
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9 }}>
-                        We're here to help. Choose your preferred way to connect.
+                        {t('contact.heroSubtitle')}
                     </Typography>
                 </Container>
             </Box>
@@ -114,12 +118,12 @@ export function ContactEnhanced() {
                     <Grid item xs={12} md={7}>
                         <Card sx={{ p: 4 }}>
                             <Typography variant="h4" fontWeight="bold" gutterBottom>
-                                Send Us a Message
+                                {t('contact.formTitle')}
                             </Typography>
                             {submitted ? (
                                 <Alert severity="success" sx={{ mt: 2 }}>
-                                    <Typography variant="h6">Thank you for reaching out!</Typography>
-                                    <Typography>We'll respond to {formData.email} within 24 hours.</Typography>
+                                    <Typography variant="h6">{t('contact.successTitle')}</Typography>
+                                    <Typography>{t('contact.successDesc')}</Typography>
                                 </Alert>
                             ) : (
                                 <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -127,7 +131,7 @@ export function ContactEnhanced() {
                                         <Grid item xs={12} sm={6}>
                                             <TextField
                                                 fullWidth
-                                                label="Full Name"
+                                                label={t('contact.name')}
                                                 name="name"
                                                 value={formData.name}
                                                 onChange={handleChange}
@@ -137,7 +141,7 @@ export function ContactEnhanced() {
                                         <Grid item xs={12} sm={6}>
                                             <TextField
                                                 fullWidth
-                                                label="Email"
+                                                label={t('contact.email')}
                                                 name="email"
                                                 type="email"
                                                 value={formData.email}
@@ -148,7 +152,7 @@ export function ContactEnhanced() {
                                         <Grid item xs={12} sm={6}>
                                             <TextField
                                                 fullWidth
-                                                label="Phone (Optional)"
+                                                label={t('contact.phone')}
                                                 name="phone"
                                                 value={formData.phone}
                                                 onChange={handleChange}
@@ -157,7 +161,7 @@ export function ContactEnhanced() {
                                         <Grid item xs={12} sm={6}>
                                             <TextField
                                                 fullWidth
-                                                label="Subject"
+                                                label={t('contact.subject')}
                                                 name="subject"
                                                 value={formData.subject}
                                                 onChange={handleChange}
@@ -167,7 +171,7 @@ export function ContactEnhanced() {
                                         <Grid item xs={12}>
                                             <TextField
                                                 fullWidth
-                                                label="Message"
+                                                label={t('contact.message')}
                                                 name="message"
                                                 multiline
                                                 rows={5}
@@ -189,7 +193,7 @@ export function ContactEnhanced() {
                                                     fontWeight: 'bold'
                                                 }}
                                             >
-                                                Send Message
+                                                {t('contact.submit')}
                                             </Button>
                                         </Grid>
                                     </Grid>
@@ -201,7 +205,7 @@ export function ContactEnhanced() {
                     {/* Contact Methods */}
                     <Grid item xs={12} md={5}>
                         <Typography variant="h5" fontWeight="bold" gutterBottom>
-                            Other Ways to Reach Us
+                            {t('contact.methodsTitle')}
                         </Typography>
                         <Stack spacing={3} sx={{ mt: 3 }}>
                             {contacts.map((contact, index) => (
@@ -226,30 +230,30 @@ export function ContactEnhanced() {
 
                         <Card sx={{ p: 3, mt: 3, bgcolor: 'grey.50' }}>
                             <Typography variant="h6" fontWeight="bold" gutterBottom>
-                                For Specific Inquiries
+                                {t('contact.inquiriesTitle')}
                             </Typography>
                             <List dense>
                                 <ListItem disablePadding>
                                     <ListItemText
-                                        primary="Sales & Partnerships"
+                                        primary={t('contact.sales')}
                                         secondary="sales@arohanhealth.com"
                                     />
                                 </ListItem>
                                 <ListItem disablePadding>
                                     <ListItemText
-                                        primary="Media & Press"
+                                        primary={t('contact.press')}
                                         secondary="press@arohanhealth.com"
                                     />
                                 </ListItem>
                                 <ListItem disablePadding>
                                     <ListItemText
-                                        primary="Careers"
+                                        primary={t('contact.careers')}
                                         secondary="careers@arohanhealth.com"
                                     />
                                 </ListItem>
                                 <ListItem disablePadding>
                                     <ListItemText
-                                        primary="Technical Support"
+                                        primary={t('contact.techSupport')}
                                         secondary="support@arohanhealth.com"
                                     />
                                 </ListItem>

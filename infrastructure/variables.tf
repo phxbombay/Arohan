@@ -51,7 +51,7 @@ variable "smtp_password" {
 }
 
 variable "admin_email" {
-  default = "info@haspranahealth.com"
+  default = "info@arohanhealth.com"
 }
 
 variable "razorpay_key_id" {
@@ -65,14 +65,14 @@ variable "razorpay_key_secret" {
 }
 
 variable "allowed_origins" {
-  default = "https://haspranahealth.com,https://www.haspranahealth.com"
+  default = "https://arohanhealth.com,https://www.arohanhealth.com"
 }
 
 variable "vite_api_url" {
-  default = "https://haspranahealth.com/v1"
+  default = "https://arohanhealth.com/v1"
 }
 
 variable "domain_name" {
-  default = "haspranahealth.com"
+  default = "arohanhealth.com"
 }
 

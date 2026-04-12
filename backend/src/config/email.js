@@ -141,7 +141,7 @@ export const sendContactFormNotification = async (formData) => {
     `;
 
     return await sendEmail({
-        to: process.env.ADMIN_EMAIL || 'info@haspranahealth.com',
+        to: process.env.ADMIN_EMAIL || 'info@arohanhealth.com',
         subject: `New Contact Form Submission from ${name}`,
         html: htmlContent
     });

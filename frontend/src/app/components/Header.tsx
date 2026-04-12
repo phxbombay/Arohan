@@ -32,6 +32,7 @@ import { useAuth } from "../../features/auth/hooks/useAuth";
 import { useCartStore } from "../../context/cartStore";
 // @ts-ignore
 import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useTranslation } from "react-i18next";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -43,20 +44,21 @@ export function Header() {
   const { user, logout, isAuthenticated } = useAuth();
   // @ts-ignore
   const cartCount = useCartStore((state) => state.getCartCount());
+  const { t } = useTranslation();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Product", path: "/products" },
-    { name: "Pricing", path: "/pricing" },
-    { name: "Nearby Hospitals", path: "/nearby-hospitals" },
-    { name: "Blog", path: "/blog" },
-    { name: "How It Works", path: "/how-it-works" },
-    { name: "Projects Overview", path: "/projects-overview" },
+    { name: t("nav.home"), path: "/" },
+    { name: t("nav.about"), path: "/about" },
+    { name: t("nav.products"), path: "/products" },
+    { name: t("nav.pricing"), path: "/pricing" },
+    { name: t("nav.nearbyHospitals"), path: "/nearby-hospitals" },
+    { name: t("nav.blog"), path: "/blog" },
+    { name: t("nav.howItWorks"), path: "/how-it-works" },
+    { name: t("nav.projectsOverview"), path: "/projects-overview" },
   ];
 
   const NavButton = ({ name, path }: { name: string, path: string }) => (
@@ -117,9 +119,9 @@ export function Header() {
                 {isAuthenticated && (
                   <NavButton
                     name={
-                      user?.role === 'admin' ? 'Admin Panel' :
-                        user?.role === 'doctor' ? 'Physician Panel' :
-                            'Dashboard'
+                      user?.role === 'admin' ? t("header.adminPanel") :
+                        user?.role === 'doctor' ? t("header.physicianPanel") :
+                            t("header.dashboard")
                     }
                     path="/dashboard"
                   />
@@ -144,7 +146,7 @@ export function Header() {
                 isAuthenticated ? (
                   <Stack direction="row" spacing={1}>
                     <Button variant="outlined" component={Link} to="/dashboard" color="inherit" sx={{ borderRadius: 8, textTransform: 'none', fontWeight: 600 }}>
-                      {user?.role === 'admin' ? 'System Admin' : user?.full_name || 'Dashboard'}
+                      {user?.role === 'admin' ? t("header.systemAdmin") : user?.full_name || t("header.dashboard")}
                     </Button>
                     <Button
                       onClick={() => {
@@ -153,7 +155,7 @@ export function Header() {
                       }}
                       sx={{ color: 'text.secondary', '&:hover': { color: 'error.main' } }}
                     >
-                      Logout
+                      {t("auth.logout")}
                     </Button>
                   </Stack>
                 ) : (
@@ -171,7 +173,7 @@ export function Header() {
                       '&:hover': { bgcolor: 'primary.50', borderColor: 'primary.dark' }
                     }}
                   >
-                    Sign In
+                    {t("auth.login")}
                   </Button>
                 )
               )}
@@ -196,7 +198,7 @@ export function Header() {
                   }
                 }}
               >
-                Emergency
+                {t("header.emergency")}
               </Button>
 
               {/* Mobile Emergency Icon (visible on extra small screens) */}
@@ -228,7 +230,7 @@ export function Header() {
       >
         <Box sx={{ p: 2 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-            <Typography variant="h6" fontWeight="bold">Menu</Typography>
+            <Typography variant="h6" fontWeight="bold">{t("header.menu")}</Typography>
             <IconButton onClick={() => setMobileMenuOpen(false)}>
               <CloseIcon />
             </IconButton>

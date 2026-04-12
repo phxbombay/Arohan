@@ -27,8 +27,10 @@ import {
 } from "@mui/icons-material";
 
 import logo from "../../assets/logo.png";
+import { useTranslation } from "react-i18next";
 
 export function Footer() {
+  const { t } = useTranslation();
   const [showContactModal, setShowContactModal] = useState(false);
 
   const SocialLink = ({ href, icon }: { href: string, icon: React.ReactNode }) => (
@@ -64,29 +66,29 @@ export function Footer() {
                 <Typography variant="h5" fontWeight="800" color="common.white" sx={{ letterSpacing: 1 }}>AROHAN</Typography>
               </Box>
               <Typography variant="body2" color="grey.400" sx={{ mb: 3, lineHeight: 1.8 }}>
-                Revolutionizing proactive healthcare through AI-powered monitoring and emergency prevention.
+                {t("footer.tagline")}
               </Typography>
               <Stack direction="row" spacing={1.5}>
-                <SocialLink href="https://www.facebook.com/haspranahealth" icon={<FacebookIcon fontSize="small" />} />
-                <SocialLink href="https://twitter.com/haspranahealth" icon={<TwitterIcon fontSize="small" />} />
-                <SocialLink href="https://www.instagram.com/haspranahealth" icon={<InstagramIcon fontSize="small" />} />
-                <SocialLink href="https://www.linkedin.com/company/hasprana-health-care-solutions-private-limited/" icon={<LinkedinIcon fontSize="small" />} />
+                <SocialLink href="https://www.facebook.com/arohanhealth" icon={<FacebookIcon fontSize="small" />} />
+                <SocialLink href="https://twitter.com/arohanhealth" icon={<TwitterIcon fontSize="small" />} />
+                <SocialLink href="https://www.instagram.com/arohanhealth" icon={<InstagramIcon fontSize="small" />} />
+                <SocialLink href="https://www.linkedin.com/company/arohan-health/" icon={<LinkedinIcon fontSize="small" />} />
               </Stack>
             </Grid>
 
             {/* Quick Links */}
             <Grid size={{ xs: 12, md: 6, lg: 3 }}>
               <Typography variant="subtitle1" fontWeight="bold" color="common.white" gutterBottom sx={{ mb: 2 }}>
-                Quick Links
+                {t("footer.quickLinks")}
               </Typography>
               <Stack spacing={1.5}>
                 {[
-                  { label: 'About Us', path: '/about' },
-                  { label: 'How It Works', path: '/how-it-works' },
-                  { label: 'Projects Overview', path: '/projects-overview' },
-                  { label: 'Nearby Hospitals', path: '/nearby-hospitals' },
-                  { label: 'Partner Hospitals', path: '/partner-hospitals' },
-                  { label: 'Careers', path: '/careers' }
+                  { label: t("nav.about"), path: '/about' },
+                  { label: t("nav.howItWorks"), path: '/how-it-works' },
+                  { label: t("nav.projectsOverview"), path: '/projects-overview' },
+                  { label: t("nav.nearbyHospitals"), path: '/nearby-hospitals' },
+                  { label: t("nav.partnerHospitals"), path: '/partner-hospitals' },
+                  { label: t("nav.careers"), path: '/careers' }
                 ].map((link) => (
                   <MuiLink
                     key={link.label}
@@ -110,10 +112,11 @@ export function Footer() {
             {/* Support */}
             <Grid size={{ xs: 12, md: 6, lg: 3 }}>
               <Typography variant="subtitle1" fontWeight="bold" color="common.white" gutterBottom sx={{ mb: 2 }}>
-                Support & Emergency
+                {t("footer.supportAndEmergency")}
               </Typography>
               <Stack spacing={1.5}>
-                <MuiLink component={Link} to="/help-center" color="inherit" underline="none" variant="body2" sx={{ '&:hover': { color: 'primary.light' } }}>Help Center & FAQ</MuiLink>
+                <MuiLink component={Link} to="/help-center" color="inherit" underline="none" variant="body2" sx={{ '&:hover': { color: 'primary.light' } }}>{t("footer.helpCenter")}</MuiLink>
+                <MuiLink component={Link} to="/security" color="inherit" underline="none" variant="body2" sx={{ '&:hover': { color: 'primary.light' } }}>{t("footer.security")}</MuiLink>
                 <MuiLink
                   component="button"
                   onClick={() => setShowContactModal(true)}
@@ -121,36 +124,36 @@ export function Footer() {
                   underline="none"
                   variant="body2"
                   sx={{ textAlign: 'left', '&:hover': { color: 'primary.light' } }}
-                >
-                  Contact Support
-                </MuiLink>
-              </Stack>
-            </Grid>
-
-            {/* Newsletter / Location */}
-            <Grid size={{ xs: 12, md: 6, lg: 3 }}>
-              <Typography variant="subtitle1" fontWeight="bold" color="common.white" gutterBottom sx={{ mb: 2 }}>
-                Contact & Location
-              </Typography>
-              <Stack spacing={2.5}>
-                <Box sx={{ display: 'flex', gap: 1.5 }}>
-                  <PhoneIcon color="primary" fontSize="small" sx={{ mt: 0.5 }} />
-                  <Box>
-                    <Typography variant="caption" color="grey.500" display="block">Phone Support</Typography>
-                    <MuiLink href="tel:+917019024300" color="inherit" underline="none" variant="body2" sx={{ '&:hover': { color: 'white' } }}>+91 70190 24300</MuiLink>
+                  >
+                    {t("footer.contactSupport")}
+                  </MuiLink>
+                </Stack>
+              </Grid>
+  
+              {/* Newsletter / Location */}
+              <Grid size={{ xs: 12, md: 6, lg: 3 }}>
+                <Typography variant="subtitle1" fontWeight="bold" color="common.white" gutterBottom sx={{ mb: 2 }}>
+                  {t("footer.contactAndLocation")}
+                </Typography>
+                <Stack spacing={2.5}>
+                  <Box sx={{ display: 'flex', gap: 1.5 }}>
+                    <PhoneIcon color="primary" fontSize="small" sx={{ mt: 0.5 }} />
+                    <Box>
+                      <Typography variant="caption" color="grey.500" display="block">{t("footer.phoneSupport")}</Typography>
+                      <MuiLink href="tel:+917019024300" color="inherit" underline="none" variant="body2" sx={{ '&:hover': { color: 'white' } }}>+91 70190 24300</MuiLink>
                   </Box>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 1.5 }}>
                   <EmailIcon color="primary" fontSize="small" sx={{ mt: 0.5 }} />
                   <Box>
-                    <Typography variant="caption" color="grey.500" display="block">Email Us</Typography>
-                    <MuiLink href="mailto:info@haspranahealth.com" color="inherit" underline="none" variant="body2" sx={{ wordBreak: 'break-all', '&:hover': { color: 'white' } }}>info@haspranahealth.com</MuiLink>
+                    <Typography variant="caption" color="grey.500" display="block">{t("footer.emailUs")}</Typography>
+                    <MuiLink href="mailto:info@arohanhealth.com" color="inherit" underline="none" variant="body2" sx={{ wordBreak: 'break-all', '&:hover': { color: 'white' } }}>info@arohanhealth.com</MuiLink>
                   </Box>
                 </Box>
                 <Box sx={{ display: 'flex', gap: 1.5 }}>
                   <MapPinIcon color="primary" fontSize="small" sx={{ mt: 0.5 }} />
                   <Box>
-                    <Typography variant="caption" color="grey.500" display="block">Headquarters</Typography>
+                    <Typography variant="caption" color="grey.500" display="block">{t("footer.headquarters")}</Typography>
                     <Typography variant="body2" color="grey.300">Bengaluru, India</Typography>
                   </Box>
                 </Box>
@@ -161,10 +164,10 @@ export function Footer() {
           <Box sx={{ borderTop: 1, borderColor: 'grey.800', pt: 4 }}>
             <Stack direction={{ xs: 'column', md: 'row' }} justifyContent="space-between" alignItems="center" spacing={2}>
               <Typography variant="body2" color="grey.500">
-                © 2026 AROHAN Emergency Services. All rights reserved.
+                {t("footer.copyright")}
               </Typography>
               <Stack direction="row" spacing={4}>
-                {['Privacy', 'Terms', 'Cookies'].map((text) => (
+                {['Privacy', 'Terms', 'Security', 'Cookies'].map((text) => (
                   <MuiLink key={text} component={Link} to={`/${text.toLowerCase()}`} variant="body2" color="grey.500" underline="none" sx={{ '&:hover': { color: 'common.white' } }}>
                     {text}
                   </MuiLink>
@@ -184,7 +187,7 @@ export function Footer() {
         PaperProps={{ sx: { borderRadius: 3, p: 1 } }}
       >
         <DialogTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h5" fontWeight="bold">Contact Us</Typography>
+          <Typography variant="h5" fontWeight="bold">{t("footer.contactUsTitle")}</Typography>
           <IconButton onClick={() => setShowContactModal(false)}>
             <CloseIcon />
           </IconButton>
@@ -196,9 +199,9 @@ export function Footer() {
               <Stack direction="row" spacing={2.5} alignItems="flex-start">
                 <PhoneIcon sx={{ color: 'error.main', mt: 0.5 }} />
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bold" color="error.dark">Emergency Hotline</Typography>
+                  <Typography variant="subtitle1" fontWeight="bold" color="error.dark">{t("footer.emergencyHotline")}</Typography>
                   <MuiLink href="tel:112" variant="h5" fontWeight="bold" color="error.main" underline="none">112</MuiLink>
-                  <Typography variant="body2" color="error.dark">24/7 Emergency Response</Typography>
+                  <Typography variant="body2" color="error.dark">{t("footer.emergencyResponse")}</Typography>
                 </Box>
               </Stack>
             </Box>
@@ -208,9 +211,9 @@ export function Footer() {
               <Stack direction="row" spacing={2.5} alignItems="flex-start">
                 <PhoneIcon sx={{ color: 'error.main', mt: 0.5 }} />
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">Phone Support</Typography>
+                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">{t("footer.phoneSupport")}</Typography>
                   <MuiLink href="tel:+917019024300" variant="h6" fontWeight="bold" color="error.main" underline="hover">+91 70190 24300</MuiLink>
-                  <Typography variant="body2" color="text.secondary">Contact us for assistance</Typography>
+                  <Typography variant="body2" color="text.secondary">{t("footer.contactAssistance")}</Typography>
                 </Box>
               </Stack>
             </Box>
@@ -220,8 +223,8 @@ export function Footer() {
               <Stack direction="row" spacing={2.5} alignItems="flex-start">
                 <EmailIcon sx={{ color: 'text.secondary', mt: 0.5 }} />
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">Email</Typography>
-                  <MuiLink href="mailto:info@haspranahealth.com" variant="body1" color="text.primary" underline="hover" sx={{ wordBreak: 'break-all' }}>info@haspranahealth.com</MuiLink>
+                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">{t("footer.email")}</Typography>
+                  <MuiLink href="mailto:info@arohanhealth.com" variant="body1" color="text.primary" underline="hover" sx={{ wordBreak: 'break-all' }}>info@arohanhealth.com</MuiLink>
                 </Box>
               </Stack>
             </Box>
@@ -231,8 +234,8 @@ export function Footer() {
               <Stack direction="row" spacing={2.5} alignItems="flex-start">
                 <GlobeIcon sx={{ color: 'text.secondary', mt: 0.5 }} />
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">Website</Typography>
-                  <MuiLink href="https://haspranahealth.com" target="_blank" variant="body1" color="text.primary" underline="hover">haspranahealth.com</MuiLink>
+                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">{t("footer.website")}</Typography>
+                  <MuiLink href="https://arohanhealth.com" target="_blank" variant="body1" color="text.primary" underline="hover">arohanhealth.com</MuiLink>
                 </Box>
               </Stack>
             </Box>
@@ -242,9 +245,9 @@ export function Footer() {
               <Stack direction="row" spacing={2.5} alignItems="flex-start">
                 <MapPinIcon sx={{ color: 'text.secondary', mt: 0.5 }} />
                 <Box>
-                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">Office Location</Typography>
-                  <Typography variant="body1" color="text.primary">MG Road, Bengaluru</Typography>
-                  <Typography variant="body1" color="text.primary">Karnataka, India 560001</Typography>
+                  <Typography variant="subtitle1" fontWeight="bold" color="text.primary">{t("footer.officeLocation")}</Typography>
+                  <Typography variant="body1" color="text.primary">{t("footer.officeAddress1")}</Typography>
+                  <Typography variant="body1" color="text.primary">{t("footer.officeAddress2")}</Typography>
                 </Box>
               </Stack>
             </Box>
@@ -252,7 +255,7 @@ export function Footer() {
 
           <Box sx={{ mt: 3, pt: 2, borderTop: 1, borderColor: 'divider' }}>
             <Typography variant="body2" color="text.secondary" align="center">
-              Our team is here to help you 24/7 for any emergency or support needs.
+              {t("footer.supportMessage")}
             </Typography>
           </Box>
         </DialogContent>

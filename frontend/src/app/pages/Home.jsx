@@ -29,6 +29,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
 
 import heroImage from '../../assets/images/hero_prevention.png';
@@ -52,6 +53,7 @@ const LoadingComponent = () => (
 );
 
 export function Home() {
+    const { t } = useTranslation();
     const [selectedImage, setSelectedImage] = useState(null);
 
     return (
@@ -95,7 +97,7 @@ export function Home() {
                                 sx={{ color: 'text.secondary', mb: 4, maxWidth: 600, lineHeight: 1.6 }}
                             >
                                 A discreet wearable plugin chip and intelligent app designed to assist in health monitoring and emergency notification.
-                                <Box component="span" sx={{ display: 'block', mt: 2, fontSize: '0.9rem', fontStyle: 'italic', color: 'warning.dark' }}>⚠️ Prototype undergoing clinical validation</Box>
+                                <Box component="span" sx={{ display: 'block', mt: 2, fontSize: '0.9rem', fontStyle: 'italic', color: 'warning.dark' }}>{t('home.prototypeNote')}</Box>
                             </MotionTypography>
 
                             <MotionBox
@@ -125,7 +127,7 @@ export function Home() {
                                         }
                                     }}
                                 >
-                                    Join Early Access
+                                    {t('home.joinEarlyAccess')}
                                 </Button>
                                 <Button
                                     component={Link}
@@ -148,7 +150,7 @@ export function Home() {
                                         }
                                     }}
                                 >
-                                    Partner with Us
+                                    {t('home.partnerWithUs')}
                                 </Button>
                             </MotionBox>
                         </Grid>
@@ -177,8 +179,8 @@ export function Home() {
                                         <ShieldCheckIcon sx={{ color: 'success.dark' }} />
                                     </Box>
                                     <Box>
-                                        <Typography variant="caption" color="text.secondary" fontWeight="bold">Status</Typography>
-                                        <Typography variant="body2" fontWeight="bold">Protected</Typography>
+                                        <Typography variant="caption" color="text.secondary" fontWeight="bold">{t('home.heroStatus')}</Typography>
+                                        <Typography variant="body2" fontWeight="bold">{t('home.heroProtected')}</Typography>
                                     </Box>
                                 </Paper>
 
@@ -192,7 +194,7 @@ export function Home() {
                                     <Box sx={{ bgcolor: 'error.light', p: 1, borderRadius: '50%' }}>
                                         <HeartPulseIcon sx={{ color: 'error.main' }} />
                                     </Box>
-                                    <Typography variant="body2" fontWeight="bold">Vitals Normal</Typography>
+                                    <Typography variant="body2" fontWeight="bold">{t('home.heroVitals')}</Typography>
                                 </Paper>
                             </Box>
                         </Grid>
@@ -207,11 +209,11 @@ export function Home() {
                 <Container >
                     <Box sx={{ textAlign: 'center', mb: 6 }}>
                         <Typography variant="h3" fontWeight="bold" gutterBottom>
-                            Closing the emergency response gap
+                            {t('home.problemTitle')}
                         </Typography>
                     </Box>
                     <Typography variant="h6" color="text.secondary" sx={{ maxWidth: 900, mx: 'auto', lineHeight: 1.8, textAlign: 'center' }}>
-                        In health emergencies, every minute is vital. Many individuals live with limited immediate supervision, and family members may be distant. Early notification and clear guidance during those first few minutes can make a significant difference. Arohan aims to provide that critical connection between an event and the right assistance.
+                        {t('home.problemDesc')}
                     </Typography>
                 </Container>
             </Box>
@@ -221,7 +223,7 @@ export function Home() {
                 <Container >
                     <Box sx={{ textAlign: 'center', mb: 8 }}>
                         <Typography variant="h3" fontWeight="bold" gutterBottom>
-                            One platform, three powerful components
+                            {t('home.solutionTitle')}
                         </Typography>
                     </Box>
                     <Grid container spacing={4} justifyContent="center" alignItems="stretch">
@@ -232,10 +234,10 @@ export function Home() {
                                         <ActivityIcon sx={{ fontSize: 40 }} />
                                     </Box>
                                     <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: 'primary.main', mb: 1 }}>
-                                        Discreet Wearable Plugin Chip
+                                        {t('home.solution1Title')}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                                        Clips onto existing watches, rings and everyday wearables. Continuously tracks key vitals and motion linked to falls and acute events. Designed for all‑day and night comfort with low‑power operation.
+                                        {t('home.solution1Desc')}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -247,10 +249,10 @@ export function Home() {
                                         <HeartPulseIcon sx={{ fontSize: 40 }} />
                                     </Box>
                                     <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: 'primary.main', mb: 1 }}>
-                                        AI Prevention Engine
+                                        {t('home.solution2Title')}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                                        Learns each person's baseline to identify unusual patterns early, enabling prevention through timely intervention. Analyzes vitals and movement to detect potential health emergencies before they escalate. Triggers instant alerts to caregivers, family members or integrated emergency services.
+                                        {t('home.solution2Desc')}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -262,10 +264,10 @@ export function Home() {
                                         <ShieldCheckIcon sx={{ fontSize: 40 }} />
                                     </Box>
                                     <Typography variant="h6" fontWeight="bold" gutterBottom sx={{ color: 'primary.main', mb: 1 }}>
-                                        First‑Aid AI Assistant
+                                        {t('home.solution3Title')}
                                     </Typography>
                                     <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                                        Voice‑ and chat‑based assistant designed for lay first responders. Provides clear, step‑by‑step instructions for common emergencies like chest pain, suspected stroke, severe bleeding or a fall with head injury. Built on curated, guideline‑aligned medical content vetted by doctors.
+                                        {t('home.solution3Desc')}
                                     </Typography>
                                 </CardContent>
                             </Card>
@@ -285,7 +287,7 @@ export function Home() {
                                 '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 6px 20px rgba(37, 99, 235, 0.6)' }
                             }}
                         >
-                            See How Arohan Works
+                            {t('home.seeHowArohanWorks')}
                         </Button>
                     </Box>
                 </Container>
@@ -296,16 +298,16 @@ export function Home() {
                 <Container >
                     <Box sx={{ textAlign: 'center', mb: 8 }}>
                         <Typography variant="h3" fontWeight="bold" gutterBottom>
-                            Designed for real‑world health monitoring
+                            {t('home.benefitsTitle')}
                         </Typography>
                     </Box>
                     <Grid container spacing={4} justifyContent="center">
                         {[
-                            { icon: <UserCheckIcon sx={{ fontSize: 40 }} />, text: 'Personalized safety, not one‑size‑fits‑all thresholds', color: 'primary.main' },
-                            { icon: <ActivityIcon sx={{ fontSize: 40 }} />, text: 'Unobtrusive design that can be worn 24/7, even during sleep', color: 'success.main' },
-                            { icon: <PhoneIcon sx={{ fontSize: 40 }} />, text: 'Instant alerts by phone call and SMS, wherever family members live', color: 'error.main' },
-                            { icon: <ShieldCheckIcon sx={{ fontSize: 40 }} />, text: 'Guided first aid so nearby helpers know exactly what to do until professionals take over', color: 'warning.main' },
-                            { icon: <HeartPulseIcon sx={{ fontSize: 40 }} />, text: 'Affordable enough to scale across families, senior‑living communities and hospitals', color: 'info.main' }
+                            { icon: <UserCheckIcon sx={{ fontSize: 40 }} />, text: t('home.benefit1'), color: 'primary.main' },
+                            { icon: <ActivityIcon sx={{ fontSize: 40 }} />, text: t('home.benefit2'), color: 'success.main' },
+                            { icon: <PhoneIcon sx={{ fontSize: 40 }} />, text: t('home.benefit3'), color: 'error.main' },
+                            { icon: <ShieldCheckIcon sx={{ fontSize: 40 }} />, text: t('home.benefit4'), color: 'warning.main' },
+                            { icon: <HeartPulseIcon sx={{ fontSize: 40 }} />, text: t('home.benefit5'), color: 'info.main' }
                         ].map((benefit, i) => (
                             <Grid item xs={12} sm={6} md={4} key={i}>
                                 <Paper elevation={0} sx={{ p: 4, height: '100%', textAlign: 'center', bgcolor: 'white', border: 1, borderColor: 'grey.200', borderRadius: 3, transition: 'all 0.3s', '&:hover': { boxShadow: 4, transform: 'translateY(-4px)' } }}>
@@ -326,15 +328,15 @@ export function Home() {
             <Box sx={{ py: 12, bgcolor: 'background.paper' }}>
                 <Container>
                     <Box sx={{ textAlign: 'center', mb: 8, maxWidth: 700, mx: 'auto' }}>
-                        <Typography variant="h3" fontWeight="bold" gutterBottom>How It Works</Typography>
-                        <Typography variant="h6" color="text.secondary">Getting emergency help has never been simpler. Follow these 4 easy steps.</Typography>
+                        <Typography variant="h3" fontWeight="bold" gutterBottom>{t('home.howItWorksTitle')}</Typography>
+                        <Typography variant="h6" color="text.secondary">{t('home.howItWorksDesc')}</Typography>
                     </Box>
                     <Grid container spacing={4} justifyContent="center">
                         {[
-                            { title: "Press SOS", desc: "Tap the emergency button anywhere.", icon: <SirenIcon sx={{ fontSize: 40 }} />, step: "1" },
-                            { title: "Location Shared", desc: "Location shared automatically.", icon: <LocationIcon sx={{ fontSize: 40 }} />, step: "2" },
-                            { title: "Help Dispatched", desc: "Ambulance notified instantly.", icon: <AmbulanceIcon sx={{ fontSize: 40 }} />, step: "3" },
-                            { title: "Real-time Tracking", desc: "Track arrival live.", icon: <MobileIcon sx={{ fontSize: 40 }} />, step: "4" }
+                            { title: t('home.hw1Title'), desc: t('home.hw1Desc'), icon: <SirenIcon sx={{ fontSize: 40 }} />, step: "1" },
+                            { title: t('home.hw2Title'), desc: t('home.hw2Desc'), icon: <LocationIcon sx={{ fontSize: 40 }} />, step: "2" },
+                            { title: t('home.hw3Title'), desc: t('home.hw3Desc'), icon: <AmbulanceIcon sx={{ fontSize: 40 }} />, step: "3" },
+                            { title: t('home.hw4Title'), desc: t('home.hw4Desc'), icon: <MobileIcon sx={{ fontSize: 40 }} />, step: "4" }
                         ].map((item, i) => (
                             <Grid item xs={12} sm={6} md={3} key={i}>
                                 <Paper elevation={0} sx={{ p: 4, bgcolor: 'grey.50', borderRadius: 4, textAlign: 'center', border: 1, borderColor: 'grey.200', height: '100%' }}>
@@ -355,18 +357,18 @@ export function Home() {
             <Box sx={{ py: 12, bgcolor: 'grey.50' }}>
                 <Container >
                     <Box sx={{ textAlign: 'center', maxWidth: 800, mx: 'auto', mb: 8 }}>
-                        <Chip label="Powered by Advanced AI Technology" sx={{ mb: 2, bgcolor: 'primary.light', color: 'primary.dark', fontWeight: 600 }} />
-                        <Typography variant="h3" fontWeight="bold" gutterBottom>Technology That Saves Lives</Typography>
-                        <Typography variant="subtitle1" color="text.secondary">Every second matters. We use technology to reach people faster, guide them better, and save lives more efficiently.</Typography>
+                        <Chip label={t('home.techChip')} sx={{ mb: 2, bgcolor: 'primary.light', color: 'primary.dark', fontWeight: 600 }} />
+                        <Typography variant="h3" fontWeight="bold" gutterBottom>{t('home.techTitle')}</Typography>
+                        <Typography variant="subtitle1" color="text.secondary">{t('home.techDesc')}</Typography>
                     </Box>
                     <Grid container spacing={4} justifyContent="center">
                         {[
-                            { title: "AI Voice Assistant", desc: "Speak for immediate guidance.", icon: <ActivityIcon />, color: "primary.main" },
-                            { title: "Multi-Language", desc: "Help in your own language.", icon: <UserCheckIcon />, color: "primary.dark" },
-                            { title: "Video Guided Aid", desc: "Visual first aid instructions.", icon: <ShieldCheckIcon />, color: "primary.main" },
-                            { title: "Smart Assistance", desc: "AI-powered action guidance.", icon: <ActivityIcon />, color: "primary.dark" },
-                            { title: "One-Tap Access", desc: "No complex forms effectively.", icon: <HeartPulseIcon />, color: "primary.main" },
-                            { title: "Location Intel", desc: "Auto-finds nearest hospitals.", icon: <ArrowRightIcon />, color: "primary.dark" }
+                            { title: t('home.tech1Title'), desc: t('home.tech1Desc'), icon: <ActivityIcon />, color: "primary.main" },
+                            { title: t('home.tech2Title'), desc: t('home.tech2Desc'), icon: <UserCheckIcon />, color: "primary.dark" },
+                            { title: t('home.tech3Title'), desc: t('home.tech3Desc'), icon: <ShieldCheckIcon />, color: "primary.main" },
+                            { title: t('home.tech4Title'), desc: t('home.tech4Desc'), icon: <ActivityIcon />, color: "primary.dark" },
+                            { title: t('home.tech5Title'), desc: t('home.tech5Desc'), icon: <HeartPulseIcon />, color: "primary.main" },
+                            { title: t('home.tech6Title'), desc: t('home.tech6Desc'), icon: <ArrowRightIcon />, color: "primary.dark" }
                         ].map((item, i) => (
                             <Grid item xs={12} sm={6} md={4} key={i}>
                                 <Paper elevation={1} sx={{ p: 3, borderRadius: 3, height: '100%', border: 1, borderColor: 'primary.light', textAlign: 'center', transition: 'all 0.3s', '&:hover': { boxShadow: 4, borderColor: 'primary.main', transform: 'translateY(-4px)' } }}>
@@ -387,14 +389,14 @@ export function Home() {
                 <Container >
                     <Box sx={{ bgcolor: 'grey.900', borderRadius: 4, p: { xs: 4, md: 8 }, color: 'white' }}>
                         <Box sx={{ textAlign: 'center', mb: 8 }}>
-                            <Typography variant="h3" fontWeight="bold" gutterBottom>Who we are for?</Typography>
-                            <Typography variant="subtitle1" color="grey.400">Tailored solutions for everyone in the ecosystem.</Typography>
+                            <Typography variant="h3" fontWeight="bold" gutterBottom>{t('home.whoTitle')}</Typography>
+                            <Typography variant="subtitle1" color="grey.400">{t('home.whoDesc')}</Typography>
                         </Box>
                         <Grid container spacing={4} justifyContent="center">
                             {[
-                                { title: "For Individuals & Families", desc: "Independent living with 24/7 safety monitoring and peace of mind.", link: "/individuals-families", color: "primary.main" },
-                                { title: "For Doctors", desc: "Real-time patient vitals and seamless API integration.", link: "/healthcare-professionals", color: "secondary.main" },
-                                { title: "For Corporate", desc: "Employee wellness programs and health partnerships.", link: "/corporate-insurance", color: "success.main" }
+                                { title: t('home.who1Title'), desc: t('home.who1Desc'), link: "/individuals-families", color: "primary.main" },
+                                { title: t('home.who2Title'), desc: t('home.who2Desc'), link: "/healthcare-professionals", color: "secondary.main" },
+                                { title: t('home.who3Title'), desc: t('home.who3Desc'), link: "/corporate-insurance", color: "success.main" }
                             ].map((item, i) => (
                                 <Grid item xs={12} md={4} key={i}>
                                     <Paper
@@ -417,7 +419,7 @@ export function Home() {
                                         <Typography variant="h5" fontWeight="bold" gutterBottom sx={{ transition: 'color 0.2s', mb: 2 }}>{item.title}</Typography>
                                         <Typography variant="body1" color="grey.400" sx={{ mb: 3, lineHeight: 1.6 }}>{item.desc}</Typography>
                                         <Stack direction="row" alignItems="center" justifyContent="center" spacing={1} sx={{ fontWeight: 600 }}>
-                                            <Box component="span">Learn More</Box>
+                                            <Box component="span">{t('home.learnMore')}</Box>
                                             <ArrowRightIcon fontSize="small" />
                                         </Stack>
                                     </Paper>

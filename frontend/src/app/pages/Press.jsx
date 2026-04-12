@@ -10,7 +10,7 @@ import {
     Link
 } from '@mui/material';
 import { Article as ArticleIcon, Download as DownloadIcon, Language as WebIcon } from '@mui/icons-material';
-import { Helmet } from 'react-helmet-async';
+import SEO from '../components/SEO';
 
 export function Press() {
     const mediaKitItems = [
@@ -64,10 +64,12 @@ export function Press() {
 
     return (
         <Box>
-            <Helmet>
-                <title>Press & Media - Arohan Health | News, Media Kit, Press Releases</title>
-                <meta name="description" content="Latest press releases, media coverage, and media kit for Arohan Health. Featured in ET, YourStory, Inc42. Contact press@arohanhealth.com for inquiries." />
-            </Helmet>
+            <SEO
+                title="Press & Media"
+                description="Latest press releases, media coverage, and media kit for Arohan Health. Featured in ET, YourStory, Inc42. Contact press@arohanhealth.com for media inquiries."
+                keywords="Arohan Health press, media coverage, health tech news India, press releases, media kit"
+                canonical="https://arohanhealth.com/press"
+            />
 
             {/* Hero */}
             <Box sx={{ bgcolor: 'secondary.main', color: 'white', py: { xs: 8, md: 12 }, textAlign: 'center' }}>

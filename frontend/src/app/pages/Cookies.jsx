@@ -1,10 +1,17 @@
 import React from 'react';
 import { Shield as ShieldIcon, Info as InfoIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import { Box, Container, Typography, Paper, Grid, Card, CardContent } from '@mui/material';
+import SEO from '../components/SEO';
 
 export function Cookies() {
     return (
         <Box sx={{ minHeight: '100dvh', bgcolor: 'grey.50', py: 8 }}>
+            <SEO
+                title="Cookie Policy"
+                description="Learn how Arohan Health uses cookies on its platform. Understand essential, analytics, and marketing cookies and how to manage your preferences."
+                keywords="Arohan Health cookie policy, health platform cookies, browser tracking preferences"
+                canonical="https://arohanhealth.com/cookies"
+            />
             <Container>
                 <Paper elevation={3} sx={{ overflow: 'hidden', borderRadius: 2 }}>
                     <Box sx={{ bgcolor: 'error.main', px: 4, py: 3, display: 'flex', alignItems: 'center', gap: 2 }}>

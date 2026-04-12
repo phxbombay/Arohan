@@ -75,8 +75,8 @@ export function Products() {
     };
 
     const features = [
-        { icon: <HeartIcon />, title: 'Real-Time Heart Monitoring', desc: '24/7 ECG-accurate heart rate tracking' },
-        { icon: <SpeedIcon />, title: 'Instant Fall Detection', desc: '98% accuracy using AI-powered accelerometer' },
+        { icon: <HeartIcon />, title: 'Real-Time Heart Monitoring', desc: 'Continuous heart rate tracking for health insights' },
+        { icon: <SpeedIcon />, title: 'Advanced Fall Detection', desc: 'Precision-engineered detection using AI-powered motion sensors' },
         { icon: <ShieldIcon />, title: 'Emergency Alerts', desc: 'Auto-notify family, doctors, ambulances' },
         { icon: <WatchIcon />, title: '72-Hour Battery Life', desc: 'Low-power design with wireless charging' }
     ];
@@ -110,8 +110,8 @@ export function Products() {
     ];
 
     const breadcrumbs = [
-        { name: 'Home', url: 'https://arohan-health.com/' },
-        { name: 'Products', url: 'https://arohan-health.com/products' }
+        { name: 'Home', url: 'https://arohanhealth.com/' },
+        { name: 'Products', url: 'https://arohanhealth.com/products' }
     ];
 
     return (
@@ -139,8 +139,9 @@ export function Products() {
                                 Your 24/7 Guardian Angel
                             </Typography>
                             <Typography variant="h6" color="text.secondary" paragraph sx={{ maxWidth: 500, mx: 'auto', mb: 4 }}>
-                                AI-powered wearable that detects falls & cardiac emergencies instantly,
+                                AI-powered wearable that detects falls & cardiac patterns,
                                 alerting family and emergency services within seconds.
+                                <Box component="span" sx={{ display: 'block', mt: 2, fontSize: '0.9rem', fontStyle: 'italic', color: 'warning.dark' }}>⚠️ Prototype undergoing clinical validation</Box>
                             </Typography>
                             <Stack direction="row" spacing={2} sx={{ mb: 4 }} justifyContent="center">
                                 <Chip icon={<CheckIcon />} label="High Fall Detection Sensitivity" color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />

@@ -1,4 +1,5 @@
 import { Box, Button, Container, Typography, TextField, Grid, Paper, Card, CardContent, CircularProgress, Alert } from '@mui/material';
+import SEO from '../components/SEO';
 import { useState } from 'react';
 import {
     LocalHospital as HospitalIcon,
@@ -97,6 +98,12 @@ export default function Partners() {
 
     return (
         <Box sx={{ minHeight: '100dvh' }}>
+            <SEO
+                title="Partners — Scale Elder-Care Together"
+                description="Partner with Arohan Health to bring AI-powered emergency detection to hospitals, senior living homes, insurers, and OEM device makers across India."
+                keywords="Arohan Health partners, hospital partnership, health tech collaboration, insurer wellness program, OEM wearable integration"
+                canonical="https://arohanhealth.com/partners"
+            />
             {/* Hero Section */}
             <Box sx={{ py: 12, bgcolor: 'primary.main', color: 'white' }}>
                 <Container>

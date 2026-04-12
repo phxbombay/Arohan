@@ -1,5 +1,6 @@
 import { Box, Container, Typography, Grid, Paper } from '@mui/material';
 import { TrendingUp as TrendingUpIcon, People as PeopleIcon, Smartphone as SmartphoneIcon, Home as HomeIcon } from '@mui/icons-material';
+import SEO from '../components/SEO';
 
 export function Impact() {
     const trends = [
@@ -31,6 +32,11 @@ export function Impact() {
 
     return (
         <Box sx={{ minHeight: '100dvh' }}>
+            <SEO 
+                title="Our Impact & Vision"
+                description="Harnessing AI-powered health monitoring to transform elder-care in India and beyond. Faster response times, fewer preventable deaths, and better quality of life."
+                keywords="social impact, elder-care India, health technology, AI for good, Arohan Health impact"
+            />
             {/* Hero Section */}
             <Box sx={{ py: 12, bgcolor: 'grey.50' }}>
                 <Container>

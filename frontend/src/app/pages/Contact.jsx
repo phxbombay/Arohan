@@ -1,4 +1,5 @@
 import { useForm } from 'react-hook-form';
+import SEO from '../components/SEO';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import {
@@ -50,6 +51,12 @@ export function Contact() {
 
     return (
         <Box sx={{ minHeight: '100dvh', display: 'flex', flexDirection: 'column' }}>
+            <SEO
+                title="Contact Us"
+                description="Get in touch with the Arohan Health team. Reach us by phone at +91 70190 24300, or email info@arohanhealth.com. We're here to help with your health monitoring needs."
+                keywords="contact Arohan Health, health tech support, emergency monitoring help, info@arohanhealth.com"
+                canonical="https://arohanhealth.com/contact"
+            />
             <Box sx={{ bgcolor: 'primary.main', color: 'primary.contrastText', py: 10, textAlign: 'center' }}>
                 <Container>
                     <Typography variant="h3" fontWeight="bold" gutterBottom align="center">Get in Touch</Typography>
@@ -88,7 +95,7 @@ export function Contact() {
                                         <Box sx={{ textAlign: 'left' }}>
                                             <Typography variant="h6" fontWeight="bold">Head Office</Typography>
                                             <Typography variant="body2" color="text.secondary">
-                                                Hasprana Health Care Solutions Pvt Ltd<br />
+                                                Arohan Health<br />
                                                 Bengaluru, Karnataka<br />
                                                 India
                                             </Typography>
@@ -100,8 +107,8 @@ export function Contact() {
                                         <MailIcon color="primary" fontSize="large" />
                                         <Box sx={{ textAlign: 'left' }}>
                                             <Typography variant="h6" fontWeight="bold">Email</Typography>
-                                            <a href="mailto:info@haspranahealth.com" style={{ textDecoration: 'none', color: '#d32f2f', fontWeight: 500 }}>
-                                                info@haspranahealth.com
+                                            <a href="mailto:info@arohanhealth.com" style={{ textDecoration: 'none', color: '#d32f2f', fontWeight: 500 }}>
+                                                info@arohanhealth.com
                                             </a>
                                         </Box>
                                     </CardContent>
@@ -111,9 +118,9 @@ export function Contact() {
                                         <PhoneIcon color="primary" fontSize="large" />
                                         <Box sx={{ textAlign: 'left' }}>
                                             <Typography variant="h6" fontWeight="bold">Phone Support</Typography>
-                                            <Typography variant="body2" color="text.secondary">
-                                                This feature will be enabled soon.
-                                            </Typography>
+                                            <a href="tel:+917019024300" style={{ textDecoration: 'none', color: '#d32f2f', fontWeight: 500 }}>
+                                                +91 70190 24300
+                                            </a>
                                         </Box>
                                     </CardContent>
                                 </Card>
