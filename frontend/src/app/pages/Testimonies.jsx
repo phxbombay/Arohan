@@ -84,6 +84,14 @@ export function ProjectsOverview() {
             accentColor: '#2e7d32',
             bgGradient: 'linear-gradient(135deg, rgba(46,125,50,0.08) 0%, rgba(46,125,50,0.02) 100%)',
             borderColor: 'rgba(46,125,50,0.18)'
+        },
+        {
+            number: '03',
+            icon: <SparkleIcon sx={{ fontSize: 36 }} />,
+            categoryColor: 'secondary',
+            accentColor: '#9c27b0',
+            bgGradient: 'linear-gradient(135deg, rgba(156,39,176,0.08) 0%, rgba(156,39,176,0.02) 100%)',
+            borderColor: 'rgba(156,39,176,0.18)'
         }
     ];
 
