@@ -2,6 +2,7 @@ import webpush from 'web-push';
 import pool from '../config/db.js';
 import logger from '../config/logger.js';
 import { DatabaseError, NotFoundError } from '../utils/errors.js';
+import { broadcastEmergency } from './emergencyAlertService.js';
 
 class NotificationService {
     constructor() {
@@ -112,6 +113,10 @@ class NotificationService {
         } catch (error) {
             logger.error('Error removing subscription', { error: error.message });
         }
+    }
+
+    async broadcastEmergency(contact, alertData, options = {}) {
+        return broadcastEmergency(contact, alertData, options);
     }
 }
 

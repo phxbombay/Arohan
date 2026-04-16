@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useCartStore } from '../../context/cartStore';
 import {
@@ -38,6 +39,7 @@ import SEO from '../components/SEO';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 
 export function Products() {
+    const { t } = useTranslation();
     const [selectedTab, setSelectedTab] = useState(0);
     const navigate = useNavigate();
     const location = useLocation();
@@ -47,9 +49,9 @@ export function Products() {
     // Product data
     const arohanDevice = {
         id: 'arohan-wearable-v1',
-        name: 'Arohan Smart Wearable',
+        name: t('productsPage.hero.badge') || 'Arohan Smart Wearable',
         price: 1,
-        description: 'AI-powered health monitoring device for elderly care',
+        description: t('productsPage.hero.subtitle') || 'AI-powered health monitoring device for elderly care',
         image: '/images/arohan-wearable-hero.png'
     };
 
@@ -57,61 +59,36 @@ export function Products() {
     const handleAddToCart = async () => {
         // Enforce Authentication
         if (!isAuthenticated || !user?.user_id) {
-            toast.error('Please login to add items to your cart');
+            toast.error(t('notifications.loginRequired') || 'Please login to add items to your cart');
             navigate('/signin', { state: { from: location.pathname } });
             return;
         }
 
         try {
             await addToCart(arohanDevice, user.user_id);
-            toast.success('Arohan device added to cart!');
+            toast.success(t('notifications.addedToCart') || 'Arohan device added to cart!');
 
             // Navigate to cart
             navigate('/cart');
         } catch (error) {
             console.error('Error adding to cart:', error);
-            toast.error('Failed to add to cart. Please try again.');
+            toast.error(t('notifications.cartError') || 'Failed to add to cart. Please try again.');
         }
     };
 
-    const features = [
-        { icon: <HeartIcon />, title: 'Real-Time Heart Monitoring', desc: 'Continuous heart rate tracking for health insights' },
-        { icon: <SpeedIcon />, title: 'Advanced Fall Detection', desc: 'Precision-engineered detection using AI-powered motion sensors' },
-        { icon: <ShieldIcon />, title: 'Emergency Alerts', desc: 'Auto-notify family, doctors, ambulances' },
-        { icon: <WatchIcon />, title: '72-Hour Battery Life', desc: 'Low-power design with wireless charging' }
-    ];
+    const featureIcons = [<HeartIcon />, <SpeedIcon />, <ShieldIcon />, <WatchIcon />];
+    const features = (t('productsPage.features', { returnObjects: true }) || []).map((feature, index) => ({
+        ...feature,
+        icon: featureIcons[index]
+    }));
 
-    const specifications = [
-        { label: 'Setup Time', value: 'will be updated soon' },
-        { label: 'Detection Accuracy', value: 'will be updated soon' },
-        { label: 'Alert Speed', value: 'will be updated soon' },
-        { label: 'Battery Life', value: 'will be updated soon' },
-        { label: 'Sensors', value: 'will be updated soon' },
-        { label: 'Connectivity', value: 'will be updated soon' },
-        { label: 'Water Resistance', value: 'will be updated soon' },
-        { label: 'Weight', value: 'will be updated soon' }
-    ];
+    const specifications = t('productsPage.specs', { returnObjects: true }) || [];
 
-    const testimonials = [
-        {
-            name: 'Prakash R.',
-            role: 'Family Caregiver',
-            rating: 5,
-            comment: 'Arohan gives us peace of mind knowing we\'ll be notified if dad ever needs help.',
-            avatar: ''
-        },
-        {
-            name: 'S. Mehta',
-            role: 'Healthcare Professional',
-            rating: 5,
-            comment: 'The focus on emergency response time and family notification is exactly what\'s needed for elderly care.',
-            avatar: ''
-        }
-    ];
+    const testimonials = t('projects.list', { returnObjects: true }) || [];
 
     const breadcrumbs = [
-        { name: 'Home', url: 'https://arohanhealth.com/' },
-        { name: 'Products', url: 'https://arohanhealth.com/products' }
+        { name: t('nav.home'), url: 'https://arohanhealth.com/' },
+        { name: t('nav.products'), url: 'https://arohanhealth.com/products' }
     ];
 
     return (
@@ -133,19 +110,18 @@ export function Products() {
                     <Grid container spacing={6} alignItems="center" justifyContent="center">
                         <Grid item xs={12} md={6}>
                             <Typography variant="overline" color="primary" fontWeight="bold" sx={{ letterSpacing: 2 }}>
-                                Arohan Wearable Device
+                                {t('productsPage.hero.badge')}
                             </Typography>
                             <Typography variant="h2" fontWeight="800" gutterBottom sx={{ lineHeight: 1.1, mb: 2 }}>
-                                Your 24/7 Guardian Angel
+                                {t('productsPage.hero.title')}
                             </Typography>
                             <Typography variant="h6" color="text.secondary" paragraph sx={{ maxWidth: 500, mx: 'auto', mb: 4 }}>
-                                AI-powered wearable that detects falls & cardiac patterns,
-                                alerting family and emergency services within seconds.
-                                <Box component="span" sx={{ display: 'block', mt: 2, fontSize: '0.9rem', fontStyle: 'italic', color: 'warning.dark' }}>⚠️ Prototype undergoing clinical validation</Box>
+                                {t('productsPage.hero.subtitle')}
+                                <Box component="span" sx={{ display: 'block', mt: 2, fontSize: '0.9rem', fontStyle: 'italic', color: 'warning.dark' }}>⚠️ {t('productsPage.hero.validation')}</Box>
                             </Typography>
                             <Stack direction="row" spacing={2} sx={{ mb: 4 }} justifyContent="center">
-                                <Chip icon={<CheckIcon />} label="High Fall Detection Sensitivity" color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
-                                <Chip icon={<CheckIcon />} label="Real-time Cardiac Monitoring" color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
+                                <Chip icon={<CheckIcon />} label={t('productsPage.hero.benefit1')} color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
+                                <Chip icon={<CheckIcon />} label={t('productsPage.hero.benefit2')} color="success" sx={{ px: 1, py: 2.5, borderRadius: 2 }} />
                             </Stack>
                             <Stack direction="row" spacing={2} justifyContent="center">
                                 <Button
@@ -162,7 +138,7 @@ export function Products() {
                                         '&:hover': { transform: 'translateY(-2px)', boxShadow: '0 6px 20px rgba(37, 99, 235, 0.6)' }
                                     }}
                                 >
-                                    Add to Cart
+                                    {t('productsPage.hero.addToCart')}
                                 </Button>
                                 <Button
                                     component={Link}
@@ -177,7 +153,7 @@ export function Products() {
                                         '&:hover': { bgcolor: 'rgba(37, 99, 235, 0.05)', borderColor: 'primary.dark' }
                                     }}
                                 >
-                                    Request Demo
+                                    {t('productsPage.hero.demo')}
                                 </Button>
                             </Stack>
                         </Grid>
@@ -196,10 +172,10 @@ export function Products() {
             {/* Features */}
             <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
                 <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
-                    Key Features
+                    {t('productsPage.featuresTitle')}
                 </Typography>
                 <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 8 }}>
-                    Engineered for reliability, designed for comfort
+                    {t('productsPage.featuresSubtitle')}
                 </Typography>
                 <Grid container spacing={4} justifyContent="center">
                     {features.map((feature, index) => (
@@ -224,9 +200,9 @@ export function Products() {
             <Box sx={{ bgcolor: 'grey.900', color: 'white', py: { xs: 6, md: 10 } }}>
                 <Container maxWidth="lg">
                     <Tabs value={selectedTab} onChange={(e, v) => setSelectedTab(v)} centered sx={{ mb: 6, '& .MuiTab-root': { color: 'grey.500', fontSize: '1rem', fontWeight: 'bold' }, '& .Mui-selected': { color: 'white !important' } }}>
-                        <Tab label="Device Specifications" />
-                        <Tab label="Mobile App" />
-                        <Tab label="Web Dashboard" />
+                        <Tab label={t('productsPage.tabs.specs')} />
+                        <Tab label={t('productsPage.tabs.app')} />
+                        <Tab label={t('productsPage.tabs.dashboard')} />
                     </Tabs>
 
                     <Box sx={{ maxWidth: 900, mx: 'auto' }}>
@@ -257,21 +233,21 @@ export function Products() {
                         {selectedTab === 1 && (
                             <Card sx={{ p: 6, textAlign: 'center', bgcolor: 'grey.800', color: 'white' }} elevation={0}>
                                 <Typography variant="h4" fontWeight="bold" gutterBottom>
-                                    Arohan Mobile App
+                                    {t('productsPage.app.title')}
                                 </Typography>
                                 <Typography variant="body1" paragraph color="grey.400" sx={{ mb: 5, fontSize: '1.1rem' }}>
-                                    Free iOS & Android app for real-time health monitoring, emergency alerts, and family sharing.
+                                    {t('productsPage.app.subtitle')}
                                 </Typography>
                                 <Grid container spacing={2} justifyContent="center" sx={{ mb: 5, textAlign: 'left' }}>
                                     <Grid item xs={12} sm={6}>
                                         <Stack spacing={3}>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">Live health dashboard</Typography>
+                                                <Typography variant="h6">{t('productsPage.app.feat1')}</Typography>
                                             </Box>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">One-tap emergency SOS</Typography>
+                                                <Typography variant="h6">{t('productsPage.app.feat2')}</Typography>
                                             </Box>
                                         </Stack>
                                     </Grid>
@@ -279,11 +255,11 @@ export function Products() {
                                         <Stack spacing={3}>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">Family member access</Typography>
+                                                <Typography variant="h6">{t('productsPage.app.feat3')}</Typography>
                                             </Box>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">Apple Health & Google Fit</Typography>
+                                                <Typography variant="h6">{t('productsPage.app.feat4')}</Typography>
                                             </Box>
                                         </Stack>
                                     </Grid>
@@ -292,18 +268,18 @@ export function Products() {
                                     <Button
                                         variant="contained"
                                         size="large"
-                                        onClick={() => toast.info("iOS App arriving on App Store next month!")}
+                                        onClick={() => toast.info(t('notifications.appSoon'))}
                                         sx={{ bgcolor: 'white', color: 'black', '&:hover': { bgcolor: 'grey.200' } }}
                                     >
-                                        Download iOS App
+                                        {t('productsPage.app.ios')}
                                     </Button>
                                     <Button
                                         variant="outlined"
                                         size="large"
-                                        onClick={() => toast.info("Android App arriving on Play Store next month!")}
+                                        onClick={() => toast.info(t('notifications.appSoon'))}
                                         sx={{ borderColor: 'white', color: 'white', '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)' } }}
                                     >
-                                        Download Android App
+                                        {t('productsPage.app.android')}
                                     </Button>
                                 </Stack>
                             </Card>
@@ -311,24 +287,24 @@ export function Products() {
                         {selectedTab === 2 && (
                             <Card sx={{ p: 6, textAlign: 'center', bgcolor: 'grey.800', color: 'white' }} elevation={0}>
                                 <Typography variant="h4" fontWeight="bold" gutterBottom>
-                                    Web Dashboard
+                                    {t('productsPage.dashboard.title')}
                                 </Typography>
                                 <Typography variant="h6" color="primary.light" gutterBottom sx={{ mb: 3 }}>
-                                    Caregiver & Provider Access
+                                    {t('productsPage.dashboard.subtitle')}
                                 </Typography>
                                 <Typography variant="body1" paragraph color="grey.400" sx={{ mb: 5, fontSize: '1.1rem' }}>
-                                    Browser-based dashboard for healthcare professionals and family caregivers to monitor patients remotely.
+                                    {t('productsPage.dashboard.desc')}
                                 </Typography>
                                 <Grid container spacing={2} justifyContent="center" sx={{ mb: 5, textAlign: 'left' }}>
                                     <Grid item xs={12} sm={6}>
                                         <Stack spacing={3}>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">Multi-patient monitoring</Typography>
+                                                <Typography variant="h6">{t('productsPage.dashboard.feat1')}</Typography>
                                             </Box>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">Historical trends & analytics</Typography>
+                                                <Typography variant="h6">{t('productsPage.dashboard.feat2')}</Typography>
                                             </Box>
                                         </Stack>
                                     </Grid>
@@ -336,11 +312,11 @@ export function Products() {
                                         <Stack spacing={3}>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">Export PDF reports</Typography>
+                                                <Typography variant="h6">{t('productsPage.dashboard.feat3')}</Typography>
                                             </Box>
                                             <Box display="flex" gap={2} alignItems="center">
                                                 <CheckIcon color="success" />
-                                                <Typography variant="h6">EHR integration (FHIR)</Typography>
+                                                <Typography variant="h6">{t('productsPage.dashboard.feat4')}</Typography>
                                             </Box>
                                         </Stack>
                                     </Grid>
@@ -351,16 +327,14 @@ export function Products() {
                 </Container>
             </Box>
 
-
-
             {/* CTA */}
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 8, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h3" fontWeight="800" gutterBottom>
-                        Ready to Protect Your Loved Ones?
+                        {t('productsPage.cta.title')}
                     </Typography>
                     <Typography variant="h6" sx={{ opacity: 0.9, mb: 5 }}>
-                        Join families worldwide using Arohan for peace of mind
+                        {t('productsPage.cta.subtitle')}
                     </Typography>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                         <Button
@@ -374,7 +348,7 @@ export function Products() {
                                 transition: 'all 0.3s'
                             }}
                         >
-                            Add to Cart
+                            {t('productsPage.cta.addToCart')}
                         </Button>
                         <Button
                             component={Link}
@@ -386,7 +360,7 @@ export function Products() {
                                 '&:hover': { bgcolor: 'rgba(255,255,255,0.1)', borderColor: 'white' }
                             }}
                         >
-                            Request Corporate Demo
+                            {t('productsPage.cta.demo')}
                         </Button>
                     </Stack>
                 </Container>

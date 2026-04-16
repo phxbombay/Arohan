@@ -46,9 +46,6 @@ const PhysicianDashboard = lazy(() => import("./pages/physician/PhysicianDashboa
 const PatientDashboard = lazy(() => import("./pages/patient/PatientDashboard.jsx").then(module => ({ default: module.PatientDashboard })));
 const UsersPage = lazy(() => import("./pages/admin/UsersPage.jsx").then(module => ({ default: module.UsersPage })));
 const ProjectsOverview = lazy(() => import("./pages/Testimonies").then(module => ({ default: module.ProjectsOverview })));
-// ... imports
-
-// ... routes
 
 const MessagesPage = lazy(() => import("./pages/admin/MessagesPage").then(module => ({ default: module.MessagesPage })));
 const LogsPage = lazy(() => import("./pages/admin/LogsPage").then(module => ({ default: module.LogsPage })));
@@ -58,10 +55,6 @@ const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
 const EarlyAccess = lazy(() => import("./pages/EarlyAccess"));
 const Partners = lazy(() => import("./pages/Partners"));
 const Impact = lazy(() => import("./pages/Impact").then(module => ({ default: module.Impact })));
-// New Phase 1 pages
-const ElderlyEnhanced = lazy(() => import("./pages/segments/ElderlyEnhanced").then(module => ({ default: module.Elderly })));
-const DoctorsEnhanced = lazy(() => import("./pages/segments/DoctorsEnhanced").then(module => ({ default: module.DoctorsEnhanced })));
-const CorporateEnhanced = lazy(() => import("./pages/segments/CorporateEnhanced").then(module => ({ default: module.CorporateEnhanced })));
 const Team = lazy(() => import("./pages/Team").then(module => ({ default: module.Team })));
 const Checkout = lazy(() => import("./pages/Checkout").then(module => ({ default: module.Checkout })));
 const CheckoutRazorpay = lazy(() => import("./pages/CheckoutRazorpay").then(module => ({ default: module.CheckoutRazorpay })));
@@ -177,10 +170,10 @@ export default function App() {
                   <Route path="/help-center" element={<HelpCenter />} />
                   <Route path="/help" element={<HelpCenter />} />
 
-                  {/* New Phase 1 Pages */}
-                  <Route path="/for-elderly-legacy" element={<ElderlyEnhanced />} />
-                  <Route path="/healthcare-professionals" element={<DoctorsEnhanced />} />
-                  <Route path="/corporate-insurance" element={<CorporateEnhanced />} />
+                  {/* Phase 1 Segment Pages */}
+                  <Route path="/for-elderly-legacy" element={<Elderly />} />
+                  <Route path="/healthcare-professionals" element={<Doctors />} />
+                  <Route path="/corporate-insurance" element={<Corporate />} />
                   <Route path="/team" element={<Team />} />
                   <Route path="/press" element={<Press />} />
                   <Route path="/case-studies" element={<CaseStudies />} />

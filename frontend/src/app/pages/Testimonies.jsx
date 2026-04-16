@@ -60,13 +60,43 @@ const fadeUp = (delay = 0) => ({
     transition: { duration: 0.6, ease: 'easeOut', delay }
 });
 
+import { useTranslation } from 'react-i18next';
+
 // ─── Component ────────────────────────────────────────────────────────────────
 export function ProjectsOverview() {
+    const { t } = useTranslation();
+
+    // Map visual properties to localized items
+    const rawProjects = t('projects.items', { returnObjects: true }) || [];
+    const visualProps = [
+        {
+            number: '01',
+            icon: <EyeIcon sx={{ fontSize: 36 }} />,
+            categoryColor: 'primary',
+            accentColor: '#1976d2',
+            bgGradient: 'linear-gradient(135deg, rgba(25,118,210,0.08) 0%, rgba(25,118,210,0.02) 100%)',
+            borderColor: 'rgba(25,118,210,0.18)'
+        },
+        {
+            number: '02',
+            icon: <PortfolioIcon sx={{ fontSize: 36 }} />,
+            categoryColor: 'success',
+            accentColor: '#2e7d32',
+            bgGradient: 'linear-gradient(135deg, rgba(46,125,50,0.08) 0%, rgba(46,125,50,0.02) 100%)',
+            borderColor: 'rgba(46,125,50,0.18)'
+        }
+    ];
+
+    const projects = rawProjects.map((rp, i) => ({
+        ...rp,
+        ...(visualProps[i] || visualProps[0])
+    }));
+
     return (
         <Box sx={{ minHeight: '100dvh', bgcolor: 'background.default' }}>
             <SEO
-                title="Projects Overview — Arohan Health"
-                description="Real-world projects and innovations built with Arohan's technology ecosystem — from AI eye-tracking to dynamic portfolio platforms."
+                title={t('projects.title') + " — Arohan Health"}
+                description={t('projects.subtitle')}
                 canonical="https://arohanhealth.com/projects-overview"
                 type="website"
             />
@@ -100,7 +130,7 @@ export function ProjectsOverview() {
                         <Stack direction="row" justifyContent="center" alignItems="center" spacing={1} sx={{ mb: 3 }}>
                             <SparkleIcon sx={{ color: 'primary.main', fontSize: 20 }} />
                             <Chip
-                                label="Featured Projects"
+                                label={t('projects.featured')}
                                 size="small"
                                 sx={{
                                     bgcolor: 'primary.50',
@@ -125,7 +155,7 @@ export function ProjectsOverview() {
                                 letterSpacing: '-1px'
                             }}
                         >
-                            Projects Overview
+                            {t('projects.title')}
                         </Typography>
 
                         <Typography
@@ -138,8 +168,7 @@ export function ProjectsOverview() {
                                 mx: 'auto'
                             }}
                         >
-                            Real-world innovations built with precision — projects that demonstrate
-                            the power of technology in healthcare and beyond.
+                            {t('projects.subtitle')}
                         </Typography>
                     </MotionBox>
 
@@ -151,7 +180,7 @@ export function ProjectsOverview() {
                 <Container maxWidth="lg">
                     <Grid container spacing={4}>
                         {projects.map((project, i) => (
-                            <Grid size={{ xs: 12 }} key={i}>
+                            <Grid item xs={12} key={i}>
                                 <MotionCard
                                     {...fadeUp(i * 0.15)}
                                     elevation={0}
@@ -175,7 +204,7 @@ export function ProjectsOverview() {
                                         <Grid container spacing={4} alignItems="flex-start">
 
                                             {/* Left column — meta */}
-                                            <Grid size={{ xs: 12, md: 3 }}>
+                                            <Grid item xs={12} md={3}>
                                                 <Stack spacing={2.5}>
                                                     {/* Large number */}
                                                     <Typography
@@ -219,7 +248,7 @@ export function ProjectsOverview() {
 
                                                     {/* Tags */}
                                                     <Stack spacing={1} sx={{ display: { xs: 'none', md: 'flex' } }}>
-                                                        {project.tags.map((tag, ti) => (
+                                                        {(project.tags || []).map((tag, ti) => (
                                                             <Box
                                                                 key={ti}
                                                                 sx={{
@@ -248,7 +277,7 @@ export function ProjectsOverview() {
                                             </Grid>
 
                                             {/* Right column — content */}
-                                            <Grid size={{ xs: 12, md: 9 }}>
+                                            <Grid item xs={12} md={9}>
                                                 {/* Quote icon */}
                                                 <QuoteIcon sx={{ color: project.accentColor, opacity: 0.25, fontSize: 56, mb: -1, ml: -1 }} />
 
@@ -291,7 +320,7 @@ export function ProjectsOverview() {
 
                                                 {/* Mobile tags */}
                                                 <Stack direction="row" flexWrap="wrap" gap={1} sx={{ mt: 3, display: { xs: 'flex', md: 'none' } }}>
-                                                    {project.tags.map((tag, ti) => (
+                                                    {(project.tags || []).map((tag, ti) => (
                                                         <Chip key={ti} label={tag} size="small"
                                                             sx={{ bgcolor: `${project.accentColor}12`, color: project.accentColor, fontWeight: 600, fontSize: '0.7rem' }}
                                                         />
@@ -313,11 +342,10 @@ export function ProjectsOverview() {
                     <MotionBox {...fadeUp(0)}>
                         <SparkleIcon sx={{ color: 'primary.main', fontSize: 36, mb: 2 }} />
                         <Typography variant="h5" fontWeight={700} gutterBottom>
-                            More innovations on the way
+                            {t('projects.status')}
                         </Typography>
                         <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.7 }}>
-                            We are continuously building and evolving. Check back soon for more
-                            projects and success stories from the Arohan ecosystem.
+                            {t('projects.statusDesc')}
                         </Typography>
                     </MotionBox>
                 </Container>

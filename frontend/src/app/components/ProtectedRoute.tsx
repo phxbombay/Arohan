@@ -17,17 +17,22 @@ export function ProtectedRoute({ children, allowedRoles }: ProtectedRouteProps) 
     }
 
     if (allowedRoles && user) {
-        // Normalize roles to lowercase for comparison
         const userRoleLower = user.role.toLowerCase();
+
+        // ✅ Admin has FULL access — bypasses all role restrictions
+        if (userRoleLower === 'admin') {
+            console.log('✅ ProtectedRoute: Admin bypass — full access granted');
+            return <>{children}</>;
+        }
+
         const allowedRolesLower = allowedRoles.map(r => r.toLowerCase());
 
         if (!allowedRolesLower.includes(userRoleLower)) {
-            console.warn(`⛔ ProtectedRoute: Role mismatch. User: ${userRoleLower}, Allowed: ${allowedRolesLower}`);
-            return <Navigate to="/" replace />;
+            console.warn(`⛔ ProtectedRoute: Role mismatch. User: ${userRoleLower}, Allowed: ${allowedRolesLower}. Redirecting to /dashboard.`);
+            return <Navigate to="/dashboard" replace />;
         }
         console.log('✅ ProtectedRoute: Access granted');
     }
 
     return <>{children}</>;
 }
-

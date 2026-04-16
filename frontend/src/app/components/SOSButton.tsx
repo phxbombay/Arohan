@@ -1,19 +1,10 @@
-import {
-  Phone as PhoneIcon,
-  LocalHospital as AmbulanceIcon
-} from "@mui/icons-material";
-import {
-  Fab,
-  Dialog,
-  DialogContent,
-  Box,
-  Typography,
-  Stack,
-  keyframes
-} from "@mui/material";
-import { useState, useEffect } from "react";
-import { useSocket } from "../../context/SocketContext";
+import { Phone as PhoneIcon } from "@mui/icons-material";
+import { Box, Fab, Typography, keyframes } from "@mui/material";
+import { useEffect, useState } from "react";
 import { toast } from 'sonner';
+import { useSocket } from "../../context/SocketContext";
+import { useAuth } from "../../features/auth/hooks/useAuth";
+import { EmergencyAlertDialog } from "./emergency/EmergencyAlertDialog";
 
 const ripple = keyframes`
   0% {
@@ -27,112 +18,72 @@ const ripple = keyframes`
 `;
 
 export function SOSButton() {
-  const [isPressed, setIsPressed] = useState(false);
-  const { socket } = useSocket();
+    const [isPressed, setIsPressed] = useState(false);
+    const { socket } = useSocket();
+    const { isAuthenticated } = useAuth();
 
-  useEffect(() => {
-    if (!socket) return;
+    useEffect(() => {
+        if (!socket) return;
 
-    const handleAlertUpdate = (data: any) => {
-      console.log('Realtime Alert Update:', data);
-      if (data.status === 'dispatched') {
-        toast.success('Ambulance dispatched! ETA: ' + (data.eta || 'unknown'));
-      }
-    };
+        const handleAlertUpdate = (data: any) => {
+            if (data.status === 'dispatched') {
+                toast.success('Ambulance dispatched! ETA: ' + (data.eta || 'unknown'));
+            }
+        };
 
-    socket.on('alert:update', handleAlertUpdate);
+        socket.on('alert:update', handleAlertUpdate);
 
-    return () => {
-      socket.off('alert:update', handleAlertUpdate);
-    };
-  }, [socket]);
+        return () => {
+            socket.off('alert:update', handleAlertUpdate);
+        };
+    }, [socket]);
 
-  const handleSOSClick = () => {
-    setIsPressed(true);
-  };
-
-  return (
-    <>
-      <Box sx={{ 
-        position: 'fixed', 
-        bottom: { xs: 'calc(16px + env(safe-area-inset-bottom, 0px))', md: 32 }, 
-        right: { xs: 16, md: 32 }, 
-        zIndex: 1200 
-      }}>
-        <Box sx={{ position: 'relative' }}>
-          {/* Ripple Effect Background */}
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              borderRadius: '50%',
-              bgcolor: 'error.main',
-              animation: `${ripple} 1.5s infinite ease-in-out`,
-              zIndex: -1
-            }}
-          />
-          <Fab
-            color="error"
-            aria-label="SOS"
-            data-testid="sos-button"
-            onClick={handleSOSClick}
-            sx={{ width: { xs: 56, md: 64 }, height: { xs: 56, md: 64 } }}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1 }}>
-              <PhoneIcon sx={{ fontSize: { xs: 24, md: 32 } }} />
-              <Typography variant="caption" sx={{ fontSize: { xs: 10, md: 12 }, fontWeight: 'bold' }}>SOS</Typography>
+    return (
+        <>
+            <Box
+                sx={{
+                    position: 'fixed',
+                    bottom: { xs: 'calc(16px + env(safe-area-inset-bottom, 0px))', md: 32 },
+                    right: { xs: 16, md: 32 },
+                    zIndex: 1200
+                }}
+            >
+                <Box sx={{ position: 'relative' }}>
+                    <Box
+                        sx={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            width: '100%',
+                            height: '100%',
+                            borderRadius: '50%',
+                            bgcolor: 'error.main',
+                            animation: `${ripple} 1.5s infinite ease-in-out`,
+                            zIndex: -1
+                        }}
+                    />
+                    <Fab
+                        color="error"
+                        aria-label="SOS"
+                        data-testid="sos-button"
+                        onClick={() => setIsPressed(true)}
+                        sx={{ width: { xs: 56, md: 64 }, height: { xs: 56, md: 64 } }}
+                    >
+                        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1 }}>
+                            <PhoneIcon sx={{ fontSize: { xs: 24, md: 32 } }} />
+                            <Typography variant="caption" sx={{ fontSize: { xs: 10, md: 12 }, fontWeight: 'bold' }}>
+                                SOS
+                            </Typography>
+                        </Box>
+                    </Fab>
+                </Box>
             </Box>
-          </Fab>
-        </Box>
-      </Box>
 
-      <Dialog
-        open={isPressed}
-        onClose={() => setIsPressed(false)}
-        maxWidth="xs"
-        fullWidth
-        PaperProps={{ sx: { borderRadius: 4, p: 2 } }}
-      >
-        <DialogContent sx={{ textAlign: 'center' }}>
-          {/* Coming Soon Disclaimer */}
-          <Box sx={{ bgcolor: 'info.50', p: 1.5, borderRadius: 2, mb: 3, border: 1, borderColor: 'info.main' }}>
-            <Typography variant="body2" color="info.main" fontWeight="bold">
-              This feature will be enabled soon.
-            </Typography>
-          </Box>
-
-          <Box sx={{ width: 80, height: 80, bgcolor: 'error.50', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 3 }}>
-            <PhoneIcon sx={{ fontSize: 40, color: 'error.main' }} />
-          </Box>
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Emergency Services Alerted
-          </Typography>
-          <Typography variant="body1" color="text.secondary" paragraph>
-            Help is on the way. Your location has been shared with emergency services.
-          </Typography>
-
-          <Box sx={{ bgcolor: 'success.50', border: 1, borderColor: 'success.light', borderRadius: 2, p: 2, mb: 2, textAlign: 'left' }}>
-            <Stack spacing={1}>
-              <Typography variant="body2" color="success.dark" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                ✓ Location shared (Bengaluru)
-              </Typography>
-              <Typography variant="body2" color="success.dark" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                ✓ Nearest ambulance dispatched
-              </Typography>
-              <Typography variant="body2" color="success.dark" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                ✓ Hospital notified
-              </Typography>
-            </Stack>
-          </Box>
-
-          <Typography variant="body2" color="text.secondary">
-            Estimated arrival: <Box component="span" fontWeight="bold" color="text.primary">4 minutes</Box>
-          </Typography>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
+            <EmergencyAlertDialog
+                open={isPressed}
+                onClose={() => setIsPressed(false)}
+                isAuthenticated={isAuthenticated}
+            />
+        </>
+    );
 }

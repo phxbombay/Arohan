@@ -247,5 +247,14 @@ APP_URL=https://yourdomain.com
 
 ---
 
+## ☁️ AWS Infrastructure
+
+### Access Credentials
+- **Access Key ID**: `[REDACTED]`
+- **Secret Access Key**: `[REDACTED]`
+- **Region**: `ap-south-1`
+
+---
+
 ## 📄 License
 Proprietary - All Rights Reserved © 2026 Arohan Health

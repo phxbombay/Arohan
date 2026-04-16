@@ -1,0 +1,210 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - region "Notifications alt+T"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - generic [ref=e6]:
+        - link "Arohan Logo" [ref=e7] [cursor=pointer]:
+          - /url: /
+          - img "Arohan Logo" [ref=e8]
+        - generic [ref=e9]:
+          - link "Home" [ref=e10] [cursor=pointer]:
+            - /url: /
+          - link "About Us" [ref=e11] [cursor=pointer]:
+            - /url: /about
+          - link "Products" [ref=e12] [cursor=pointer]:
+            - /url: /products
+          - link "Pricing" [ref=e13] [cursor=pointer]:
+            - /url: /pricing
+          - link "Nearby Hospitals" [ref=e14] [cursor=pointer]:
+            - /url: /nearby-hospitals
+          - link "Blog" [ref=e15] [cursor=pointer]:
+            - /url: /blog
+          - link "How It Works" [ref=e16] [cursor=pointer]:
+            - /url: /how-it-works
+          - link "Projects Overview" [ref=e17] [cursor=pointer]:
+            - /url: /projects-overview
+        - generic [ref=e18]:
+          - button "Change Language" [ref=e19] [cursor=pointer]:
+            - img [ref=e20]
+          - link "0" [ref=e22] [cursor=pointer]:
+            - /url: /cart
+            - generic [ref=e23]:
+              - img [ref=e24]
+              - generic: "0"
+          - link "Login" [ref=e26] [cursor=pointer]:
+            - /url: /signin
+          - link "Emergency" [ref=e27] [cursor=pointer]:
+            - /url: tel:112
+            - img [ref=e29]
+            - text: Emergency
+    - main [ref=e31]:
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - img [ref=e36]
+          - heading "Sign in to your account" [level=2] [ref=e38]
+          - paragraph [ref=e39]:
+            - text: Or
+            - button "create a new account" [ref=e40] [cursor=pointer]
+        - generic [ref=e41]:
+          - paragraph [ref=e43]: "Error: Too many login attempts from this IP, please try again after 15 minutes."
+          - generic [ref=e45]:
+            - generic [ref=e46]:
+              - generic [ref=e47]:
+                - text: Email address
+                - generic [ref=e48]: "*"
+              - generic [ref=e49]:
+                - img [ref=e51]
+                - textbox "Email address" [ref=e53]:
+                  - /placeholder: you@example.com
+                  - text: patient@test.com
+                - group:
+                  - generic: Email address *
+            - generic [ref=e54]:
+              - generic [ref=e55]:
+                - text: Password
+                - generic [ref=e56]: "*"
+              - generic [ref=e57]:
+                - img [ref=e59]
+                - textbox "Password" [ref=e61]:
+                  - /placeholder: ••••••••
+                  - text: Patient123!
+                - button "toggle password visibility" [ref=e63] [cursor=pointer]:
+                  - img [ref=e64]
+                - group:
+                  - generic: Password *
+            - generic [ref=e66] [cursor=pointer]:
+              - generic [ref=e67]:
+                - checkbox "Remember me" [checked] [ref=e68]
+                - img [ref=e69]
+              - generic [ref=e71]: Remember me
+            - button "Sign In" [ref=e72] [cursor=pointer]:
+              - text: Sign In
+              - img [ref=e74]
+    - contentinfo [ref=e76]:
+      - generic [ref=e77]:
+        - generic [ref=e78]:
+          - generic [ref=e79]:
+            - generic [ref=e80]:
+              - img "Arohan" [ref=e81]
+              - heading "AROHAN" [level=5] [ref=e82]
+            - paragraph [ref=e83]: Revolutionizing proactive healthcare through AI-powered monitoring and emergency prevention. Arohan is currently a prototype undergoing clinical validation.
+            - generic [ref=e84]:
+              - link [ref=e85] [cursor=pointer]:
+                - /url: https://www.facebook.com/arohanhealth
+                - img [ref=e86]
+              - link [ref=e88] [cursor=pointer]:
+                - /url: https://twitter.com/arohanhealth
+                - img [ref=e89]
+              - link [ref=e91] [cursor=pointer]:
+                - /url: https://www.instagram.com/arohanhealth
+                - img [ref=e92]
+              - link [ref=e94] [cursor=pointer]:
+                - /url: https://www.linkedin.com/company/arohan-health/
+                - img [ref=e95]
+          - generic [ref=e97]:
+            - heading "Quick Links" [level=6] [ref=e98]
+            - generic [ref=e99]:
+              - link "About Us" [ref=e100] [cursor=pointer]:
+                - /url: /about
+              - link "How It Works" [ref=e101] [cursor=pointer]:
+                - /url: /how-it-works
+              - link "Projects Overview" [ref=e102] [cursor=pointer]:
+                - /url: /projects-overview
+              - link "Nearby Hospitals" [ref=e103] [cursor=pointer]:
+                - /url: /nearby-hospitals
+              - link "Partner Hospitals" [ref=e104] [cursor=pointer]:
+                - /url: /partner-hospitals
+              - link "Careers" [ref=e105] [cursor=pointer]:
+                - /url: /careers
+          - generic [ref=e106]:
+            - heading "Support & Emergency" [level=6] [ref=e107]
+            - generic [ref=e108]:
+              - link "Help Center & FAQ" [ref=e109] [cursor=pointer]:
+                - /url: /help-center
+              - link "Security & Data Privacy" [ref=e110] [cursor=pointer]:
+                - /url: /security
+              - button "Contact Support" [ref=e111] [cursor=pointer]
+          - generic [ref=e112]:
+            - heading "Contact & Location" [level=6] [ref=e113]
+            - generic [ref=e114]:
+              - generic [ref=e115]:
+                - img [ref=e116]
+                - generic [ref=e118]:
+                  - generic [ref=e119]: Phone Support
+                  - link "+91 70190 24300" [ref=e120] [cursor=pointer]:
+                    - /url: tel:+917019024300
+              - generic [ref=e121]:
+                - img [ref=e122]
+                - generic [ref=e124]:
+                  - generic [ref=e125]: Email Us
+                  - link "info@arohanhealth.com" [ref=e126] [cursor=pointer]:
+                    - /url: mailto:info@arohanhealth.com
+              - generic [ref=e127]:
+                - img [ref=e128]
+                - generic [ref=e130]:
+                  - generic [ref=e131]: Headquarters
+                  - paragraph [ref=e132]: Bengaluru, India
+        - generic [ref=e134]:
+          - paragraph [ref=e135]: © 2026 Arohan Health. All rights reserved.
+          - generic [ref=e136]:
+            - link "Privacy" [ref=e137] [cursor=pointer]:
+              - /url: /privacy
+            - link "Terms" [ref=e138] [cursor=pointer]:
+              - /url: /terms
+            - link "Security" [ref=e139] [cursor=pointer]:
+              - /url: /security
+            - link "Cookies" [ref=e140] [cursor=pointer]:
+              - /url: /cookies
+    - button "SOS" [ref=e144] [cursor=pointer]:
+      - generic [ref=e145]:
+        - img [ref=e146]
+        - generic [ref=e148]: SOS
+    - button "chat" [ref=e149] [cursor=pointer]:
+      - img [ref=e150]
+    - generic [ref=e152]:
+      - button "Notifications Blocked" [disabled]:
+        - generic:
+          - img
+        - text: Notifications Blocked
+  - generic [ref=e154]:
+    - img [ref=e155]
+    - generic [ref=e157]:
+      - heading "We Value Your Privacy" [level=6] [ref=e158]
+      - paragraph [ref=e159]: We use cookies to enhance your browsing experience, analyze site traffic, and personalize content. Your health data is never shared without consent.
+      - generic [ref=e160]:
+        - generic [ref=e161]:
+          - generic:
+            - checkbox "Essential - Required for site functionality" [checked] [disabled]
+            - img
+          - paragraph [ref=e162]:
+            - strong [ref=e163]: Essential
+            - text: "- Required for site functionality"
+        - generic [ref=e164] [cursor=pointer]:
+          - generic [ref=e165]:
+            - checkbox "Analytics - Help us improve our service" [ref=e166]
+            - img [ref=e167]
+          - paragraph [ref=e169]:
+            - strong [ref=e170]: Analytics
+            - text: "- Help us improve our service"
+        - generic [ref=e171] [cursor=pointer]:
+          - generic [ref=e172]:
+            - checkbox "Marketing - Personalized content and offers" [ref=e173]
+            - img [ref=e174]
+          - paragraph [ref=e176]:
+            - strong [ref=e177]: Marketing
+            - text: "- Personalized content and offers"
+      - generic [ref=e178]:
+        - text: Read our
+        - link "Privacy Policy" [ref=e179] [cursor=pointer]:
+          - /url: /privacy
+        - text: and
+        - link "Terms of Service" [ref=e180] [cursor=pointer]:
+          - /url: /terms
+      - generic [ref=e181]:
+        - button "Accept All" [ref=e182] [cursor=pointer]
+        - button "Save Preferences" [ref=e183] [cursor=pointer]
+        - button "Reject Non-Essential" [ref=e184] [cursor=pointer]
+```

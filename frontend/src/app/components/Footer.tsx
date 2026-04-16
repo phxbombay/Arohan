@@ -167,9 +167,22 @@ export function Footer() {
                 {t("footer.copyright")}
               </Typography>
               <Stack direction="row" spacing={4}>
-                {['Privacy', 'Terms', 'Security', 'Cookies'].map((text) => (
-                  <MuiLink key={text} component={Link} to={`/${text.toLowerCase()}`} variant="body2" color="grey.500" underline="none" sx={{ '&:hover': { color: 'common.white' } }}>
-                    {text}
+                {[
+                  { key: 'privacy', path: '/privacy' },
+                  { key: 'terms', path: '/terms' },
+                  { key: 'security', path: '/security' },
+                  { key: 'cookies', path: '/cookies' }
+                ].map((item) => (
+                  <MuiLink 
+                    key={item.key} 
+                    component={Link} 
+                    to={item.path} 
+                    variant="body2" 
+                    color="grey.500" 
+                    underline="none" 
+                    sx={{ '&:hover': { color: 'common.white' } }}
+                  >
+                    {t(`footer.bottomLinks.${item.key}`)}
                   </MuiLink>
                 ))}
               </Stack>

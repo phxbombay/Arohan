@@ -18,7 +18,7 @@ import {
     Stack,
     Divider
 } from '@mui/material';
-import { blogPosts } from '../../data/blog-data';
+import blogPosts from '../../data/blog-data.json';
 import { safeDate } from '../../utils/date-utils';
 
 export function Blog() {

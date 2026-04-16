@@ -30,18 +30,21 @@ import {
 import { StructuredData } from '../components/StructuredData';
 import { generateBreadcrumbSchema } from '../../utils/structuredData';
 import SEO from '../components/SEO';
+import { useTranslation } from 'react-i18next';
 
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../features/auth/hooks/useAuth';
 import { toast } from 'sonner';
 
 export function HowItWorks() {
+    const { t } = useTranslation();
+    const navigate = useNavigate();
     const { isAuthenticated } = useAuth();
     const location = useLocation();
 
     const handleOrderDevice = () => {
         if (!isAuthenticated) {
-            toast.error('Please login to order device');
+            toast.error(t('notifications.loginRequired') || 'Please login to order device');
             navigate('/signin', { state: { from: location.pathname } });
             return;
         }
@@ -60,73 +63,43 @@ export function HowItWorks() {
 
             if (existingItemIndex >= 0) {
                 existingCart[existingItemIndex].quantity += 1;
-                toast.success('Quantity updated in cart!');
+                toast.success(t('notifications.cartUpdated') || 'Quantity updated in cart!');
             } else {
                 existingCart.push({ ...product, quantity: 1 });
-                toast.success('Arohan device added to cart!');
+                toast.success(t('notifications.addedToCart') || 'Arohan device added to cart!');
             }
 
             localStorage.setItem('arohan-cart', JSON.stringify(existingCart));
             navigate('/cart');
         } catch (error) {
             console.error('Error adding to cart:', error);
-            toast.error('Failed to add to cart.');
+            toast.error(t('notifications.cartError') || 'Failed to add to cart.');
         }
     };
 
     const handleDownloadApp = () => {
-        toast.info("Mobile App coming soon to Play Store & App Store!");
+        toast.info(t('notifications.appSoon') || "Mobile App coming soon to Play Store & App Store!");
     };
 
-    const steps = [
-        {
-            label: 'Plug-in and Pair',
-            description: 'Attach the Arohan plugin chip to a compatible watch, ring or wrist band. Pair it once with the mobile app to register the user, caregivers and emergency contacts.',
-            icon: <PhoneIcon />
-        },
-        {
-            label: 'Learn Your Baseline',
-            description: 'Over the first few days, Arohan\'s AI engine learns the user\'s typical heart-rate and motion patterns. This allows the system to detect meaningful deviations rather than reacting to every minor fluctuation.',
-            icon: <HeartIcon />
-        },
-        {
-            label: 'Continuous Monitoring',
-            description: 'The device monitors vitals and movement round the clock. It looks for patterns that may indicate a fall, a rapid change in blood pressure or other warning signs of cardiac or neurological events.',
-            icon: <AnalyticsIcon />
-        },
-        {
-            label: 'Instant Alerts',
-            description: 'When an event is detected, Arohan automatically sends alerts through calls and SMS to registered contacts and, where integrated, partner ambulance or hospital services. Alerts can include time, location and last-known vital trends.',
-            icon: <AlertIcon />
-        },
-        {
-            label: 'Guided First Aid',
-            description: 'The first responder on the scene opens the Arohan app or uses voice commands. The assistant asks a few basic questions (demographics etc), then provides structured, step-by-step guidance for first aid until professionals arrive. All actions are logged for later medical review. The content is curated by doctors. If there is no content available, the assistant clearly says it doesn\'t know instead of providing incorrect information.',
-            icon: <CloudIcon />
-        }
-    ];
+    const stepIcons = [<PhoneIcon />, <HeartIcon />, <AnalyticsIcon />, <AlertIcon />, <CloudIcon />];
+    const steps = (t('howItWorksPage.steps', { returnObjects: true }) || []).map((step, index) => ({
+        ...step,
+        description: step.desc,
+        icon: stepIcons[index]
+    }));
 
-    const specs = [
-        { feature: 'Setup Time', value: 'will be updated soon' },
-        { feature: 'Detection Accuracy', value: 'will be updated soon' },
-        { feature: 'Alert Speed', value: 'will be updated soon' },
-        { feature: 'Battery Life', value: 'will be updated soon' },
-        { feature: 'Sensors', value: 'will be updated soon' },
-        { feature: 'Connectivity', value: 'will be updated soon' },
-        { feature: 'Water Resistance', value: 'will be updated soon' },
-        { feature: 'Weight', value: 'will be updated soon' }
-    ];
+    const specs = t('howItWorksPage.specs', { returnObjects: true }) || [];
 
     const breadcrumbs = [
-        { name: 'Home', url: 'https://arohanhealth.com/' },
-        { name: 'How It Works', url: 'https://arohanhealth.com/how-it-works' }
+        { name: t('nav.home'), url: 'https://arohanhealth.com/' },
+        { name: t('nav.howItWorks'), url: 'https://arohanhealth.com/how-it-works' }
     ];
 
     return (
         <Box>
             <SEO
-                title="How Arohan Works"
-                description="Learn how Arohan's AI-powered wearable detects falls and cardiac emergencies in real-time, sending instant alerts to family and emergency services in under 45 seconds."
+                title={t('howItWorksPage.title')}
+                description={t('howItWorksPage.subtitle')}
                 keywords="how Arohan works, AI fall detection, emergency wearable setup, cardiac monitoring India"
                 canonical="https://arohanhealth.com/how-it-works"
             />
@@ -136,13 +109,13 @@ export function HowItWorks() {
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 6, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h2" fontWeight="800" gutterBottom sx={{ letterSpacing: -1 }}>
-                        How Arohan Works
+                        {t('howItWorksPage.title')}
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9, mb: 2, fontWeight: 500 }}>
-                        From setup to life-saving alerts in simple steps
+                        {t('howItWorksPage.subtitle')}
                     </Typography>
                     <Chip
-                        label="⚠️ PRODUCT DEVELOPMENT IS STILL UNDERWAY"
+                        label={t('howItWorksPage.developmentNote')}
                         sx={{
                             bgcolor: 'warning.main',
                             color: 'white',
@@ -153,8 +126,8 @@ export function HowItWorks() {
                         }}
                     />
                     <Stack direction="row" spacing={2} justifyContent="center">
-                        <Chip label="Quick Setup" sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 'bold', fontSize: '1rem', py: 2 }} />
-                        <Chip label="No Training Required" sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 'bold', fontSize: '1rem', py: 2 }} />
+                        <Chip label={t('howItWorksPage.quickSetup')} sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 'bold', fontSize: '1rem', py: 2 }} />
+                        <Chip label={t('howItWorksPage.noTraining')} sx={{ bgcolor: 'white', color: 'primary.main', fontWeight: 'bold', fontSize: '1rem', py: 2 }} />
                     </Stack>
                 </Container>
             </Box>
@@ -162,10 +135,10 @@ export function HowItWorks() {
             {/* User Journey Stepper */}
             <Container maxWidth="md" sx={{ py: { xs: 6, md: 10 } }}>
                 <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
-                    Your Journey to 24/7 Protection
+                    {t('howItWorksPage.journeyTitle')}
                 </Typography>
                 <Typography variant="h6" color="text.secondary" align="center" sx={{ mb: 8 }}>
-                    Follow these 5 steps to activate round-the-clock emergency monitoring
+                    {t('howItWorksPage.journeyDesc')}
                 </Typography>
 
                 <Box sx={{ maxWidth: 600, mx: 'auto' }}>
@@ -211,7 +184,7 @@ export function HowItWorks() {
             <Box sx={{ bgcolor: 'grey.50', py: { xs: 6, md: 10 } }}>
                 <Container maxWidth="lg">
                     <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
-                        Technical Specifications
+                        {t('productsPage.tabs.specs')}
                     </Typography>
                     <TableContainer component={Paper} elevation={0} sx={{ maxWidth: 800, mx: 'auto', mt: 6, borderRadius: 4, boxShadow: 3, border: '1px solid', borderColor: 'grey.200' }}>
                         <Table>
@@ -233,7 +206,7 @@ export function HowItWorks() {
             {/* How Detection Works */}
             <Container maxWidth="lg" sx={{ py: { xs: 6, md: 10 } }}>
                 <Typography variant="h3" fontWeight="800" align="center" gutterBottom>
-                    AI Detection Technology
+                    {t('howItWorksPage.techTitle')}
                 </Typography>
                 <Grid container spacing={4} sx={{ mt: 4 }} justifyContent="center">
                     <Grid item xs={12} md={6}>
@@ -244,14 +217,13 @@ export function HowItWorks() {
                                 </Box>
                             </Box>
                             <Typography variant="h4" fontWeight="bold" gutterBottom color="primary">
-                                Fall Detection (98% Accuracy)
+                                {t('howItWorksPage.fallTitle')}
                             </Typography>
                             <Typography variant="body1" paragraph fontSize={18} sx={{ mb: 3 }}>
-                                <strong>How it works:</strong> AI analyzes accelerometer and gyroscope data 100 times per second,
-                                detecting sudden acceleration changes, impact force, and post-fall stillness.
+                                {t('howItWorksPage.fallDesc')}
                             </Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ bgcolor: 'grey.100', p: 2, borderRadius: 2, display: 'inline-block' }}>
-                                <strong>False Positive Rate:</strong> Less than 5%
+                                {t('howItWorksPage.fallFalseRate')}
                             </Typography>
                         </Card>
                     </Grid>
@@ -263,14 +235,13 @@ export function HowItWorks() {
                                 </Box>
                             </Box>
                             <Typography variant="h4" fontWeight="bold" gutterBottom color="error">
-                                Cardiac Anomaly Detection
+                                {t('howItWorksPage.cardiacTitle')}
                             </Typography>
                             <Typography variant="body1" paragraph fontSize={18} sx={{ mb: 3 }}>
-                                <strong>How it works:</strong> Continuous ECG monitoring detects arrhythmia, tachycardia (fast heart rate),
-                                bradycardia (slow heart rate), and irregular patterns.
+                                {t('howItWorksPage.cardiacDesc')}
                             </Typography>
                             <Typography variant="body2" color="text.secondary" sx={{ bgcolor: 'grey.100', p: 2, borderRadius: 2, display: 'inline-block' }}>
-                                <strong>Sensitivity:</strong> 95% Clinical Grade
+                                {t('howItWorksPage.cardiacSensitivity')}
                             </Typography>
                         </Card>
                     </Grid>
@@ -281,10 +252,10 @@ export function HowItWorks() {
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 8, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h3" fontWeight="800" gutterBottom>
-                        Ready to Get Started?
+                        {t('howItWorksPage.ctaTitle')}
                     </Typography>
                     <Typography variant="h6" sx={{ opacity: 0.9, mb: 5 }}>
-                        Setup is quick. Protection lasts a lifetime.
+                        {t('howItWorksPage.ctaDesc')}
                     </Typography>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                         <Button
@@ -293,7 +264,7 @@ export function HowItWorks() {
                             size="large"
                             sx={{ bgcolor: 'white', color: 'primary.main', '&:hover': { bgcolor: 'grey.100' }, fontWeight: 'bold', px: 5, py: 1.5, fontSize: '1.2rem', borderRadius: 8 }}
                         >
-                            Order Device
+                            {t('howItWorksPage.orderDevice')}
                         </Button>
                         <Button
                             onClick={handleDownloadApp}
@@ -301,7 +272,7 @@ export function HowItWorks() {
                             size="large"
                             sx={{ borderColor: 'white', color: 'white', '&:hover': { bgcolor: 'rgba(255,255,255,0.1)', borderColor: 'white' }, fontWeight: 'bold', px: 5, py: 1.5, fontSize: '1.2rem', borderRadius: 8 }}
                         >
-                            Download App (Free)
+                            {t('howItWorksPage.downloadApp')}
                         </Button>
                     </Stack>
                 </Container>

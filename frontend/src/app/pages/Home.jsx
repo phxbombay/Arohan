@@ -28,8 +28,8 @@ import {
 } from '@mui/icons-material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, lazy, Suspense } from 'react';
-import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 
 import heroImage from '../../assets/images/hero_prevention.png';
@@ -84,9 +84,7 @@ export function Home() {
                                 transition={{ duration: 0.5 }}
                                 sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 800, color: 'text.primary', lineHeight: 1.2, mb: 3 }}
                             >
-                                Arohan – <Box component="span" sx={{ color: 'primary.main' }}>AI‑Powered</Box><br />
-                                Emergency Prevention <br />
-                                & First Aid
+                                {t('home.heroTitle')}
                             </MotionTypography>
 
                             <MotionTypography
@@ -96,7 +94,7 @@ export function Home() {
                                 transition={{ duration: 0.5, delay: 0.2 }}
                                 sx={{ color: 'text.secondary', mb: 4, maxWidth: 600, lineHeight: 1.6 }}
                             >
-                                A discreet wearable plugin chip and intelligent app designed to assist in health monitoring and emergency notification.
+                                {t('home.heroSubtitle')}
                                 <Box component="span" sx={{ display: 'block', mt: 2, fontSize: '0.9rem', fontStyle: 'italic', color: 'warning.dark' }}>{t('home.prototypeNote')}</Box>
                             </MotionTypography>
 

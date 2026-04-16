@@ -160,7 +160,7 @@ export function Header() {
                   </Stack>
                 ) : (
                   <Button
-                    variant="outlined"
+                    variant="contained"
                     component={Link}
                     to="/signin"
                     sx={{
@@ -168,9 +168,12 @@ export function Header() {
                       px: 3,
                       textTransform: 'none',
                       fontWeight: 600,
-                      color: 'primary.main',
-                      borderColor: 'primary.main',
-                      '&:hover': { bgcolor: 'primary.50', borderColor: 'primary.dark' }
+                      boxShadow: '0 4px 14px rgba(37, 99, 235, 0.4)',
+                      '&:hover': { 
+                        bgcolor: 'primary.dark',
+                        transform: 'translateY(-1px)',
+                        boxShadow: '0 6px 20px rgba(37, 99, 235, 0.6)'
+                      }
                     }}
                   >
                     {t("auth.login")}
@@ -264,7 +267,9 @@ export function Header() {
                 onClick={() => setMobileMenuOpen(false)}
                 sx={{ justifyContent: 'flex-start', color: 'text.primary', py: 1.5 }}
               >
-                Dashboard
+                {user?.role === 'admin' ? t("header.adminPanel") :
+                 user?.role === 'doctor' ? t("header.physicianPanel") :
+                 t("header.dashboard")}
               </Button>
             </ListItem>
           </List>
@@ -286,7 +291,7 @@ export function Header() {
                 }
                 sx={{ justifyContent: 'flex-start', mb: 1, py: 1.5 }}
               >
-                Cart
+                {t("cart.title") || "Cart"}
               </Button>
             </ListItem>
             <ListItem disablePadding>
@@ -302,7 +307,7 @@ export function Header() {
                   }}
                   sx={{ py: 1.5 }}
                 >
-                  Logout
+                  {t("auth.logout")}
                 </Button>
               ) : (
                 <Button
@@ -314,7 +319,7 @@ export function Header() {
                   color="primary"
                   sx={{ py: 1.5 }}
                 >
-                  Sign In
+                  {t("auth.login")}
                 </Button>
               )}
             </ListItem>

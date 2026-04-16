@@ -135,9 +135,11 @@ CREATE TABLE IF NOT EXISTS emergency_contacts (
     contact_id VARCHAR(36) PRIMARY KEY,
     user_id VARCHAR(36) NOT NULL,
     name VARCHAR(100) NOT NULL,
-    phone VARCHAR(50) NOT NULL, -- Larger for encryption
+    phone VARCHAR(50), -- Larger for encryption
+    email VARCHAR(255),
     relation VARCHAR(50),
     priority TINYINT UNSIGNED DEFAULT 1,
+    preferred_channels JSON,
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     INDEX idx_emergency_contact_user (user_id)
 );

@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Box, Button, Card, CardContent, Typography, LinearProgress, Stack, TextField } from '@mui/material';
 import { AutoAwesome as AiIcon } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 
 export function SymptomChecker() {
+    const { t } = useTranslation();
     const [symptom, setSymptom] = useState('');
     const [analyzing, setAnalyzing] = useState(false);
     const [result, setResult] = useState<string | null>(null);
@@ -19,15 +21,15 @@ export function SymptomChecker() {
             const greetings = ['hi', 'hello', 'hey', 'greetings', 'good morning', 'good afternoon', 'good evening'];
 
             if (lowerSymptom.length < 4) {
-                setResult('INFO: Please provide more details about your symptoms for an accurate assessment.');
+                setResult(t('symptomChecker.results.moreDetails'));
             } else if (greetings.some(g => lowerSymptom === g || lowerSymptom.startsWith(g + ' '))) {
-                setResult('INFO: Hello! I am an AI symptom checker. Please describe your symptoms (e.g., "severe headache", "chest pain").');
+                setResult(t('symptomChecker.results.greeting'));
             } else if (lowerSymptom.includes('chest') || lowerSymptom.includes('heart') || lowerSymptom.includes('breath')) {
-                setResult('CRITICAL: Possible Cardiac or Respiratory Event. Recommendation: Call SOS immediately.');
+                setResult(t('symptomChecker.results.cardiac'));
             } else if (lowerSymptom.includes('head') || lowerSymptom.includes('dizz') || lowerSymptom.includes('vision')) {
-                setResult('WARNING: Potential Neurological Issue. Recommendation: Consult a doctor.');
+                setResult(t('symptomChecker.results.neuro'));
             } else {
-                setResult('NOTICE: Unable to assess urgency based on the description. If you are in pain or concerned, please visit a nearby clinic.');
+                setResult(t('symptomChecker.results.unknown'));
             }
         }, 2000);
     };
@@ -37,15 +39,15 @@ export function SymptomChecker() {
             <CardContent>
                 <Stack direction="row" alignItems="center" spacing={1} mb={2}>
                     <AiIcon color="primary" />
-                    <Typography variant="h6" fontWeight="bold">AI Symptom Checker (Beta)</Typography>
+                    <Typography variant="h6" fontWeight="bold">{t('symptomChecker.title')}</Typography>
                 </Stack>
                 <Typography variant="body2" color="text.secondary" paragraph>
-                    Describe your symptoms below. Our AI model will assess urgency.
+                    {t('symptomChecker.description')}
                 </Typography>
 
                 <TextField
                     fullWidth
-                    label="Describe your symptoms (e.g., severe chest pain)"
+                    label={t('symptomChecker.label')}
                     variant="outlined"
                     value={symptom}
                     onChange={(e) => setSymptom(e.target.value)}
@@ -60,15 +62,22 @@ export function SymptomChecker() {
                     disabled={!symptom || analyzing}
                     startIcon={analyzing ? <CircularProgressSize16 /> : <AiIcon />}
                 >
-                    {analyzing ? 'Analyzing Vitals...' : 'Analyze Symptoms'}
+                    {analyzing ? t('symptomChecker.analyzing') : t('symptomChecker.analyzeAction')}
                 </Button>
 
                 {analyzing && <LinearProgress sx={{ mt: 2 }} />}
 
                 {result && (
-                    <Box sx={{ mt: 3, p: 2, bgcolor: result.includes('CRITICAL') ? 'error.50' : 'info.50', borderRadius: 1, borderLeft: '4px solid', borderColor: result.includes('CRITICAL') ? 'error.main' : 'info.main' }}>
-                        <Typography variant="subtitle2" fontWeight="bold" color={result.includes('CRITICAL') ? 'error.main' : 'info.main'}>
-                            AI Analysis Result:
+                    <Box sx={{
+                        mt: 3,
+                        p: 2,
+                        bgcolor: result.includes('CRITICAL') || result.includes('गंभीर') || result.includes('ತೀವ್ರ') ? 'error.50' : 'info.50',
+                        borderRadius: 1,
+                        borderLeft: '4px solid',
+                        borderColor: result.includes('CRITICAL') || result.includes('गंभीर') || result.includes('ತೀವ್ರ') ? 'error.main' : 'info.main'
+                    }}>
+                        <Typography variant="subtitle2" fontWeight="bold" color={result.includes('CRITICAL') || result.includes('गंभीर') || result.includes('ತೀವ್ರ') ? 'error.main' : 'info.main'}>
+                            {t('symptomChecker.resultTitle')}
                         </Typography>
                         <Typography variant="body1">
                             {result}

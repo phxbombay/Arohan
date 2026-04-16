@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import {
     Box,
     Paper,
@@ -25,36 +25,39 @@ import {
 } from '@mui/icons-material';
 import { useTheme, alpha } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 // @ts-ignore
 // @ts-ignore
 import api from '../../services/api';
 import { safeDate } from '../../utils/date-utils';
 
-const INITIAL_MESSAGES = [
-    {
-        id: 1,
-        text: "Hi! I'm the Proactive Health Assistant (Coming Soon). How can I help you today?",
-        sender: 'bot',
-        timestamp: new Date()
-    }
-];
-
-const SUGGESTIONS = [
-    { label: 'Emergency Help', icon: <Emergency fontSize="small" />, action: 'emergency' },
-    { label: 'Find a Doctor', icon: <LocalHospital fontSize="small" />, action: 'doctor' },
-    { label: 'Book Appointment', icon: <CalendarMonth fontSize="small" />, action: 'appointment' },
-    { label: 'Customer Support', icon: <SupportAgent fontSize="small" />, action: 'support' },
-];
-
 export function Chatbot() {
+    const { t } = useTranslation();
     const theme = useTheme();
     const navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false);
-    const [messages, setMessages] = useState(INITIAL_MESSAGES);
     const [input, setInput] = useState('');
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef(null);
     const [connectionError, setConnectionError] = useState(false);
+
+    const INITIAL_MESSAGES = useMemo(() => [
+        {
+            id: 1,
+            text: t('chatbot.initialMessage'),
+            sender: 'bot',
+            timestamp: new Date()
+        }
+    ], [t]);
+
+    const SUGGESTIONS = useMemo(() => [
+        { label: t('chatbot.suggestions.emergency'), icon: <Emergency fontSize="small" />, action: 'emergency' },
+        { label: t('chatbot.suggestions.doctor'), icon: <LocalHospital fontSize="small" />, action: 'doctor' },
+        { label: t('chatbot.suggestions.appointment'), icon: <CalendarMonth fontSize="small" />, action: 'appointment' },
+        { label: t('chatbot.suggestions.support'), icon: <SupportAgent fontSize="small" />, action: 'support' },
+    ], [t]);
+
+    const [messages, setMessages] = useState(INITIAL_MESSAGES);
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,6 +66,14 @@ export function Chatbot() {
     useEffect(() => {
         scrollToBottom();
     }, [messages, isOpen, isTyping]);
+
+    // Reset messages to localized initial message when language changes if no history
+    useEffect(() => {
+        const savedChatId = localStorage.getItem('arohan_chat_id');
+        if (!savedChatId && messages.length === 1 && messages[0].id === 1) {
+            setMessages(INITIAL_MESSAGES);
+        }
+    }, [t, INITIAL_MESSAGES, messages.length]);
 
     // Fetch chat history on mount
     useEffect(() => {
@@ -148,7 +159,7 @@ export function Chatbot() {
                 ...prev,
                 {
                     id: Date.now() + 1,
-                    text: "This feature will be enabled soon",
+                    text: t('chatbot.systemDisabled'),
                     sender: 'bot',
                     timestamp: new Date(),
                     isBlue: true
@@ -251,11 +262,11 @@ export function Chatbot() {
                                 </Avatar>
                                 <Box>
                                     <Typography variant="subtitle1" fontWeight="bold" sx={{ textShadow: '0 2px 4px rgba(0,0,0,0.2)' }}>
-                                        Proactive Health Assistant
+                                        {t('chatbot.title')}
                                     </Typography>
                                     <Typography variant="caption" sx={{ opacity: 0.9, display: 'flex', alignItems: 'center', gap: 0.5 }}>
                                         <Box component="span" sx={{ width: 8, height: 8, bgcolor: '#4caf50', borderRadius: '50%', display: 'inline-block' }} />
-                                        Online
+                                        {t('chatbot.online')}
                                     </Typography>
                                 </Box>
                             </Stack>
@@ -283,7 +294,7 @@ export function Chatbot() {
                             {connectionError && (
                                 <Box sx={{ textAlign: 'center', my: 2 }}>
                                     <Typography variant="caption" color="error">
-                                        Connection issues detected. Retrying...
+                                        {t('chatbot.connectionError')}
                                     </Typography>
                                 </Box>
                             )}
@@ -331,7 +342,7 @@ export function Chatbot() {
                                     {msg.action && (
                                         <Stack direction="row" spacing={1} mt={1} ml={1}>
                                             <Chip
-                                                label="View Details"
+                                                label={t('chatbot.viewDetails')}
                                                 onClick={() => handleNavigation(msg.action)}
                                                 color="primary"
                                                 variant="outlined"
@@ -410,7 +421,7 @@ export function Chatbot() {
                                 <TextField
                                     fullWidth
                                     size="small"
-                                    placeholder="Type a message..."
+                                    placeholder={t('chatbot.placeholder')}
                                     value={input}
                                     onChange={(e) => setInput(e.target.value)}
                                     onKeyPress={(e) => e.key === 'Enter' && handleSend()}

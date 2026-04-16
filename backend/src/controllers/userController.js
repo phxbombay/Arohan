@@ -1,8 +1,46 @@
+import crypto from 'crypto';
 import pool from '../config/db.js';
 import logger from '../config/logger.js';
 import { encrypt, decrypt } from '../utils/encryption.js';
 import { auditLog } from '../middleware/auditLog.js';
-import crypto from 'crypto';
+import {
+    getContactEnabledChannels,
+    normalizeAlertChannels,
+    parseStoredAlertChannels,
+    serializeAlertChannels,
+} from '../services/emergencyAlertService.js';
+
+const hydrateEmergencyContact = (contact) => {
+    const phone = contact.phone ? decrypt(contact.phone) || contact.phone : null;
+    const preferredChannels = parseStoredAlertChannels(contact.preferred_channels);
+    const hydratedContact = {
+        ...contact,
+        phone,
+        preferred_channels: preferredChannels,
+    };
+
+    return {
+        ...hydratedContact,
+        available_channels: getContactEnabledChannels(hydratedContact),
+    };
+};
+
+const sanitizeEmergencyContactInput = (body) => {
+    const name = typeof body.name === 'string' ? body.name.trim() : '';
+    const phone = typeof body.phone === 'string' ? body.phone.trim() : '';
+    const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
+    const relation = typeof body.relation === 'string' ? body.relation.trim() : null;
+    const parsedPriority = Number.parseInt(body.priority, 10);
+    const priority = Number.isNaN(parsedPriority) || parsedPriority < 1 ? 1 : parsedPriority;
+
+    return {
+        name,
+        phone: phone || null,
+        email: email || null,
+        relation,
+        priority,
+    };
+};
 
 // @desc    Get user profile
 // @route   GET /v1/users/profile
@@ -35,13 +73,7 @@ export const getEmergencyContacts = async (req, res) => {
             [req.user.user_id]
         );
 
-        // Decrypt phone numbers before sending
-        const decryptedContacts = rows.map(contact => ({
-            ...contact,
-            phone: decrypt(contact.phone) || contact.phone // Fallback if not encrypted legacy data
-        }));
-
-        res.json(decryptedContacts);
+        res.json(rows.map(hydrateEmergencyContact));
     } catch (error) {
         logger.error('Get Contacts Error:', error);
         res.status(500).json({ message: 'Server error' });
@@ -52,38 +84,75 @@ export const getEmergencyContacts = async (req, res) => {
 // @route   POST /v1/users/emergency-contacts
 // @access  Private
 export const addEmergencyContact = async (req, res) => {
-    const { name, phone, relation, priority } = req.body;
+    const { name, phone, email, relation, priority } = sanitizeEmergencyContactInput(req.body);
+    const requestedPreferredChannels = normalizeAlertChannels(req.body.preferred_channels);
 
-    if (!name || !phone) {
-        return res.status(400).json({ message: 'Name and phone are required' });
+    if (!name || (!phone && !email)) {
+        return res.status(400).json({ message: 'Name and at least one contact method are required' });
+    }
+
+    if (req.body.preferred_channels !== undefined && requestedPreferredChannels.length === 0) {
+        return res.status(400).json({ message: 'Preferred channels must include at least one supported channel' });
+    }
+
+    const contactCapabilities = [];
+    if (phone) {
+        contactCapabilities.push('sms', 'whatsapp');
+    }
+    if (email) {
+        contactCapabilities.push('email');
+    }
+
+    const preferredChannels = requestedPreferredChannels.filter(channel => contactCapabilities.includes(channel));
+
+    if (req.body.preferred_channels !== undefined && preferredChannels.length === 0) {
+        return res.status(400).json({
+            message: 'Preferred channels do not match the provided contact details'
+        });
     }
 
     try {
-        // Enforce limit of 5 contacts for non-VIP (example logic)
-        const [rows] = await pool.query('SELECT COUNT(*) as count FROM emergency_contacts WHERE user_id = ?', [req.user.user_id]);
-        if (parseInt(rows[0].count) >= 5) {
+        const [rows] = await pool.query(
+            'SELECT COUNT(*) as count FROM emergency_contacts WHERE user_id = ?',
+            [req.user.user_id]
+        );
+
+        if (parseInt(rows[0].count, 10) >= 5) {
             return res.status(400).json({ message: 'Contact limit reached' });
         }
 
-        // Encrypt phone
-        const encryptedPhone = encrypt(phone);
         const contact_id = crypto.randomUUID();
+        const encryptedPhone = phone ? encrypt(phone) : null;
+        const serializedPreferredChannels = serializeAlertChannels(preferredChannels);
 
         await pool.query(
-            'INSERT INTO emergency_contacts (contact_id, user_id, name, phone, relation, priority) VALUES (?, ?, ?, ?, ?, ?)',
-            [contact_id, req.user.user_id, name, encryptedPhone, relation, priority || 1]
+            `INSERT INTO emergency_contacts
+            (contact_id, user_id, name, phone, email, relation, priority, preferred_channels)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+            [
+                contact_id,
+                req.user.user_id,
+                name,
+                encryptedPhone,
+                email,
+                relation,
+                priority,
+                serializedPreferredChannels
+            ]
         );
 
-        const createdContact = {
+        const createdContact = hydrateEmergencyContact({
             contact_id,
             user_id: req.user.user_id,
             name,
-            phone,
+            phone: encryptedPhone,
+            email,
             relation,
-            priority: priority || 1
-        };
+            priority,
+            preferred_channels: preferredChannels,
+        });
 
-        await auditLog('add_emergency_contact', 'emergency_contacts', {
+        await auditLog('add_emergency_contact', createdContact.contact_id, {
             userId: req.user.user_id,
             resourceId: createdContact.contact_id
         });

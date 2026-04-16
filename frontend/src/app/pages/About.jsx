@@ -20,78 +20,25 @@ import { useTranslation } from 'react-i18next';
 export function About() {
     const { t } = useTranslation();
     // Core Leadership
-    const leadership = [
-        {
-            name: 'Mrudhula Uriti',
-            title: 'Founder & CEO',
-            role: 'HR & Marketing',
-            bio: 'Strong marketing and HR strategy acumen, enriched by leadership stints at global organizations like Siemens and Accor.',
-            linkedin: '#',
-            expertise: ['Marketing', 'HR Strategy', 'Business Development']
-        }
-    ];
+    const leadership = t('about_extra.leadership', { returnObjects: true }) || [];
 
     // Advisory Board
-    const advisors = [
-        {
-            name: 'Dr. Ravi Kiran',
-            title: 'Startup Advisor',
-            bio: 'PhD in Biomedical Engineering (USA) and runs a thriving healthcare deep-tech startup.',
-            linkedin: '#',
-            expertise: ['Biomedical Engineering', 'Healthcare Tech', 'Startups']
-        }
-    ];
+    const advisors = t('about_extra.advisors', { returnObjects: true }) || [];
 
     // Medical Advisory Panel
-    const medicalAdvisors = [
-        {
-            name: 'Dr. Uday Shankar',
-            title: 'Medical Advisor',
-            specialty: 'Paediatrician'
-        },
-        {
-            name: 'Dr. Anna Das',
-            title: 'Medical Advisor',
-            specialty: 'Rheumatologist'
-        }
-    ];
+    const medicalAdvisors = t('about_extra.medical', { returnObjects: true }) || [];
 
     // Technical & Operations Team
-    const technicalTeam = [
-        { name: 'Eswar Goud', role: 'Operations Management', institution: 'MBA Student' },
-        { name: 'Pracheth Singh', role: 'Software Engineer', institution: 'Engineering Student' },
-        { name: 'Dheeraj A U', role: 'Software Engineer', institution: 'Engineering Student' }
-    ];
+    const technicalTeam = t('about_extra.team', { returnObjects: true }) || [];
 
-    const values = [
-        {
-            title: 'Patient-Centric',
-            description: 'Every decision prioritizes patient safety and well-being',
-            icon: '❤️'
-        },
-        {
-            title: 'Innovation',
-            description: 'Pushing boundaries of AI and wearable technology',
-            icon: '💡'
-        },
-        {
-            title: 'Trust',
-            description: 'Transparent data practices and HIPAA/GDPR compliance',
-            icon: '🔒'
-        },
-        {
-            title: 'Accessibility',
-            description: 'Affordable proactive care for individuals and families across India',
-            icon: '🌏'
-        }
-    ];
+    const valueIcons = ['❤️', '💡', '🔒', '🌏'];
+    const values = (t('about_extra.values', { returnObjects: true }) || []).map((v, i) => ({
+        ...v,
+        description: v.desc, // Map 'desc' from JSON to 'description' used in component
+        icon: valueIcons[i]
+    }));
 
-    const milestones = [
-        { year: '2025', event: 'Company founded in Bengaluru' },
-        { year: '2025 Q4', event: 'Initial prototype development and testing' },
-        { year: '2026 Q1', event: 'Open early access program' },
-        { year: '2026 Q3', event: 'Regulatory certification process' }
-    ];
+    const milestones = t('about_extra.milestones', { returnObjects: true }) || [];
 
     const breadcrumbs = [
         { name: 'Home', url: 'https://arohanhealth.com/' },
@@ -138,15 +85,11 @@ export function About() {
                         {t('about.evidenceDesc')}
                     </Typography>
                     <Grid container spacing={3}>
-                        {[
-                            { title: 'Geriatric Fall Dynamics', ref: 'Predictive modeling of fall risks in urban senior environments based on balance and gait analysis.' },
-                            { title: 'Cardiac Arrhythmia Monitoring', ref: 'Continuous PPG-based detection protocols for irregular heart rhythms and tachycardia events.' },
-                            { title: 'Emergency Response Latency', ref: 'Clinical studies proving that 50% reduction in notification time leads to 30% better recovery outcomes.' }
-                        ].map((study, idx) => (
+                        {(t('about_extra.studies', { returnObjects: true }) || []).map((study, idx) => (
                             <Grid item xs={12} md={4} key={idx}>
                                 <Paper elevation={0} sx={{ p: 4, border: 1, borderColor: 'grey.200', borderRadius: 3, height: '100%' }}>
                                     <Typography variant="h6" fontWeight="bold" gutterBottom>{study.title}</Typography>
-                                    <Typography variant="body2" color="text.secondary">{study.ref}</Typography>
+                                    <Typography variant="body2" color="text.secondary">{study.desc}</Typography>
                                 </Paper>
                             </Grid>
                         ))}
@@ -385,10 +328,10 @@ export function About() {
             <Box sx={{ bgcolor: 'primary.main', color: 'white', py: { xs: 8, md: 10 }, textAlign: 'center' }}>
                 <Container maxWidth="md">
                     <Typography variant="h3" fontWeight="800" gutterBottom>
-                        Join Us in Saving Lives
+                        {t('about_extra.cta.title')}
                     </Typography>
                     <Typography variant="h6" sx={{ opacity: 0.9, mb: 5 }}>
-                        Careers, partnerships, and investment opportunities
+                        {t('about_extra.cta.subtitle')}
                     </Typography>
                     <Stack direction={{ xs: 'column', sm: 'row' }} spacing={3} justifyContent="center">
                         <Button
@@ -402,7 +345,7 @@ export function About() {
                                 transition: 'all 0.3s'
                             }}
                         >
-                            <EmailIcon sx={{ mr: 1 }} /> Contact Us
+                            <EmailIcon sx={{ mr: 1 }} /> {t('about_extra.cta.contact')}
                         </Button>
                         <Button
                             component={Link}
@@ -414,7 +357,7 @@ export function About() {
                                 '&:hover': { bgcolor: 'rgba(255,255,255,0.1)', borderColor: 'white' }
                             }}
                         >
-                            View Careers
+                            {t('about_extra.cta.careers')}
                         </Button>
                     </Stack>
                 </Container>

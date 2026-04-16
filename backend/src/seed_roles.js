@@ -43,40 +43,49 @@ const seedRoles = async () => {
 
     try {
         for (const user of users) {
-            // Check if user already exists
-            const [existing] = await pool.query('SELECT user_id FROM users WHERE email = ?', [user.email]);
+            try {
+                // Step 1: Find existing user_id (needed to clean refresh_tokens FK first)
+                const [existing] = await pool.query(
+                    'SELECT user_id FROM users WHERE email = ?',
+                    [user.email]
+                );
 
-            if (existing.length > 0) {
-                console.log(`ℹ️  User ${user.email} already exists. Skipping.`);
-                continue;
+                if (existing.length > 0) {
+                    const existingId = existing[0].user_id;
+                    // Step 2: Delete FK-dependent refresh_tokens FIRST
+                    await pool.query(
+                        'DELETE FROM refresh_tokens WHERE user_id = ?',
+                        [existingId]
+                    );
+                    console.log(`🧹 Cleared tokens for: ${user.email}`);
+
+                    // Step 3: Now safe to delete user
+                    await pool.query('DELETE FROM users WHERE user_id = ?', [existingId]);
+                    console.log(`🧹 Deleted existing user: ${user.email}`);
+                }
+
+                // Step 4: Re-create with fresh credentials
+                const user_id = crypto.randomUUID();
+                const hashedPassword = await bcrypt.hash(user.password, 10);
+
+                await pool.query(
+                    `INSERT INTO users (user_id, full_name, email, password_hash, role, is_active, created_at)
+                     VALUES (?, ?, ?, ?, ?, TRUE, NOW())`,
+                    [user_id, user.full_name, user.email, hashedPassword, user.role]
+                );
+
+                console.log(`✅ Created ${user.role}: ${user.email} (password: ${user.password})`);
+            } catch (userErr) {
+                console.error(`❌ Failed for ${user.email}:`, userErr.message);
             }
-
-            const user_id = crypto.randomUUID();
-            const hashedPassword = await bcrypt.hash(user.password, 10);
-
-            const query = `
-                INSERT INTO users (user_id, full_name, email, password_hash, role, is_active, created_at)
-                VALUES (?, ?, ?, ?, ?, ?, NOW())
-            `;
-
-            await pool.query(query, [
-                user_id,
-                user.full_name,
-                user.email,
-                hashedPassword,
-                user.role,
-                true
-            ]);
-
-            console.log(`✅ Created ${user.role}: ${user.email}`);
         }
 
-        console.log('🎉 Seeding complete!');
+        console.log('\n🎉 Seeding complete!');
+        console.log('\n📋 Test Credentials:');
+        users.forEach(u => console.log(`   ${u.role.padEnd(15)} | ${u.email} | ${u.password}`));
         process.exit(0);
     } catch (error) {
-        console.error('❌ Seeding failed:', error);
-        if (error.sql) console.error('SQL:', error.sql);
-        if (error.message) console.error('Message:', error.message);
+        console.error('❌ Seeding failed:', error.message);
         process.exit(1);
     }
 };

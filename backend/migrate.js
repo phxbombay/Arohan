@@ -63,7 +63,20 @@ async function migrate() {
             await connection.query('CREATE INDEX idx_audit_timestamp ON audit_logs(timestamp)');
         }
 
-        // 6. Orders & Payments
+        // 6. Emergency Contacts
+        console.log('Refining emergency_contacts table...');
+        await connection.query(`
+            ALTER TABLE emergency_contacts
+            MODIFY phone VARCHAR(50) NULL
+        `);
+        if (!await columnExists('emergency_contacts', 'email')) {
+            await connection.query('ALTER TABLE emergency_contacts ADD COLUMN email VARCHAR(255) NULL AFTER phone');
+        }
+        if (!await columnExists('emergency_contacts', 'preferred_channels')) {
+            await connection.query('ALTER TABLE emergency_contacts ADD COLUMN preferred_channels JSON NULL AFTER priority');
+        }
+
+        // 7. Orders & Payments
         console.log('Refining orders and payments...');
         if (!await indexExists('orders', 'idx_orders_user')) {
             await connection.query('CREATE INDEX idx_orders_user ON orders(user_id)');
@@ -75,7 +88,7 @@ async function migrate() {
             await connection.query('CREATE INDEX idx_payments_order ON payments(order_id)');
         }
 
-        // 7. Chat Tables (MySQL Conversion)
+        // 8. Chat Tables (MySQL Conversion)
         console.log('Ensuring Chat tables exist...');
         await connection.query(`
             CREATE TABLE IF NOT EXISTS chats (
@@ -103,7 +116,7 @@ async function migrate() {
             )
         `);
 
-        // 8. Blogs refinements
+        // 9. Blogs refinements
         console.log('Refining blogs table...');
         await connection.query(`
             ALTER TABLE blogs 

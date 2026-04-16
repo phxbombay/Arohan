@@ -109,16 +109,22 @@ export function SignInPage() {
     };
 
     const completeLogin = () => {
-        const from = (location.state as any)?.from || '/dashboard';
-        const role = (user?.role || localStorage.getItem('user_role') || 'patient').toLowerCase();
+        // IMPORTANT: user?.role is stale (still null) right after login() because
+        // Zustand set() is async w.r.t re-renders. localStorage is written
+        // synchronously inside authStore.login() so it's always up-to-date here.
+        const role = (localStorage.getItem('user_role') || 'patient').toLowerCase();
 
-        if (role === 'admin') {
-            console.log('🚀 Navigating to /admin');
-            navigate('/admin');
-        } else {
-            console.log(`🚀 Navigating to ${from}`);
-            navigate(from);
-        }
+        const roleRoutes: Record<string, string> = {
+            admin: '/admin',
+            physician: '/physician/dashboard',
+            doctor: '/physician/dashboard',
+            hospital_admin: '/hospital/dashboard',
+            patient: '/patient/dashboard',
+        };
+
+        const destination = roleRoutes[role] || '/dashboard';
+        console.log(`🚀 completeLogin → role=${role}, navigating to ${destination}`);
+        navigate(destination);
     };
 
     const handleVerifyOTP = async (e: FormEvent) => {

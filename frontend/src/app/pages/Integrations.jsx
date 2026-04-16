@@ -1,13 +1,15 @@
 import { Box, Container, Typography, Grid, Paper, Button, Divider, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
 import { Api as ApiIcon, Payment as PaymentIcon, Router as RouterIcon, Storage as StorageIcon, CheckCircle as CheckCircleIcon, Security as SecurityIcon } from '@mui/icons-material';
+import { useTranslation } from 'react-i18next';
 import SEO from '../components/SEO';
 
 export function Integrations() {
+    const { t } = useTranslation();
     return (
         <Box>
             <SEO 
-                title="API & Integrations - Arohan Health"
-                description="Connect Arohan's AI emergency detection with your existing healthcare ecosystem. API documentation, Payment gateway integration, and device connectivity details."
+                title={t('integrationsPage.heroTitle')}
+                description={t('integrationsPage.heroSubtitle')}
                 keywords="API integration, payment gateway, healthcare API, medical device connectivity, PayTM integration"
             />
 
@@ -15,10 +17,10 @@ export function Integrations() {
             <Box sx={{ py: 10, bgcolor: 'primary.main', color: 'white' }}>
                 <Container maxWidth="lg">
                     <Typography variant="h2" fontWeight="bold" gutterBottom>
-                        Integrations & Connectors
+                        {t('integrationsPage.heroTitle')}
                     </Typography>
                     <Typography variant="h5" sx={{ opacity: 0.9 }}>
-                        Seamlessly link Arohan to your clinical systems, apps, and payout workflows
+                        {t('integrationsPage.heroSubtitle')}
                     </Typography>
                 </Container>
             </Box>
@@ -29,24 +31,18 @@ export function Integrations() {
                     <Grid item xs={12} md={6}>
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
                             <ApiIcon color="primary" sx={{ fontSize: 40 }} />
-                            <Typography variant="h4" fontWeight="bold">Healthcare APIs</Typography>
+                            <Typography variant="h4" fontWeight="bold">{t('integrationsPage.apiTitle')}</Typography>
                         </Box>
                         <Typography variant="body1" paragraph color="text.secondary">
-                            Our RESTful APIs allow hospitals and gated communities to pull real-time health alerts and historical vitals into their own management dashboards.
+                            {t('integrationsPage.apiDesc')}
                         </Typography>
                         <List>
-                            <ListItem>
-                                <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
-                                <ListItemText primary="Webhook notifications for emergency events" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
-                                <ListItemText primary="Batch retrieval of heart rate and SpO2 data" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
-                                <ListItemText primary="FHIR/HL7 compliant data formatting" />
-                            </ListItem>
+                            {(t('integrationsPage.apiPoints', { returnObjects: true }) || []).map((point, i) => (
+                                <ListItem key={i}>
+                                    <ListItemIcon><CheckCircleIcon color="success" /></ListItemIcon>
+                                    <ListItemText primary={point} />
+                                </ListItem>
+                            ))}
                         </List>
                         <Button variant="outlined" sx={{ mt: 3 }}>Request API Docs</Button>
                     </Grid>
@@ -55,10 +51,10 @@ export function Integrations() {
                     <Grid item xs={12} md={6}>
                         <Box sx={{ display: 'flex', alignItems: 'center', mb: 3, gap: 2 }}>
                             <PaymentIcon color="secondary" sx={{ fontSize: 40 }} />
-                            <Typography variant="h4" fontWeight="bold">Payment Gateways</Typography>
+                            <Typography variant="h4" fontWeight="bold">{t('integrationsPage.paymentTitle')}</Typography>
                         </Box>
                         <Typography variant="body1" paragraph color="text.secondary">
-                            We support localized payment ecosystems for subscription management and hardware purchases, ensuring a smooth experience for users in India.
+                            {t('integrationsPage.paymentDesc')}
                         </Typography>
                         <Grid container spacing={2}>
                             {['PayTM', 'Razorpay', 'UPI / PhonePe', 'Stripe (Global)'].map((p, i) => (
@@ -80,9 +76,9 @@ export function Integrations() {
                     <Grid item xs={12} md={4}>
                         <Box sx={{ p: 3, textAlign: 'center' }}>
                             <RouterIcon sx={{ fontSize: 64, color: 'info.main', mb: 2 }} />
-                            <Typography variant="h5" fontWeight="bold" gutterBottom>Connectivity</Typography>
+                            <Typography variant="h5" fontWeight="bold" gutterBottom>{t('integrationsPage.hardwareTitle')}</Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Dual-band WiFi, Bluetooth 5.0 Low Energy, and optional 4G LTE fallover support.
+                                {t('integrationsPage.hardwareDesc')}
                             </Typography>
                         </Box>
                     </Grid>
@@ -91,9 +87,9 @@ export function Integrations() {
                     <Grid item xs={12} md={4}>
                         <Box sx={{ p: 3, textAlign: 'center' }}>
                             <StorageIcon sx={{ fontSize: 64, color: 'success.main', mb: 2 }} />
-                            <Typography variant="h5" fontWeight="bold" gutterBottom>Cloud Storage</Typography>
+                            <Typography variant="h5" fontWeight="bold" gutterBottom>{t('integrationsPage.cloudTitle')}</Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Encrypted archival of health data on AWS Mumbai region servers for low latency.
+                                {t('integrationsPage.cloudDesc')}
                             </Typography>
                         </Box>
                     </Grid>
@@ -102,9 +98,9 @@ export function Integrations() {
                     <Grid item xs={12} md={4}>
                         <Box sx={{ p: 3, textAlign: 'center' }}>
                             <SecurityIcon sx={{ fontSize: 64, color: 'warning.main', mb: 2 }} />
-                            <Typography variant="h5" fontWeight="bold" gutterBottom>IAM Control</Typography>
+                            <Typography variant="h5" fontWeight="bold" gutterBottom>{t('integrationsPage.iamTitle')}</Typography>
                             <Typography variant="body2" color="text.secondary">
-                                Identity and Access Management for role-based dashboard access (Admin/Doctor/Nurse).
+                                {t('integrationsPage.iamDesc')}
                             </Typography>
                         </Box>
                     </Grid>
@@ -114,11 +110,11 @@ export function Integrations() {
             {/* Bottom CTA */}
             <Box sx={{ py: 8, bgcolor: 'grey.50', textAlign: 'center' }}>
                 <Container>
-                    <Typography variant="h4" fontWeight="bold" gutterBottom>Need a Custom Integration?</Typography>
+                    <Typography variant="h4" fontWeight="bold" gutterBottom>{t('integrationsPage.ctaTitle')}</Typography>
                     <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-                        Our engineering team can build custom connectors for specialized medical equipment.
+                        {t('integrationsPage.ctaDesc')}
                     </Typography>
-                    <Button variant="contained" size="large">Talk to an Engineer</Button>
+                    <Button variant="contained" size="large">{t('integrationsPage.ctaButton')}</Button>
                 </Container>
             </Box>
         </Box>
