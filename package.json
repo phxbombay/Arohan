@@ -1,5 +1,27 @@
 {
   "dependencies": {
     "@aws-sdk/client-ec2": "^3.1019.0"
+  },
+  "name": "arohan",
+  "version": "1.0.0",
+  "description": "[![License](https://img.shields.io/badge/license-Proprietary-blue.svg)](LICENSE)\r [![Node.js](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen.svg)](https://nodejs.org/)\r [![React](https://img.shields.io/badge/react-18.x-blue.svg)](https://reactjs.org/)\r [![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://www.docker.com/)\r [![MySQL](https://img.shields.io/badge/mysql-8.0-orange.svg)](https://www.mysql.com/)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phxbombay/Arohan.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/phxbombay/Arohan/issues"
+  },
+  "homepage": "https://github.com/phxbombay/Arohan#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1"
   }
 }
